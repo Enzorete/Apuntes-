@@ -299,57 +299,57 @@ $$
 
 **Respuesta:** 90% tasa de aciertos
 
-# Ejercicio 7 – Memoria caché (mapeo directo)
+# Ejercicio 7
 
-## Enunciado
-Computadora de 32 bits con:
-- Memoria principal: 8 MB, $T_{mp} = 1.260$ ns
-- Memoria caché: 4 KB, $T_c = 120$ ns
-- Correspondencia directa
-- Línea = 256 bytes
-- Accesos totales = 1.200.000, fallos = 600.000
+**Enunciado:**  
+Dada las especificaciones de una computadora de 32 bits cuenta con una memoria ppal. de 8MB con tiempo de acceso de 1 260ns y una memoria cache de 4KB con un tiempo de acceso de 120ns con correspondencia directa. Se registran 600 000 fallas en cache con un total de 1 200 000 accesos y el tamaño de linea es de 256 bytes.
 
----
+### Indicar el tiempo medio de acceso
+Ts = Tcaché + (1 - H) * Terror  
+H = aciertos/totales = (1 200 000 - 600 000)/1 200 000 = 0.5  
+Ts = 120ns + (1 - 0.5) * 1 260ns  
+Ts = 750ns  
 
-## 1) Tiempo medio de acceso
+### Calcular los bits de cada uno de los campos de la dirección
+MP = 8MB → 2³ * 2²⁰ = 2²³ → **23 bits**
 
-Fórmula:
-$$ T_s = T_c + (1 - H) \cdot T_{mp} $$
+1. **Offset de palabras:**  
+   palabra = log2(tamaño de linea) → log2(256) = **8 bits**
 
-Tasa de aciertos:
-$$ H = \frac{\text{aciertos}}{\text{totales}} = \frac{1.200.000 - 600.000}{1.200.000} = 0,5 $$
+2. **Bits de linea:**  
+   linea = cache/linea → 2²*2¹⁰ / 256 = 2⁴ → **4 bits linea**
 
-Cálculo:
-$$ T_s = 120\ \text{ns} + (1 - 0,5) \cdot 1.260\ \text{ns} $$
-$$ T_s = 120 + 630 = 750\ \text{ns} $$
-
-**Resultado: $T_s = 750$ ns**
+3. **Bits de etiqueta:**  
+   etiqueta = bits direccion - linea - palabra  
+   etiqueta = 23 - 4 - 8 = **11 bits**
 
 ---
 
-## 2) Bits de los campos de dirección
+### b)
+MP = 2^20 * 2^3 = 2^23
 
-Memoria principal 8 MB:
-$$ 8\ \text{MB} = 8 \cdot 2^{20} = 2^3 \cdot 2^{20} = 2^{23} \ \text{bytes} $$
-→ Se usan **23 bits** de dirección.
+TC = tamaño lineas * cantidad lineas  
+2^12 = 2^8 * cantidad lineas  
+2^4 = cantidad lineas → **4 bits**
 
-### a) Offset de palabra
-$$ \text{palabra} = \log_2(\text{tamaño de línea}) = \log_2(256) = 8\ \text{bits} $$
+palabra = log2(256) = 2^8 = **8 bits**
 
-### b) Bits de línea
-$$ \text{nº líneas} = \frac{\text{caché}}{\text{línea}} = \frac{4\ \text{KB}}{256\ \text{B}} = \frac{4 \cdot 2^{10}}{2^8} = 2^4 $$
-$$ \text{línea} = 4\ \text{bits} $$
+etiqueta = 23 - 4 - 8 = **11 bits**
 
-### c) Bits de etiqueta
-$$ \text{etiqueta} = \text{bits dirección} - \text{línea} - \text{palabra} $$
-$$ \text{etiqueta} = 23 - 4 - 8 = 11\ \text{bits} $$
+### c) 
+bloques = MP/bloque = 2^23/2^8 = **2^15**
 
-**Resultado:**
-- Etiqueta: **11 bits**
-- Línea: **4 bits**
-- Palabra (offset): **8 bits**
+---
 
-Formato de dirección (23 bits):
-```
-|  Etiqueta (11)  |  Línea (4)  |  Offset (8) |
-```
+## 12) Coherencia de caché
+
+**a) ¿Cómo se origina un problema de coherencia de caché?**  
+Pasa en sistemas multiprocesador. Cada CPU tiene su propia caché. Si el CPU 1 modifica un dato en su caché, el CPU 2 puede tener una copia vieja de ese mismo dato en su caché. Entonces los dos ven valores distintos para la misma dirección de memoria. Ahí tenés el problema de coherencia.
+
+**b) Detallar el método transparencia de hardware para resolver el problema**  
+La "transparencia de hardware" se refiere a protocolos que el hardware maneja automáticamente sin que el programador haga nada. Los dos más conocidos:
+
+| Método | Cómo funciona |
+| --- | --- |
+| **Snooping/Bus watching** | Cada caché "espía" el bus. Si detecta que otro CPU escribió en una dirección que él tiene cacheada, invalida su copia o la actualiza. Protocolos tipo MSI, MESI. |
+| **Directorios** | Hay un directorio central que sabe qué cachés tienen copia de cada bloque. Cuando alguien escribe, el directorio avisa solo a las cachés involucradas para invalidar/actualizar. |
