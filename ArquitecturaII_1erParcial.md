@@ -1,6 +1,6 @@
 ---
 title: "Arquitectura II"
-subtitle: "Verdadero / Falso (1 al 8)"
+subtitle: "Verdadero / Falso (1 al 8) y Ejercicios de Caché"
 author: "Apuntes de cátedra"
 date: "2026-05-06"
 lang: "es-AR"
@@ -8,348 +8,152 @@ lang: "es-AR"
 
 # Arquitectura II
 
-## Verdadero / Falso (1 al 8)
+> Resumen de verdadero/falso y ejercicios resueltos de memoria caché.
+
+## Índice
+- [Parte 1 - Verdadero / Falso](#parte-1---verdadero--falso)
+  - [1. NMI](#1-las-interrupciones-nmi-son-interrupciones-que-no-pueden-aplazarse-o-anularse)
+  - [2. DMA polling](#2-el-método-dma-es-administración-de-es-programada-donde-pregunta-en-secuencia-si-un-periférico-necesita-atención)
+  - [3. Modos DMA](#3-el-método-dma-puede-operar-de-una-sola-manera-la-cual-es-detención-de-cpu)
+  - [4. Robo de ciclos](#4-en-dma-en-la-técnica-de-robo-de-ciclos-tiene-la-restricción-de-poder-transmitir-una-palabra-usando-los-semiciclos-de-reloj-que-no-utiliza-la-cpu)
+  - [5. Complemento a 2](#5-en-complemento-a-dos-el-binario-1001-representa-el-número-9)
+  - [6. Negación C2](#6-el-proceso-de-negación-en-complemento-a-dos-es-realizar-el-complemento-a-uno-y-luego-sumar-1)
+  - [7. IEEE 754](#7-en-coma-flotante-el-método-adoptado-desde-1985-es-el-mecanismo-de-punto-fijo)
+  - [8. Overflow exponente](#8-en-operaciones-con-números-en-coma-flotante-puede-ocurrir-el-desbordamiento-del-exponente)
+- [Parte 2 - Ejercicios](#parte-2---ejercicios-de-memoria-caché)
+  - [Ejercicio 1](#ejercicio-1---tiempo-promedio)
+  - [Ejercicio 2](#ejercicio-2---variante)
+  - [Ejercicio 3](#ejercicio-3---mapeo-directo)
+  - [Ejercicio 4](#ejercicio-4---mapeo-asociativo)
+  - [Ejercicio 5](#ejercicio-5---bloque-y-tiempo-promedio)
+  - [Ejercicio 6](#ejercicio-6---asociativa-por-conjuntos)
+  - [Ejercicio 7](#ejercicio-7---mapeo-directo-completo)
+
+---
+
+## Parte 1 - Verdadero / Falso
 
 ### 1) Las interrupciones NMI son interrupciones que no pueden aplazarse o anularse.
-**Respuesta: Verdadero**
-
-NMI = *Non-Maskable Interrupt*. Se crearon para fallos críticos (alimentación, error de paridad) y la CPU no las puede enmascarar.
-
----
+**Respuesta:** <span style="background:#10b981;color:white;padding:2px 8px;border-radius:6px;font-weight:700">VERDADERO</span>  
+NMI = Non-Maskable Interrupt. Se usan para fallos críticos y la CPU no las puede enmascarar.
 
 ### 2) El método DMA es administración de E/S programada donde pregunta en secuencia si un periférico necesita atención.
-**Respuesta: Falso**
-
-Eso describe *polling* (E/S programada). DMA es lo contrario: el controlador toma el bus y mueve datos directo a memoria sin que la CPU pregunte.
-
----
+**Respuesta:** <span style="background:#ef4444;color:white;padding:2px 8px;border-radius:6px;font-weight:700">FALSO</span>  
+Eso es <span style="color:#ef4444">polling</span>. DMA transfiere directo a memoria sin intervención continua de la CPU.
 
 ### 3) El método DMA puede operar de una sola manera, la cual es detención de CPU.
-**Respuesta: Falso**
-
-Hay tres formas clásicas: detención de CPU (ráfaga), robo de ciclo y DMA transparente. Detención es solo una.
-
----
+**Respuesta:** <span style="background:#ef4444;color:white;padding:2px 8px;border-radius:6px;font-weight:700">FALSO</span>  
+Tres modos clásicos: <span style="color:#2563eb">detención de CPU (ráfaga)</span>, <span style="color:#2563eb">robo de ciclo</span> y <span style="color:#2563eb">DMA transparente</span>.
 
 ### 4) En DMA, en la técnica de robo de ciclos, tiene la restricción de poder transmitir una palabra usando los semiciclos de reloj que no utiliza la CPU.
-**Respuesta: Verdadero**
-
-En los apuntes de la materia lo toman así. La idea clave es que roba un ciclo de bus por vez y mueve una palabra. Algunos libros lo explican con "semiciclos", otros solo "cuando la CPU no usa el bus".
-
----
+**Respuesta:** <span style="background:#10b981;color:white;padding:2px 8px;border-radius:6px;font-weight:700">VERDADERO</span>  
+Roba un ciclo de bus por vez. En los apuntes se explica como "semiciclo".
 
 ### 5) En complemento a dos, el binario 1001 representa el número 9.
-**Respuesta: Falso**
-
-Con 4 bits, MSB=1 indica negativo. 1001 → inviertes (0110) +1 = 0111 = 7 → es **-7**. Como entero sin signo sí sería 9, pero en C2 no.
-
----
+**Respuesta:** <span style="background:#ef4444;color:white;padding:2px 8px;border-radius:6px;font-weight:700">FALSO</span>  
+Con 4 bits, MSB=1 → negativo. 1001 = <span style="color:#7c3aed">-7 en C2</span>. Como sin signo sí sería 9.
 
 ### 6) El proceso de negación en complemento a dos es realizar el complemento a uno y luego sumar 1.
-**Respuesta: Verdadero**
-
-Esa es la definición exacta.
-
----
+**Respuesta:** <span style="background:#10b981;color:white;padding:2px 8px;border-radius:6px;font-weight:700">VERDADERO</span>
 
 ### 7) En coma flotante, el método adoptado desde 1985 es el mecanismo de punto fijo.
-**Respuesta: Falso**
-
-Desde 1985 rige **IEEE 754** para punto flotante, no punto fijo.
-
----
+**Respuesta:** <span style="background:#ef4444;color:white;padding:2px 8px;border-radius:6px;font-weight:700">FALSO</span>  
+Desde 1985 rige <span style="color:#2563eb">IEEE 754</span> para punto flotante.
 
 ### 8) En operaciones con números en coma flotante, puede ocurrir el desbordamiento del exponente.
-**Respuesta: Verdadero**
-
-Overflow y underflow del exponente son los dos errores típicos.
-
----
-
-## Ejercicios de Memoria Caché
-
-### 1) Tiempo promedio de acceso
-**Enunciado:** Memoria caché $T_1 = 1$ ns/palabra, memoria principal $T_2 = 10$ ns/palabra, tasa de aciertos $H = 0{,}90$, líneas de 256 palabras.
-
-**Paso 1: Identificar qué piden**
-- "Tiempo promedio de acceso" → usar $T_s = T_1 + (1-H) \cdot T_2$
-
-**Paso 2: Sacar los datos**
-- $T_1 = 1$ ns
-- $T_2 = 10$ ns
-- $H = 0{,}90$
-
-**Solución:**
-$$
-T_s = 1 + (1-0{,}9) \times 10 = 1 + 1 = 2\ \text{ns}
-$$
+**Respuesta:** <span style="background:#10b981;color:white;padding:2px 8px;border-radius:6px;font-weight:700">VERDADERO</span>  
+Overflow y underflow de exponente son errores típicos.
 
 ---
 
-### 2) Tiempo promedio de acceso (variante)
-**Enunciado:** $T_1 = 1$ ns/palabra, $T_2 = 10$ ns/palabra, $H = 0{,}975$, líneas de 1024 palabras.
+## Parte 2 - Ejercicios de Memoria Caché
 
-**Solución:**
-$$
-T_s = 1 + (1-0{,}975) \times 10 = 1 + 0{,}25 = 1{,}25\ \text{ns}
-$$
-
----
-
-### 3) Mapeo directo
-**Enunciado:** Memoria principal de 256M palabras de 16 bits. Caché de 1M palabras, mapeo directo, líneas de 256 palabras.
-
-**a) Bits de etiqueta, línea y palabra**
-
-**Paso 1: Pasar todo a potencia de 2**
-- Memoria principal: $256\text{M} = 256 \cdot 2^{20} = 2^8 \cdot 2^{20} = 2^{28}$
-- Caché: $1\text{M} = 2^{20}$
-- Tamaño de línea: $256 = 2^8$
-
-**Paso 2: Bits de dirección total**
-- $2^{28} \Rightarrow 28$ bits
-
-**Paso 3: Bits de palabra (offset)**
-- $\log_2(256) = 8 \Rightarrow 8$ bits
-
-**Paso 4: Cantidad de líneas de caché**
-- $\frac{2^{20}}{2^8} = 2^{12}$
-- Cantidad de líneas = $2^{12} = 4096$
-- Bits de línea = $12$ bits
-
-**Paso 5: Bits de etiqueta**
-- $\text{Etiqueta} = 28 - 12 - 8 = 8$ bits
-
-**Formato de dirección:** | Etiqueta (8) | Línea (12) | Palabra (8) |
-
-**b) Cantidad de bloques de memoria principal**
-
-**Paso 6: Cantidad de bloques**
-- $\frac{2^{28}}{2^8} = 2^{20}$
-- Bloques = $2^{20} = 1.048.576$
-
-# Ejercicio 4: Mapeo Asociativo
-
-**Enunciado:** Se tiene una unidad de memoria de 256M palabras de 16 bits, y una memoria caché de 1M palabras. La caché utiliza mapeo asociativo y está dividida en líneas de 256 palabras cada una.
-
-**Calcular:**
-- a) ¿Cuántos bits hay en los campos de etiqueta y palabra?
-- b) Cantidad de bloques de memoria principal.
-
-# ¿Qué es mapeo asociativo?
-
-Es una forma de organizar la caché donde:
-- cualquier bloque de memoria puede ir a **cualquier línea de caché**
-- **NO SE CALCULA LA LÍNEA**
-
----
-
-## Datos
-
-**Memoria principal:**
-$$
-256\text{M} = 256 \cdot 2^{20} = 2^8 \cdot 2^{20} = 2^{28}
-$$
-
-### a) Campos de dirección
-
-- **Palabra (offset):**
-$$
-\log_2(256) = 8 \Rightarrow 8\ \text{bits}
-$$
-
-- **Etiqueta:**
-$$
-\text{etiqueta} = 28\ \text{bits} - 8\ \text{bits} = 20\ \text{bits}
-$$
-
-### b) Cantidad de bloques
-$$
-\text{bloques} = \frac{2^{28}}{2^8} = 2^{20}
-$$
-
-### Paso 5: Bits de etiqueta
-En mapeo asociativo no hay campo de línea, por lo tanto:
-$$
-\text{Etiqueta} = 28 - 8 = 20 \text{ bits}
-$$
-
-**Formato de dirección:** | Etiqueta (20) | Palabra (8) |
-
-### Paso 6: Cantidad de bloques de memoria principal
-$$
-\frac{2^{28}}{2^8} = 2^{20}
-$$
-$$
-\text{Bloques} = 2^{20} = 1.048.576
-$$
-
-# Ejercicio de caché: bloque y tiempo promedio
-
-# Ejercicio 5
-
-**Enunciado:** Sea un computador de 32 bits con una memoria caché de 256 KB, líneas de 64 bytes y un tiempo de acceso de 5 ns. La caché es asociativa por conjuntos de 4 vías y se emplea la política de reemplazo LRU.
-
-**Calcular:**
-
-### a) ¿Cuál es el tamaño de los bloques que se transfieren entre la memoria caché y la memoria principal?
-
-El bloque es la unidad de transferencia y coincide con la línea de caché.
-
-$$
-\text{bloque} = \text{línea} = 64\ \text{bytes}
-$$
-
-### b) Si el tiempo para transferir un bloque de memoria principal a caché es de 200 ns, indique la tasa de aciertos a caché necesaria, de forma que el tiempo medio de acceso al sistema de memoria sea de 20 ns.
-
-**Datos:**
-- $T_1 = 5\ \text{ns}$ (caché)
-- $T_2 = 200\ \text{ns}$ (fallo)
-- $T_s = 20\ \text{ns}$ (deseado)
+### Ejercicio 1 - Tiempo promedio
+**Datos:** $T_1 = 1$ ns, $T_2 = 10$ ns, $H = 0,90$, línea 256 palabras
 
 **Fórmula:**
-$$
-T_s = T_1 + (1-H) \cdot T_2
-$$
+$$ T_s = T_1 + (1-H) \cdot T_2 $$
 
-**Resolución:**
-$$
-20 = 5 + (1-H) \cdot 200
-$$
-$$
-15 = (1-H) \cdot 200
-$$
-$$
-1-H = \frac{15}{200} = \frac{3}{40}
-$$
-$$
-H = 1 - \frac{3}{40} = \frac{37}{40} = 0{,}925
-$$
+$$ T_s = 1 + (1-0,9) 	 10 = 2\ 	{ns} $$
 
-**Respuesta:** $H = 92{,}5\%$
+### Ejercicio 2 - Variante
+**Datos:** $T_1 = 1$ ns, $T_2 = 10$ ns, $H = 0,975$
 
+$$ T_s = 1 + (1-0,975) 	 10 = 1,25\ 	{ns} $$
 
-## Conceptos clave
+### Ejercicio 3 - Mapeo directo
+**Datos:** MP = 256M palabras de 16 bits, Caché = 1M palabras, línea = 256 palabras
 
-> **Bloque = pedazo de memoria que se copia completo desde memoria principal a caché**
+- MP: $256	{M} = 2^{28}$ → <span style="color:#2563eb">28 bits</span>
+- Offset palabra: $\log_2(256) = 8$ bits
+- Líneas caché: $2^{20} / 2^8 = 2^{12} = 4096$ → <span style="color:#2563eb">12 bits</span>
+- Etiqueta: $28 - 12 - 8 = 8$ bits
 
-> El bloque es la **unidad de transferencia** entre memoria principal y caché, y tiene el **mismo tamaño que la línea de caché**.
+**Formato:** <code style="background:#eef2ff;color:#3730a3;padding:2px 6px;border-radius:4px">Etiqueta 8</code> <code style="background:#eef2ff;color:#3730a3;padding:2px 6px;border-radius:4px">Línea 12</code> <code style="background:#eef2ff;color:#3730a3;padding:2px 6px;border-radius:4px">Palabra 8</code>
 
-**Pensalo así:** la CPU no trae 1 dato solo, trae un grupo de datos juntos.
+**Bloques en MP:** $2^{28} / 2^8 = 2^{20} = 1.048.576$
 
-- Ese grupo = bloque
-- En tu ejercicio te dicen: *línea de caché = 64 bytes*
+### Ejercicio 4 - Mapeo asociativo
+**Datos:** MP = 256M palabras, Caché = 1M palabras, línea = 256 palabras
 
-**Entonces:** cada línea puede guardar 64 bytes, y lo que se copia desde memoria también es de 64 bytes.
+En asociativo no hay campo de línea.
 
----
+- Offset: <span style="color:#7c3aed">8 bits</span>
+- Etiqueta: $28 - 8 = 20$ bits
 
-**Conclusión:** Para que el tiempo promedio de acceso sea de 20 ns, la caché debe acertar al menos 37 de cada 40 accesos (92,5%). De esa forma, el costo de los fallos (200 ns) se diluye lo suficiente como para compensar los 5 ns del acierto.
+**Formato:** <code style="background:#f5f3ff;color:#5b21b6;padding:2px 6px;border-radius:4px">Etiqueta 20</code> <code style="background:#f5f3ff;color:#5b21b6;padding:2px 6px;border-radius:4px">Palabra 8</code>
 
-# Ejercicio 6
+**Bloques en MP:** $2^{20} = 1.048.576$
 
-**Enunciado:** Se dispone de un computador con direcciones de memoria de 32 bits, que direcciona la memoria por bytes. El computador dispone de una memoria caché asociativa por conjuntos de 4 vías, con un tamaño de línea de 4 palabras. Dicha caché tiene un tamaño de 64 KB. El tiempo de acceso a la memoria caché es de 2 ns y el tiempo necesario para tratar un fallo de caché es de 80 ns.
+### Ejercicio 5 - Bloque y tiempo promedio
+**Datos:** 32 bits, caché 256 KB, línea 64 bytes, $T_1 = 5$ ns, $T_2 = 200$ ns, $T_s$ deseado = 20 ns, 4 vías LRU
 
-**Calcular:**
+**a) Tamaño de bloque**
+$$ 	{bloque} = 	{línea} = 64\ 	{bytes} $$
 
-### a) Tamaño en MB de la memoria que se puede direccionar en este computador
-- 32 bits → $2^{32}$ bytes
-$$
-\frac{2^{32}}{2^{20}} = 2^{12} = 4096\ \text{MB}
-$$
+**b) Tasa de aciertos necesaria**
+$$ 20 = 5 + (1-H) \cdot 200 $$
+$$ 1-H = 15/200 = 0,075 $$
+$$ H = 0,925 = 92,5\% $$
 
-### b) Número de palabras que se pueden almacenar en la memoria caché
+> <span style="color:#92400e">El bloque es la unidad de transferencia. La CPU trae 64 bytes juntos, no uno solo.</span>
+
+### Ejercicio 6 - Asociativa por conjuntos
+**Datos:** Direcciones 32 bits, byte direccionable, caché 64 KB, 4 vías, línea = 4 palabras, $T_c = 2$ ns, $T_f = 80$ ns
+
+**a) Memoria direccionable**
+$$ 2^{32}\ 	{bytes} = 4096\ 	{MB} $$
+
+**b) Palabras en caché**
 - 64 KB = 65536 bytes
-- tamaño de línea = 4 palabras = 4 bytes
-- cantidad de líneas = $65536 / 4 = 16384$
-- cantidad de palabras (según líneas) = 16384 palabras
+- Asumiendo palabra = 4 bytes → línea = 16 bytes
+- Líneas = 65536 / 16 = 4096
+- Palabras totales = 4096 × 4 = 16384
 
-### c) Número de líneas que se pueden almacenar en el mismo conjunto
-$$
-4\ \text{líneas}
-$$
+**c) Líneas por conjunto**
+$$ 4 $$
 
-### d) Número de líneas de la caché
-- 64 KB = 65536 bytes
-- tamaño de línea = 4 palabras = 4 bytes
-$$
-\text{cantidad de líneas} = 65536 / 4 = 16384\ \text{líneas}
-$$
-- caché de 4 vías
-- cantidad de conjuntos = $16384 / 4 = 4096$
+**d) Número de líneas**
+$$ 4096 $$
 
-### e) Número de conjuntos de la caché
-$$
-4096 / 4 = 1024\ \text{conjuntos}
-$$
+**e) Número de conjuntos**
+$$ 4096 / 4 = 1024 $$
 
-### f) Tasa de aciertos necesaria para $T_s = 10$ ns
-$$
-10\text{ns} = 2\text{ns} + (1-H) \cdot 80\text{ns}
-$$
-$$
-8\text{ns} = (1-H) \cdot 80\text{ns}
-$$
-$$
-\frac{1}{10} = 1-H
-$$
-$$
-H = 1 - \frac{1}{10} = 0{,}9
-$$
+**f) H para $T_s = 10$ ns**
+$$ 10 = 2 + (1-H) \cdot 80 $$
+$$ H = 0,9 = 90\% $$
 
-**Respuesta:** 90% tasa de aciertos
+### Ejercicio 7 - Mapeo directo completo
+**Datos:** MP 8 MB, $T_{mp}=1260$ ns, caché 4 KB, $T_c=120$ ns, línea 256 B, accesos 1.200.000, fallos 600.000
 
-# Ejercicio 7 – Memoria caché (mapeo directo)
+**1) Tiempo medio**
+$$ H = 600.000 / 1.200.000 = 0,5 $$
+$$ T_s = 120 + 0,5 	* 1260 = 750\ 	{ns} $$
 
-## Enunciado
-Computadora de 32 bits con:
-- Memoria principal: 8 MB, $T_{mp} = 1.260$ ns
-- Memoria caché: 4 KB, $T_c = 120$ ns
-- Correspondencia directa
-- Línea = 256 bytes
-- Accesos totales = 1.200.000, fallos = 600.000
+**2) Campos de dirección**
+- MP 8 MB = $2^{23}$ bytes → 23 bits
+- Offset: $\log_2(256) = 8$ bits
+- Líneas: $4096 / 256 = 16 = 2^4$ → 4 bits
+- Etiqueta: $23 - 4 - 8 = 11$ bits
 
----
-
-## 1) Tiempo medio de acceso
-
-Fórmula:
-$$ T_s = T_c + (1 - H) \cdot T_{mp} $$
-
-Tasa de aciertos:
-$$ H = \frac{\text{aciertos}}{\text{totales}} = \frac{1.200.000 - 600.000}{1.200.000} = 0,5 $$
-
-Cálculo:
-$$ T_s = 120\ \text{ns} + (1 - 0,5) \cdot 1.260\ \text{ns} $$
-$$ T_s = 120 + 630 = 750\ \text{ns} $$
-
-**Resultado: $T_s = 750$ ns**
-
----
-
-## 2) Bits de los campos de dirección
-
-Memoria principal 8 MB:
-$$ 8\ \text{MB} = 8 \cdot 2^{20} = 2^3 \cdot 2^{20} = 2^{23} \ \text{bytes} $$
-→ Se usan **23 bits** de dirección.
-
-### a) Offset de palabra
-$$ \text{palabra} = \log_2(\text{tamaño de línea}) = \log_2(256) = 8\ \text{bits} $$
-
-### b) Bits de línea
-$$ \text{nº líneas} = \frac{\text{caché}}{\text{línea}} = \frac{4\ \text{KB}}{256\ \text{B}} = \frac{4 \cdot 2^{10}}{2^8} = 2^4 $$
-$$ \text{línea} = 4\ \text{bits} $$
-
-### c) Bits de etiqueta
-$$ \text{etiqueta} = \text{bits dirección} - \text{línea} - \text{palabra} $$
-$$ \text{etiqueta} = 23 - 4 - 8 = 11\ \text{bits} $$
-
-**Resultado:**
-- Etiqueta: **11 bits**
-- Línea: **4 bits**
-- Palabra (offset): **8 bits**
-
-Formato de dirección (23 bits):
-```
-|  Etiqueta (11)  |  Línea (4)  |  Offset (8) |
-```
+**Formato:** <code style="background:#dbeafe;color:#1e40af;padding:2px 6px;border-radius:4px">Etiqueta 11</code> <code style="background:#dbeafe;color:#1e40af;padding:2px 6px;border-radius:4px">Línea 4</code> <code style="background:#dbeafe;color:#1e40af;padding:2px 6px;border-radius:4px">Offset 8</code>
