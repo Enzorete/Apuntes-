@@ -106,3 +106,7 @@ Propiedad: **izq < raíz < der**
 - No confundir subárbol izquierdo con derecho.
 
 > **Resumen final**: un árbol organiza datos en jerarquía. En un binario cada nodo tiene hasta dos hijos. Según cómo visites raíz, izquierda y derecha, obtenés preorden, inorden o postorden.
+ 
+
+# **FIN PRIMER PARCIAL**
+
