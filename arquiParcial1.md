@@ -194,213 +194,213 @@ Señales importantes del bus
     Clock: sincroniza las operaciones del sistema.
     Reset: reinicia los módulos del sistema.
 
-1. Concepto de memoria
+Concepto de memoria
 
-Las memorias se usan para:
+   Las memorias se usan para:
+   
+   almacenar datos
+   almacenar instrucciones
+   
+   Se organizan en unidades llamadas registros.
+   Existen muchos tipos de memoria, con distintas tecnologías, velocidades y costos.
 
-almacenar datos
-almacenar instrucciones
+Características de las memorias
 
-Se organizan en unidades llamadas registros.
-Existen muchos tipos de memoria, con distintas tecnologías, velocidades y costos.
+   Las memorias se diferencian por:
+   
+   ubicación
+   capacidad
+   método de acceso
+   prestaciones
+   soporte físico
+   organización
 
-2. Características de las memorias
+Ubicación
+   Interna
+   
+   Está dentro de la computadora.
+   
+   Ejemplos:
+   
+   registros
+   caché
+   RAM
+   Externa
+   
+   Son dispositivos de almacenamiento conectados mediante E/S.
+   
+   Ejemplos:
+   
+   discos
+   cintas
 
-Las memorias se diferencian por:
+Capacidad
 
-ubicación
-capacidad
-método de acceso
-prestaciones
-soporte físico
-organización
+   Indica cuánto puede almacenar una memoria.
+   
+   Se expresa en:
+   
+   bytes
+   palabras
+   
+   Una palabra suele ser de:
+   
+   8 bits
+   16 bits
+   32 bits
 
-3. Ubicación
-Interna
+Unidad de transferencia
 
-Está dentro de la computadora.
+   Es la cantidad de datos que se transfieren a la vez.
+   
+   Memoria interna
+   
+   Transfiere palabras.
+   
+   Memoria externa
+   
+   Transfiere bloques.
 
-Ejemplos:
-
-registros
-caché
-RAM
-Externa
-
-Son dispositivos de almacenamiento conectados mediante E/S.
-
-Ejemplos:
-
-discos
-cintas
-
-4. Capacidad
-
-Indica cuánto puede almacenar una memoria.
-
-Se expresa en:
-
-bytes
-palabras
-
-Una palabra suele ser de:
-
-8 bits
-16 bits
-32 bits
-
-5. Unidad de transferencia
-
-Es la cantidad de datos que se transfieren a la vez.
-
-Memoria interna
-
-Transfiere palabras.
-
-Memoria externa
-
-Transfiere bloques.
-
-6. Métodos de acceso
-Secuencial
-
-Hay que recorrer los datos uno por uno hasta llegar al deseado.
-
-Ejemplo:
-
-cintas
-Directo (DMA)
-
-Accede directamente a una zona aproximada y luego busca el dato.
-
-Ejemplo:
-
-discos
-Aleatorio (RAM)
-
-Se puede acceder directamente a cualquier posición.
-
-El tiempo de acceso es constante.
+Métodos de acceso
+   Secuencial
+   
+   Hay que recorrer los datos uno por uno hasta llegar al deseado.
+   
+   Ejemplo:
+   
+   cintas
+   Directo (DMA)
+   
+   Accede directamente a una zona aproximada y luego busca el dato.
+   
+   Ejemplo:
+   
+   discos
+   Aleatorio (RAM)
+   
+   Se puede acceder directamente a cualquier posición.
+   
+   El tiempo de acceso es constante.
 
 Asociativo
 
-Busca datos por contenido y no por dirección.
+   Busca datos por contenido y no por dirección.
 
-7. Prestaciones
-Tiempo de acceso
+Prestaciones
+   Tiempo de acceso
+   
+   Tiempo que tarda en leer o escribir un dato.
+   
+   Tiempo de ciclo
+   
+   Tiempo mínimo entre dos accesos consecutivos.
+   
+   Velocidad de transferencia
+   
+   Velocidad con la que se transfieren datos.
 
-Tiempo que tarda en leer o escribir un dato.
+Soportes físicos
 
-Tiempo de ciclo
+   Tipos de materiales usados para construir memorias:
+   
+   semiconductores
+   magnéticos
+   ópticos
+   magneto-ópticos
 
-Tiempo mínimo entre dos accesos consecutivos.
+Características físicas
+   Volátil
+   
+   Pierde la información al apagarse.
+   
+   Ejemplo:
+   
+   RAM
+   No volátil
+   
+   Mantiene la información sin energía.
+   
+   Ejemplo:
+   
+   discos
+   ROM
+   
+   Memoria solo lectura.
 
-Velocidad de transferencia
+Organización
 
-Velocidad con la que se transfieren datos.
+   Es la forma en que los bits se acomodan para formar palabras en memoria.
 
-8. Soportes físicos
+Jerarquía de memorias
 
-Tipos de materiales usados para construir memorias:
+   Las memorias buscan equilibrar:
+   
+   capacidad
+   velocidad
+   costo
+   
+   Relaciones importantes:
+   
+   menor tiempo de acceso → mayor costo
+   mayor capacidad → menor costo por bit
+   mayor capacidad → mayor tiempo de acceso
+   
+   Idea de jerarquía
+   
+   No se usa una sola memoria.
+   
+   Se combinan:
 
-semiconductores
-magnéticos
-ópticos
-magneto-ópticos
+   Tipo	   Característica
+   rápidas:	pequeñas y costosas
+   lentas:	grandes y baratas
 
-9. Características físicas
-Volátil
+Localidad referencial
 
-Pierde la información al apagarse.
+   La idea es mantener los datos más usados en las memorias más rápidas.
 
-Ejemplo:
-
-RAM
-No volátil
-
-Mantiene la información sin energía.
-
-Ejemplo:
-
-discos
-ROM
-
-Memoria solo lectura.
-
-10. Organización
-
-Es la forma en que los bits se acomodan para formar palabras en memoria.
-
-11. Jerarquía de memorias
-
-Las memorias buscan equilibrar:
-
-capacidad
-velocidad
-costo
-
-Relaciones importantes:
-
-menor tiempo de acceso → mayor costo
-mayor capacidad → menor costo por bit
-mayor capacidad → mayor tiempo de acceso
-
-12. Idea de jerarquía
-
-No se usa una sola memoria.
-
-Se combinan:
-
-Tipo	Característica
-rápidas	pequeñas y costosas
-lentas	grandes y baratas
-
-13. Localidad referencial
-
-La idea es mantener los datos más usados en las memorias más rápidas.
-
-14. Tipos de memoria
+Tipos de memoria
 Registros
 
-Los más rápidos y pequeños.
-
-Caché
-
-Memoria rápida entre CPU y RAM.
+   Los más rápidos y pequeños.
+   
+   Caché
+   
+   Memoria rápida entre CPU y RAM.
 
 RAM
 
-Memoria principal del sistema.
+   Memoria principal del sistema.
+   
+   Memoria masiva
+   
+   Discos, pendrives, SSD, etc.
+   
+   Memoria externa
+   
+   Almacenamiento permanente.
 
-Memoria masiva
+Caché
+   pequeña
+   muy rápida
+   mejora el rendimiento
+   almacena datos usados frecuentemente
 
-Discos, pendrives, SSD, etc.
+RAM
+   memoria principal
+   acceso aleatorio
+   volátil
+   guarda programas y datos en uso
 
-Memoria externa
+Ejemplo de jerarquía
 
-Almacenamiento permanente.
+   Si el dato está en caché:
 
-15. Caché
-pequeña
-muy rápida
-mejora el rendimiento
-almacena datos usados frecuentemente
+   acceso rápido
 
-16. RAM
-memoria principal
-acceso aleatorio
-volátil
-guarda programas y datos en uso
+   Si no está:
 
-17. Ejemplo de jerarquía
+   se busca en un nivel más lento
+   luego se copia al nivel rápido
 
-Si el dato está en caché:
-
-acceso rápido
-
-Si no está:
-
-se busca en un nivel más lento
-luego se copia al nivel rápido
-
-La mayoría de accesos deberían resolverse en los niveles rápidos.
+   La mayoría de accesos deberían resolverse en los niveles rápidos.
