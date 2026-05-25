@@ -1,413 +1,680 @@
-Apunte_Arqui2_Recu1
+# Resumen — Ciclos de captación, interrupciones y arquitectura de buses
 
-LA FUNCION BASICA DE UN COMPUTADOR ES EJECUTAR UN PROGRAMA ACOMPAÑADO DE INSTRUCCIONES GUARDADAS EN MEMORIA. EL PROCESADOR EJECUTA ESTAS INSTRUCCIONES.
+# 1. Ciclo de instrucción
 
-LA CPU SIEMPRE INCREMENTA EL PC DESPUES DE CAPTAR CADA INSTRUCCION, ES DECIR YA ESTA POSICIONADO EN LA PROXIMA INSTRUCCION.
+La CPU ejecuta programas repitiendo continuamente dos etapas:
 
-LA INSTRUCCION CAPTADA SE ALMACENA EN UN REGISTRO DE LA CPU LLAMADA IR Y ES TRADUCIDO A CODIGO BINARIO Y LA CPU LLEVA A CABO X ACCION:
+1. Captar la instrucción
+2. Ejecutarla
 
-PROCESADOR-MEMORIA.
-PROCESADOR-E/S.
-PROCESAMIENTO DE DATOS.
-CONTROL.
+Ese proceso se llama ciclo de instrucción.
 
-LA EJECUCION DE UNA INSTRUCCION PUEDE IMPLICAR UNA COMBINACION DE LAS ANTERIORES.
+---
 
-Codop y dirección
+# 2. Registros importantes de la CPU
 
-| Parte     | Para qué sirve                                          |
-| --------- | ------------------------------------------------------- |
-| Codop     | Dice QUÉ operación hacer                                |
-| Dirección | Dice CON QUÉ dato o en qué posición de memoria trabajar |
+## PC — Program Counter
+Guarda la dirección de la próxima instrucción.
 
-Codop: Es el código que entiende la CPU para saber qué acción ejecutar.
+Ejemplo:
+Si PC = 300, la CPU va a buscar la instrucción en la memoria 300.
 
-| Codop | Acción                        |
-| ----- | ----------------------------- |
-| 0001  | Cargar AC desde memoria       |
-| 0010  | Guardar AC en memoria         |
-| 0101  | Sumar a AC un dato de memoria |
+---
 
-Dirección: Dice CON QUÉ dato o en qué posición de memoria trabajar
+## IR — Instruction Register
+Guarda la instrucción que se está ejecutando actualmente.
 
-Ejemplo REAL de la diapositiva
+---
 
-Aparece esta instrucción: 1940
+## AC — Acumulador
+Registro temporal donde la CPU guarda datos y resultados.
 
-La CPU la separa así:
+---
 
-| Parte | Valor     |
-| ----- | --------- |
-| 1     | codop     |
-| 940   | dirección |
+# 3. Codop y dirección
 
-Entonces:
+Las instrucciones están divididas en:
 
-el 1 significa:
+| Parte | Función |
+|---|---|
+| Codop | Dice qué operación hacer |
+| Dirección | Indica dónde está el dato |
 
-“Cargar AC desde memoria”
+Ejemplo:
 
-el 940 significa:
+1940
 
-“usá el dato que está en la dirección 940”
+- 1 → cargar
+- 940 → dirección de memoria
 
-Estados del ciclo de instrucción
+Significa:
 
-IAC → Instruction Address Calculation
-→ Cálculo de la dirección de instrucción
+Cargar en AC el dato guardado en la posición 940
 
-IF → Instruction Fetch
-→ Captación de instrucción
+---
 
-IOD → Instruction Operation Decoding
-→ Decodificación de la operación de la instrucción
+# 4. Estados del ciclo de instrucción
 
-OAC → Operand Address Calculation
-→ Cálculo de la dirección del operando
+1. IAC → Instruction Address Calculation  
+   → Cálculo de la dirección de instrucción
 
-OF → Operand Fetch
-→ Captación de operando
+2. IF → Instruction Fetch  
+   → Captación de instrucción
 
-DO → Data Operation
-→ Operación con datos
+3. IOD → Instruction Operation Decoding  
+   → Decodificación de la operación de la instrucción
 
-OS → Operand Store
-→ Almacenamiento de operando
+4. OAC → Operand Address Calculation  
+   → Cálculo de la dirección del operando
 
-5. Tipos de operaciones que puede hacer la CPU
-   Procesador ↔ Memoria
+5. OF → Operand Fetch  
+   → Captación de operando
 
+6. DO → Data Operation  
+   → Operación con datos
+
+7. OS → Operand Store  
+   → Almacenamiento de operando
+
+---
+
+# 5. Tipos de operaciones que puede hacer la CPU
+
+## Procesador ↔ Memoria
 Mover datos entre CPU y memoria.
 
-Procesador ↔ E/S
-
+## Procesador ↔ E/S
 Mover datos con dispositivos externos.
 
-Procesamiento de datos
-
+## Procesamiento de datos
 Operaciones aritméticas y lógicas.
 
-Control
-
+## Control
 Cambiar la secuencia del programa (saltos).
 
-Interrupciones
+---
+
+# 6. Interrupciones
 
 Una interrupción ocurre cuando otro componente le pide atención a la CPU.
+
 Sirven para evitar que el procesador quede esperando mientras un dispositivo lento trabaja.
 
-Tipos de interrupciones
+---
 
-| Tipo          | Ejemplo               |
-| ------------- | --------------------- |
-| Programa      | división por cero     |
-| Temporización | temporizador          |
-| E/S           | terminó una impresión |
-| Hardware      | error físico          |
+# 7. Tipos de interrupciones
 
-Qué hace la CPU cuando ocurre una interrupción
+| Tipo | Ejemplo |
+|---|---|
+| Programa | división por cero |
+| Temporización | temporizador |
+| E/S | terminó una impresión |
+| Hardware | error físico |
 
-1. Guarda el contexto actual
+---
 
-   La CPU guarda en memoria información importante del programa que estaba ejecutando, como el valor del PC, para poder continuar después exactamente donde quedó.
+# 8. Qué hace la CPU cuando ocurre una interrupción
 
-2. Suspende el programa
+## 1. Guarda el contexto actual
+La CPU guarda información importante del programa para poder continuar después donde quedó.
 
-   El programa actual se pausa temporalmente para atender la interrupción.
+## 2. Suspende el programa
+El programa actual se pausa temporalmente.
 
-3. Ejecuta el gestor de interrupción
+## 3. Ejecuta el gestor de interrupción
+La CPU ejecuta una rutina especial para atender la interrupción.
 
-   La CPU salta a una rutina especial llamada “gestor de interrupción”, encargada de atender el evento ocurrido.
+## 4. Atiende el problema
+Se realiza la acción necesaria según el dispositivo o error.
 
-4. Atiende el problema
+## 5. Vuelve al programa original
+La CPU recupera el contexto guardado y continúa normalmente.
 
-   El gestor identifica qué dispositivo o situación generó la interrupción y realiza la acción necesaria.
+---
 
-5. Vuelve al programa original
-
-   Cuando termina el gestor de interrupción, la CPU recupera el contexto guardado y continúa ejecutando el programa normal.
-
-Interrupciones múltiples
+# 9. Interrupciones múltiples
 
 Puede haber varias interrupciones al mismo tiempo.
 
-Dos opciones:
-
-Desactivar interrupciones
-
+## Desactivar interrupciones
 La CPU atiende una por vez.
 
-Prioridades
-
+## Prioridades
 Una interrupción importante puede interrumpir a otra menos importante.
+
+---
+
+# 10. Entrada y salida (E/S)
 
 Los módulos de E/S permiten comunicar la computadora con dispositivos externos:
 
-teclado
-impresora
-disco
-etc.
+- teclado
+- impresora
+- disco
+- etc.
 
-DMA — Direct Memory Access
+---
 
-Permite que un módulo de E/S transfiera datos directamente con la memoria sin usar constantemente la CPU.
+# 11. DMA — Direct Memory Access
 
-Estructura de interconexión
+Permite transferir datos directamente entre memoria y dispositivos sin usar constantemente la CPU.
+
+---
+
+# 12. Estructura de interconexión
 
 Los componentes principales son:
 
-CPU
-Memoria
-Módulos de E/S
+- CPU
+- Memoria
+- Módulos de E/S
 
-Todos deben comunicarse entre sí mediante líneas de conexión.
+Todos se comunican mediante líneas de conexión.
 
-Bus
+---
 
-Un bus es un conjunto de líneas compartidas que conectan los componentes de la computadora.
+# 13. Bus
 
-Tipos de buses
+Un bus es un conjunto de líneas compartidas que conectan los componentes.
 
-Bus de datos
+---
 
-    Transporta datos.
+# 14. Tipos de buses
 
-Bus de direcciones
+## Bus de datos
+Transporta datos.
 
-    Indica origen o destino.
+## Bus de direcciones
+Indica origen o destino.
 
-Bus de control
+## Bus de control
+Coordina señales y operaciones.
 
-    Coordina operaciones y señales.
+---
 
-Señales importantes del bus
+# 15. Señales importantes del bus
 
-    Memory Read: lee un dato desde memoria.
-    Memory Write: escribe un dato en memoria.
-    I/O Read: lee un dato desde un dispositivo de E/S.
-    I/O Write: envía un dato a un dispositivo de E/S.
-    Transfer ACK: confirma que la transferencia se realizó.
-    Bus Request: un módulo solicita usar el bus.
-    Bus Grant: se concede el uso del bus.
-    Interrupt Request: indica una interrupción pendiente.
-    Interrupt ACK: confirma que la interrupción fue aceptada.
-    Clock: sincroniza las operaciones del sistema.
-    Reset: reinicia los módulos del sistema.
+- Memory Read: lee un dato desde memoria.
+- Memory Write: escribe un dato en memoria.
+- I/O Read: lee un dato desde un dispositivo de E/S.
+- I/O Write: envía un dato a un dispositivo de E/S.
+- Transfer ACK: confirma la transferencia.
+- Bus Request: solicita usar el bus.
+- Bus Grant: concede el uso del bus.
+- Interrupt Request: indica una interrupción pendiente.
+- Interrupt ACK: confirma la interrupción.
+- Clock: sincroniza las operaciones.
+- Reset: reinicia el sistema.
 
-Concepto de memoria
+---
 
-      Las memorias se usan para:
-      
-      almacenar datos
-      almacenar instrucciones
-      
-      Se organizan en unidades llamadas registros.
-      Existen muchos tipos de memoria, con distintas tecnologías, velocidades y costos.
+# Resumen — Introducción a Memorias
 
-Características de las memorias
+# 1. Concepto de memoria
 
-      Las memorias se diferencian por:
-      
-      ubicación
-      capacidad
-      método de acceso
-      prestaciones
-      soporte físico
-      organización
+Las memorias se usan para:
+- almacenar datos
+- almacenar instrucciones
 
-Ubicación
+---
 
-      Interna
-      
-      Está dentro de la computadora.
-      
-      Ejemplos:
-      
-      registros
-      caché
-      RAM
-      Externa
-      
-      Son dispositivos de almacenamiento conectados mediante E/S.
-      
-      Ejemplos:
-      
-      discos
-      cintas
+# 2. Características de las memorias
 
-Capacidad
-   
-      Indica cuánto puede almacenar una memoria.
-      
-      Se expresa en:
-      
-      bytes
-      palabras
-      
-      Una palabra suele ser de:
-      
-      8 bits
-      16 bits
-      32 bits
+Las memorias se diferencian por:
+- ubicación
+- capacidad
+- método de acceso
+- prestaciones
+- soporte físico
+- organización
 
-Unidad de transferencia
-   
-      Es la cantidad de datos que se transfieren a la vez.
-      
-      Memoria interna
-      
-      Transfiere palabras.
-      
-      Memoria externa
-      
-      Transfiere bloques.
+---
 
-Métodos de acceso
-   
-      Secuencial
-      
-      Hay que recorrer los datos uno por uno hasta llegar al deseado.
-      
-      Ejemplo:
-      
-      cintas
-      Directo (DMA)
-      
-      Accede directamente a una zona aproximada y luego busca el dato.
-      
-      Ejemplo:
-      
-      discos
-      Aleatorio (RAM)
-      
-      Se puede acceder directamente a cualquier posición.
-      
-      El tiempo de acceso es constante.
+# 3. Ubicación
 
-Asociativo
+## Interna
+Dentro de la computadora.
 
-      Busca datos por contenido y no por dirección.
+Ejemplos:
+- registros
+- caché
+- RAM
 
-Prestaciones
- 
-      Tiempo de acceso
-      
-      Tiempo que tarda en leer o escribir un dato.
-      
-      Tiempo de ciclo
-      
-      Tiempo mínimo entre dos accesos consecutivos.
-      
-      Velocidad de transferencia
-      
-      Velocidad con la que se transfieren datos.
+## Externa
+Dispositivos conectados mediante E/S.
 
-Soportes físicos
+Ejemplos:
+- discos
+- cintas
 
-      Tipos de materiales usados para construir memorias:
-      
-      semiconductores
-      magnéticos
-      ópticos
-      magneto-ópticos
-   
-Características físicas
+---
 
-      Volátil:
-      
-      Pierde la información al apagarse.
-      
-      Ejemplo:
-      
-      RAM
-      No volátil:
-      
-      Mantiene la información sin energía.
-      
-      Ejemplo:
-      
-      discos
-      ROM
-      
-      Memoria solo lectura.
+# 4. Capacidad
 
-Organización
+Indica cuánto puede almacenar una memoria.
 
-      Es la forma en que los bits se acomodan para formar palabras en memoria.
+Se expresa en:
+- bytes
+- palabras
 
-Jerarquía de memorias
+---
 
-      Las memorias buscan equilibrar:
-      
-      capacidad
-      velocidad
-      costo
-      
-      Relaciones importantes:
-      
-      menor tiempo de acceso → mayor costo
-      mayor capacidad → menor costo por bit
-      mayor capacidad → mayor tiempo de acceso
-      
-      Idea de jerarquía
-      
-      No se usa una sola memoria.
-      
-      Se combinan:
-   
-      Tipo	   Característica
-      rápidas:	pequeñas y costosas
-      lentas:	grandes y baratas
+# 5. Unidad de transferencia
 
-Localidad referencial
+## Memoria interna
+Transfiere palabras.
 
-      La idea es mantener los datos más usados en las memorias más rápidas.
+## Memoria externa
+Transfiere bloques.
 
-*Tipos de memoria
+---
 
-Registros
+# 6. Métodos de acceso
 
-      Los más rápidos y pequeños.
-   
-      Caché
-   
-      Memoria rápida entre CPU y RAM.
+## Secuencial
+Acceso uno por uno.
 
-      RAM
+## Directo
+Acceso aproximado y luego búsqueda.
 
-      Memoria principal del sistema.
-      
-      Memoria masiva
-      
-      Discos, pendrives, SSD, etc.
-   
-Memoria externa
-   
-      Almacenamiento permanente.
+## Aleatorio
+Acceso directo a cualquier posición.
 
-Caché
+## Asociativo
+Busca por contenido y no por dirección.
 
-      pequeña
-      muy rápida
-      mejora el rendimiento
-      almacena datos usados frecuentemente
+---
 
-RAM
+# 7. Prestaciones
 
-      memoria principal
-      acceso aleatorio
-      volátil
-      guarda programas y datos en uso
+## Tiempo de acceso
+Tiempo para leer o escribir.
 
-Ejemplo de jerarquía
+## Tiempo de ciclo
+Tiempo mínimo entre accesos.
 
-      Si el dato está en caché:
-   
-      acceso rápido
-   
-      Si no está:
-   
-      se busca en un nivel más lento
-      luego se copia al nivel rápido
-   
-      La mayoría de accesos deberían resolverse en los niveles rápidos.
+## Velocidad de transferencia
+Velocidad de envío de datos.
+
+---
+
+# 8. Soportes físicos
+
+- semiconductores
+- magnéticos
+- ópticos
+- magneto-ópticos
+
+---
+
+# 9. Características físicas
+
+## Volátil
+Pierde datos sin energía.
+
+## No volátil
+Mantiene datos sin energía.
+
+## ROM
+Memoria solo lectura.
+
+---
+
+# 10. Organización
+
+Forma en que los bits forman palabras.
+
+---
+
+# 11. Jerarquía de memorias
+
+Busca equilibrio entre:
+- capacidad
+- velocidad
+- costo
+
+---
+
+# 12. Idea de jerarquía
+
+Se combinan memorias:
+- rápidas y pequeñas
+- lentas y grandes
+
+---
+
+# 13. Localidad referencial
+
+Los datos más usados se mantienen en memorias rápidas.
+
+---
+
+# 14. Tipos de memoria
+
+## Registros
+Más rápidos y pequeños.
+
+## Caché
+Intermedia entre CPU y RAM.
+
+## RAM
+Memoria principal.
+
+## Memoria masiva
+Discos, SSD, pendrives.
+
+## Memoria externa
+Almacenamiento permanente.
+
+---
+
+# 15. Caché
+
+- pequeña
+- rápida
+- mejora rendimiento
+- guarda datos frecuentes
+
+---
+
+# 16. RAM
+
+- memoria principal
+- acceso aleatorio
+- volátil
+
+---
+
+# 17. Ejemplo de jerarquía
+
+Si el dato está en caché:
+- acceso rápido
+
+Si no:
+- se busca en memoria lenta
+- luego se copia al nivel rápido
+
+---
+
+# Resumen — Memoria Caché
+
+# 1. ¿Por qué existe la memoria caché?
+
+La CPU es mucho más rápida que la memoria principal.
+
+La caché aparece para:
+- acelerar accesos a memoria
+- mejorar el rendimiento del sistema
+
+---
+
+# 2. ¿Qué es la memoria caché?
+
+Es una memoria:
+
+- pequeña
+- muy rápida
+- ubicada entre CPU y RAM
+
+Guarda copias de datos usados frecuentemente.
+
+---
+
+# 3. Funcionamiento básico
+
+## Si el dato está en caché
+La CPU lo obtiene rápidamente.
+
+→ Hit (acierto)
+
+## Si el dato NO está
+Se trae un bloque desde RAM hacia caché.
+
+→ Miss (falla)
+
+El dato pasa a caché cuando ocurre una falla de caché.
+
+O sea:
+
+1. La CPU pide un dato.
+2. La caché revisa si lo tiene.
+3. Si NO está:
+   - lo busca en RAM
+   - trae el bloque completo
+   - lo guarda en caché
+
+RAM → bloque con datos → caché
+
+No es un bloque vacío.
+
+---
+
+## Ejemplo
+
+La CPU pide el dato 22.
+
+### Primera vez
+- caché NO lo tiene
+- se busca en RAM
+- se trae el bloque:
+
+20 21 22 23
+
+- ese bloque se guarda en caché
+
+### Segunda vez
+Si la CPU vuelve a pedir 22:
+- ya está en caché
+- acceso rápido (hit)
+
+La caché guarda temporalmente datos usados recientemente porque probablemente vuelvan a utilizarse.
+
+---
+
+# 4. Localidad de referencia
+
+Si un dato fue usado recientemente:
+- probablemente vuelva a usarse
+- o se usen datos cercanos
+
+Por eso se cargan bloques completos y no una sola palabra.
+
+---
+
+# 5. Estructura de la caché
+
+## Memoria principal
+Está dividida en bloques.
+
+## Caché
+Está dividida en líneas.
+
+Cada línea contiene:
+- palabras
+- etiqueta (tag)
+
+La etiqueta identifica qué bloque está guardado ahí.
+
+---
+
+# 6. Operación de lectura
+
+La CPU genera una dirección.
+
+## Si hay acierto
+La caché entrega el dato directamente.
+
+## Si hay falla
+El bloque se copia desde RAM a caché y luego a la CPU.
+
+---
+
+# 7. Tipos de carga ante una falla
+
+## Load Through
+Primero se envía el dato a la CPU y después se completa la carga del bloque.
+
+## Load Back
+Primero se completa la carga en caché y luego se entrega a la CPU.
+
+---
+
+# 8. Elementos de diseño de caché
+
+La caché se diseña considerando:
+- tamaño
+- correspondencia
+- reemplazo
+- escritura
+- tamaño de línea
+- cantidad de cachés
+
+---
+
+# 9. Tamaño de caché
+
+Se busca equilibrio entre:
+- velocidad
+- costo
+- capacidad
+
+Más caché:
+- mejora rendimiento
+- aumenta costo
+
+---
+
+# 10. Función de correspondencia
+
+Define dónde puede ubicarse un bloque de RAM dentro de caché.
+
+Tipos:
+- directa
+- asociativa
+- asociativa por conjuntos
+
+---
+
+# 11. Correspondencia directa
+
+Cada bloque de RAM puede ir solamente a una línea específica de caché.
+
+## Ventaja
+- simple
+- barata
+
+## Desventaja
+Dos bloques pueden pelear por la misma línea constantemente.
+
+---
+
+# 12. Correspondencia asociativa
+
+Un bloque puede ir a cualquier línea.
+
+## Ventaja
+- flexible
+- mejor tasa de aciertos
+
+## Desventaja
+- hardware complejo
+
+---
+
+# 13. Correspondencia asociativa por conjuntos
+
+La caché se divide en conjuntos.
+
+Un bloque puede ir a cualquier línea dentro de su conjunto.
+
+Combina:
+- simplicidad de directa
+- flexibilidad de asociativa
+
+---
+
+# 14. Algoritmos de sustitución
+
+## LRU
+Reemplaza el menos usado recientemente.
+
+## LFU
+Reemplaza el menos usado frecuentemente.
+
+## FIFO
+Sale el primero que entró.
+
+## Aleatorio
+Reemplazo al azar.
+
+---
+
+# 15. Políticas de escritura
+
+## Write Through
+Escribe en caché y RAM al mismo tiempo.
+
+## Write Back
+Primero escribe en caché y después en RAM.
+
+## Write Allocate
+Carga el bloque en caché antes de escribir.
+
+## Write No Allocate
+Escribe directo en RAM.
+
+---
+
+# 16. Coherencia de caché
+
+Si una caché modifica un dato,
+las demás deben actualizarse o invalidarse.
+
+---
+
+# 17. Tamaño de línea
+
+Bloques grandes:
+- mejoran aciertos
+- aprovechan localidad
+
+Pero:
+- ocupan más espacio
+- reemplazan más datos
+
+---
+
+# 18. Caché multinivel
+
+Puede haber:
+- L1
+- L2
+- L3
+
+## L1
+Más rápida y pequeña.
+
+---
+
+# 19. Caché unificada y partida
+
+## Unificada
+Guarda datos e instrucciones.
+
+## Partida
+Separada en:
+- datos
+- instrucciones
+
+---
+
+# 20. Conceptos importantes
+
+## Hit Rate (HR)
+Porcentaje de aciertos.
+
+## Miss Rate (MR)
+Porcentaje de fallas.
+
+## Tiempo efectivo de acceso
+Tiempo promedio real de acceso.
