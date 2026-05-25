@@ -193,3 +193,13 @@ Señales importantes del bus
     Interrupt ACK: confirma que la interrupción fue aceptada.
     Clock: sincroniza las operaciones del sistema.
     Reset: reinicia los módulos del sistema.
+
+1. Concepto de memoria
+
+Las memorias se usan para:
+
+almacenar datos
+almacenar instrucciones
+
+Se organizan en unidades llamadas registros.
+Existen muchos tipos de memoria, con distintas tecnologías, velocidades y costos.
