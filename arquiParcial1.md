@@ -196,195 +196,201 @@ Señales importantes del bus
 
 Concepto de memoria
 
-   Las memorias se usan para:
-   
-   almacenar datos
-   almacenar instrucciones
-   
-   Se organizan en unidades llamadas registros.
-   Existen muchos tipos de memoria, con distintas tecnologías, velocidades y costos.
+      Las memorias se usan para:
+      
+      almacenar datos
+      almacenar instrucciones
+      
+      Se organizan en unidades llamadas registros.
+      Existen muchos tipos de memoria, con distintas tecnologías, velocidades y costos.
 
 Características de las memorias
 
-   Las memorias se diferencian por:
-   
-   ubicación
-   capacidad
-   método de acceso
-   prestaciones
-   soporte físico
-   organización
+      Las memorias se diferencian por:
+      
+      ubicación
+      capacidad
+      método de acceso
+      prestaciones
+      soporte físico
+      organización
 
 Ubicación
-   Interna
-   
-   Está dentro de la computadora.
-   
-   Ejemplos:
-   
-   registros
-   caché
-   RAM
-   Externa
-   
-   Son dispositivos de almacenamiento conectados mediante E/S.
-   
-   Ejemplos:
-   
-   discos
-   cintas
+
+      Interna
+      
+      Está dentro de la computadora.
+      
+      Ejemplos:
+      
+      registros
+      caché
+      RAM
+      Externa
+      
+      Son dispositivos de almacenamiento conectados mediante E/S.
+      
+      Ejemplos:
+      
+      discos
+      cintas
 
 Capacidad
-
-   Indica cuánto puede almacenar una memoria.
    
-   Se expresa en:
-   
-   bytes
-   palabras
-   
-   Una palabra suele ser de:
-   
-   8 bits
-   16 bits
-   32 bits
+      Indica cuánto puede almacenar una memoria.
+      
+      Se expresa en:
+      
+      bytes
+      palabras
+      
+      Una palabra suele ser de:
+      
+      8 bits
+      16 bits
+      32 bits
 
 Unidad de transferencia
-
-   Es la cantidad de datos que se transfieren a la vez.
    
-   Memoria interna
-   
-   Transfiere palabras.
-   
-   Memoria externa
-   
-   Transfiere bloques.
+      Es la cantidad de datos que se transfieren a la vez.
+      
+      Memoria interna
+      
+      Transfiere palabras.
+      
+      Memoria externa
+      
+      Transfiere bloques.
 
 Métodos de acceso
-   Secuencial
    
-   Hay que recorrer los datos uno por uno hasta llegar al deseado.
-   
-   Ejemplo:
-   
-   cintas
-   Directo (DMA)
-   
-   Accede directamente a una zona aproximada y luego busca el dato.
-   
-   Ejemplo:
-   
-   discos
-   Aleatorio (RAM)
-   
-   Se puede acceder directamente a cualquier posición.
-   
-   El tiempo de acceso es constante.
+      Secuencial
+      
+      Hay que recorrer los datos uno por uno hasta llegar al deseado.
+      
+      Ejemplo:
+      
+      cintas
+      Directo (DMA)
+      
+      Accede directamente a una zona aproximada y luego busca el dato.
+      
+      Ejemplo:
+      
+      discos
+      Aleatorio (RAM)
+      
+      Se puede acceder directamente a cualquier posición.
+      
+      El tiempo de acceso es constante.
 
 Asociativo
 
-   Busca datos por contenido y no por dirección.
+      Busca datos por contenido y no por dirección.
 
 Prestaciones
-   Tiempo de acceso
-   
-   Tiempo que tarda en leer o escribir un dato.
-   
-   Tiempo de ciclo
-   
-   Tiempo mínimo entre dos accesos consecutivos.
-   
-   Velocidad de transferencia
-   
-   Velocidad con la que se transfieren datos.
+ 
+      Tiempo de acceso
+      
+      Tiempo que tarda en leer o escribir un dato.
+      
+      Tiempo de ciclo
+      
+      Tiempo mínimo entre dos accesos consecutivos.
+      
+      Velocidad de transferencia
+      
+      Velocidad con la que se transfieren datos.
 
 Soportes físicos
 
-   Tipos de materiales usados para construir memorias:
+      Tipos de materiales usados para construir memorias:
+      
+      semiconductores
+      magnéticos
+      ópticos
+      magneto-ópticos
    
-   semiconductores
-   magnéticos
-   ópticos
-   magneto-ópticos
-
 Características físicas
-   Volátil
-   
-   Pierde la información al apagarse.
-   
-   Ejemplo:
-   
-   RAM
-   No volátil
-   
-   Mantiene la información sin energía.
-   
-   Ejemplo:
-   
-   discos
-   ROM
-   
-   Memoria solo lectura.
+
+      Volátil:
+      
+      Pierde la información al apagarse.
+      
+      Ejemplo:
+      
+      RAM
+      No volátil:
+      
+      Mantiene la información sin energía.
+      
+      Ejemplo:
+      
+      discos
+      ROM
+      
+      Memoria solo lectura.
 
 Organización
 
-   Es la forma en que los bits se acomodan para formar palabras en memoria.
+      Es la forma en que los bits se acomodan para formar palabras en memoria.
 
 Jerarquía de memorias
 
-   Las memorias buscan equilibrar:
+      Las memorias buscan equilibrar:
+      
+      capacidad
+      velocidad
+      costo
+      
+      Relaciones importantes:
+      
+      menor tiempo de acceso → mayor costo
+      mayor capacidad → menor costo por bit
+      mayor capacidad → mayor tiempo de acceso
+      
+      Idea de jerarquía
+      
+      No se usa una sola memoria.
+      
+      Se combinan:
    
-   capacidad
-   velocidad
-   costo
-   
-   Relaciones importantes:
-   
-   menor tiempo de acceso → mayor costo
-   mayor capacidad → menor costo por bit
-   mayor capacidad → mayor tiempo de acceso
-   
-   Idea de jerarquía
-   
-   No se usa una sola memoria.
-   
-   Se combinan:
-
-   Tipo	   Característica
-   rápidas:	pequeñas y costosas
-   lentas:	grandes y baratas
+      Tipo	   Característica
+      rápidas:	pequeñas y costosas
+      lentas:	grandes y baratas
 
 Localidad referencial
 
-   La idea es mantener los datos más usados en las memorias más rápidas.
+      La idea es mantener los datos más usados en las memorias más rápidas.
 
-Tipos de memoria
+*Tipos de memoria
+
 Registros
 
-   Los más rápidos y pequeños.
+      Los más rápidos y pequeños.
    
-   Caché
+      Caché
    
-   Memoria rápida entre CPU y RAM.
+      Memoria rápida entre CPU y RAM.
 
-RAM
+      RAM
 
-   Memoria principal del sistema.
+      Memoria principal del sistema.
+      
+      Memoria masiva
+      
+      Discos, pendrives, SSD, etc.
    
-   Memoria masiva
+Memoria externa
    
-   Discos, pendrives, SSD, etc.
-   
-   Memoria externa
-   
-   Almacenamiento permanente.
+      Almacenamiento permanente.
 
 Caché
-   pequeña
-   muy rápida
-   mejora el rendimiento
-   almacena datos usados frecuentemente
+
+      pequeña
+      muy rápida
+      mejora el rendimiento
+      almacena datos usados frecuentemente
 
 RAM
 
