@@ -387,20 +387,21 @@ Caché
    almacena datos usados frecuentemente
 
 RAM
-   memoria principal
-   acceso aleatorio
-   volátil
-   guarda programas y datos en uso
+
+      memoria principal
+      acceso aleatorio
+      volátil
+      guarda programas y datos en uso
 
 Ejemplo de jerarquía
 
-   Si el dato está en caché:
-
-   acceso rápido
-
-   Si no está:
-
-   se busca en un nivel más lento
-   luego se copia al nivel rápido
-
-   La mayoría de accesos deberían resolverse en los niveles rápidos.
+      Si el dato está en caché:
+   
+      acceso rápido
+   
+      Si no está:
+   
+      se busca en un nivel más lento
+      luego se copia al nivel rápido
+   
+      La mayoría de accesos deberían resolverse en los niveles rápidos.
