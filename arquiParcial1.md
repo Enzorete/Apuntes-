@@ -233,3 +233,174 @@ Ejemplos:
 
 discos
 cintas
+
+4. Capacidad
+
+Indica cuánto puede almacenar una memoria.
+
+Se expresa en:
+
+bytes
+palabras
+
+Una palabra suele ser de:
+
+8 bits
+16 bits
+32 bits
+
+5. Unidad de transferencia
+
+Es la cantidad de datos que se transfieren a la vez.
+
+Memoria interna
+
+Transfiere palabras.
+
+Memoria externa
+
+Transfiere bloques.
+
+6. Métodos de acceso
+Secuencial
+
+Hay que recorrer los datos uno por uno hasta llegar al deseado.
+
+Ejemplo:
+
+cintas
+Directo (DMA)
+
+Accede directamente a una zona aproximada y luego busca el dato.
+
+Ejemplo:
+
+discos
+Aleatorio (RAM)
+
+Se puede acceder directamente a cualquier posición.
+
+El tiempo de acceso es constante.
+
+Asociativo
+
+Busca datos por contenido y no por dirección.
+
+7. Prestaciones
+Tiempo de acceso
+
+Tiempo que tarda en leer o escribir un dato.
+
+Tiempo de ciclo
+
+Tiempo mínimo entre dos accesos consecutivos.
+
+Velocidad de transferencia
+
+Velocidad con la que se transfieren datos.
+
+8. Soportes físicos
+
+Tipos de materiales usados para construir memorias:
+
+semiconductores
+magnéticos
+ópticos
+magneto-ópticos
+
+9. Características físicas
+Volátil
+
+Pierde la información al apagarse.
+
+Ejemplo:
+
+RAM
+No volátil
+
+Mantiene la información sin energía.
+
+Ejemplo:
+
+discos
+ROM
+
+Memoria solo lectura.
+
+10. Organización
+
+Es la forma en que los bits se acomodan para formar palabras en memoria.
+
+11. Jerarquía de memorias
+
+Las memorias buscan equilibrar:
+
+capacidad
+velocidad
+costo
+
+Relaciones importantes:
+
+menor tiempo de acceso → mayor costo
+mayor capacidad → menor costo por bit
+mayor capacidad → mayor tiempo de acceso
+
+12. Idea de jerarquía
+
+No se usa una sola memoria.
+
+Se combinan:
+
+Tipo	Característica
+rápidas	pequeñas y costosas
+lentas	grandes y baratas
+
+13. Localidad referencial
+
+La idea es mantener los datos más usados en las memorias más rápidas.
+
+14. Tipos de memoria
+Registros
+
+Los más rápidos y pequeños.
+
+Caché
+
+Memoria rápida entre CPU y RAM.
+
+RAM
+
+Memoria principal del sistema.
+
+Memoria masiva
+
+Discos, pendrives, SSD, etc.
+
+Memoria externa
+
+Almacenamiento permanente.
+
+15. Caché
+pequeña
+muy rápida
+mejora el rendimiento
+almacena datos usados frecuentemente
+
+16. RAM
+memoria principal
+acceso aleatorio
+volátil
+guarda programas y datos en uso
+
+17. Ejemplo de jerarquía
+
+Si el dato está en caché:
+
+acceso rápido
+
+Si no está:
+
+se busca en un nivel más lento
+luego se copia al nivel rápido
+
+La mayoría de accesos deberían resolverse en los niveles rápidos.
