@@ -203,3 +203,33 @@ almacenar instrucciones
 
 Se organizan en unidades llamadas registros.
 Existen muchos tipos de memoria, con distintas tecnologías, velocidades y costos.
+
+2. Características de las memorias
+
+Las memorias se diferencian por:
+
+ubicación
+capacidad
+método de acceso
+prestaciones
+soporte físico
+organización
+
+3. Ubicación
+Interna
+
+Está dentro de la computadora.
+
+Ejemplos:
+
+registros
+caché
+RAM
+Externa
+
+Son dispositivos de almacenamiento conectados mediante E/S.
+
+Ejemplos:
+
+discos
+cintas
