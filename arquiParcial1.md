@@ -678,3 +678,458 @@ Porcentaje de fallas.
 
 ## Tiempo efectivo de acceso
 Tiempo promedio real de acceso.
+
+
+# Resumen — Memoria Interna
+
+# 1. Memoria principal
+
+La memoria principal utiliza tecnología semiconductora.
+
+Su elemento básico es la celda de memoria.
+
+---
+
+# 2. Celda de memoria
+
+Cada celda:
+
+- representa 0 o 1
+- puede escribirse
+- puede leerse
+
+Tiene dos estados estables para almacenar bits.
+
+---
+
+# 3. Funcionamiento de una celda
+
+## Selección
+Elige la celda que se va a usar.
+
+## Control
+Indica si será lectura o escritura.
+
+## Escritura
+Coloca un 0 o un 1 en la celda.
+
+## Lectura
+Obtiene el valor almacenado.
+
+---
+
+# 4. Memoria RAM
+
+RAM significa:
+
+Random Access Memory
+
+(acceso aleatorio)
+
+Se puede acceder directamente a cualquier posición de memoria.
+
+---
+
+# 5. Características de la RAM
+
+- lectura y escritura
+- volátil
+- almacenamiento temporal
+- rápida
+- usa señales eléctricas
+
+Guarda:
+- programas en ejecución
+- datos usados actualmente
+
+---
+
+# 6. Tipos de RAM
+
+## SRAM
+RAM estática.
+
+Basada en flip-flops.
+
+## DRAM
+RAM dinámica.
+
+Basada en transistores y capacitores.
+
+---
+
+# 7. DRAM
+
+La DRAM:
+
+- almacena cargas eléctricas
+- usa capacitores
+- necesita refrescos periódicos
+- se usa como memoria principal
+
+La carga eléctrica se pierde con el tiempo aunque siga encendida.
+
+---
+
+# 8. SRAM
+
+La SRAM:
+
+- usa biestables
+- es más rápida
+- no necesita refrescos
+- mantiene datos mientras tenga energía
+
+---
+
+# 9. SRAM vs DRAM
+
+## DRAM
+- más barata
+- más densa
+- más lenta
+- necesita refresco
+- usada como memoria principal
+
+## SRAM
+- más rápida
+- más cara
+- usada en caché
+
+---
+
+# 10. Memoria ROM
+
+ROM significa:
+
+Read Only Memory
+
+(memoria de solo lectura)
+
+Contiene datos permanentes y no volátiles.
+
+---
+
+# 11. Funciones de la ROM
+
+La ROM:
+
+- almacena configuraciones básicas
+- ayuda al arranque de la PC
+- activa periféricos
+- guarda programas permanentes
+
+---
+
+# 12. PROM
+
+PROM:
+- programable una sola vez
+- no volátil
+- escritura eléctrica
+
+---
+
+# 13. EPROM
+
+EPROM:
+- puede borrarse con luz ultravioleta
+- puede reprogramarse
+- el borrado afecta todo el chip
+
+---
+
+# 14. EEPROM
+
+EEPROM:
+- borrado eléctrico
+- permite actualizar bytes específicos
+- más flexible
+
+---
+
+# 15. Memoria Flash
+
+La memoria Flash:
+
+- usa borrado eléctrico
+- es rápida
+- puede borrar bloques completos
+
+---
+
+# 16. RAM vs ROM
+
+## RAM
+- lectura y escritura
+- volátil
+- temporal
+
+## ROM
+- solo lectura
+- no volátil
+- permanente
+
+---
+
+# 17. Errores en memoria
+
+## Fallo permanente
+Daño físico en la memoria.
+
+Puede dejar bits “pegados” en 0 o 1.
+
+## Error transitorio
+Error temporal sin daño físico.
+
+Puede deberse a problemas eléctricos.
+
+---
+
+# 18. Corrección de errores
+
+Se agregan bits extra llamados códigos de error.
+
+Sirven para:
+- detectar errores
+- corregir algunos errores
+
+Cuando se lee la memoria:
+- se recalcula el código
+- se compara con el guardado
+
+---
+
+# 19. Resultados posibles al verificar errores
+
+## Sin errores
+Los datos se usan normalmente.
+
+## Error corregible
+El sistema corrige el dato.
+
+## Error no corregible
+El sistema informa el problema.
+
+---
+
+# 20. SDRAM
+
+SDRAM:
+- funciona sincronizada con el reloj
+- trabaja a la velocidad del bus
+- reduce tiempos de espera
+
+---
+
+# 21. DDR SDRAM
+
+DDR:
+- envía datos dos veces por ciclo
+- más rápida
+- más económica
+
+---
+
+# 22. RDRAM
+
+RDRAM:
+- muy rápida
+- muy costosa
+- reemplazada por DDR
+
+---
+
+# 23. CDRAM
+
+CDRAM:
+- puede funcionar como caché
+- sirve como buffer de datos
+
+  # Resumen — Memoria Externa
+
+# 1. Definición
+
+La memoria externa o auxiliar incluye todos los dispositivos de almacenamiento que no forman parte de la memoria interna (RAM y ROM).
+
+Se usa para:
+- almacenamiento masivo
+- almacenamiento permanente
+- guardar datos e información
+
+Es:
+- no volátil
+- de gran capacidad
+- más lenta que la memoria principal
+
+No es fundamental para que la computadora funcione.
+
+Ejemplos:
+- discos duros
+- SSD
+- pendrives
+- CDs
+- DVDs
+
+---
+
+# 2. Tecnologías de almacenamiento
+
+Existen distintos tipos de tecnologías para almacenar información.
+
+---
+
+# 3. Almacenamiento magnético
+
+Utiliza propiedades magnéticas para guardar datos.
+
+Ejemplos:
+- disquete
+- disco duro
+- cinta magnética
+
+Características:
+- gran capacidad
+- almacenamiento tradicional
+- usa magnetismo para leer y escribir
+
+---
+
+# 4. Almacenamiento óptico
+
+Usa rayos láser para leer y escribir información.
+
+La información se almacena en surcos microscópicos sobre discos.
+
+Ejemplos:
+- CD
+- DVD
+
+Características:
+- tecnología digital
+- lectura óptica mediante láser
+
+---
+
+# 5. Almacenamiento magneto-óptico
+
+Combina:
+- magnetismo
+- tecnología óptica
+
+Permite:
+- escribir
+- reescribir datos
+
+Ejemplos:
+- Disco Zip
+- Floptical
+- Minidisc
+
+---
+
+# 6. Almacenamiento de estado sólido
+
+SSD significa:
+
+Solid State Drive
+
+Usa memoria no volátil para almacenar datos.
+
+Características:
+- más rápido
+- silencioso
+- resistente a golpes
+- menor tiempo de acceso
+- menor latencia
+
+Ejemplos:
+- memorias USB
+- tarjetas de memoria
+- discos SSD
+
+---
+
+# 7. RAID
+
+RAID es un sistema que usa varios discos trabajando juntos como una sola unidad lógica.
+
+Puede usar:
+- discos duros
+- SSD
+
+Objetivos:
+- mejorar rendimiento
+- aumentar capacidad
+- tolerar fallos
+- mejorar integridad de datos
+
+---
+
+# 8. Beneficios de RAID
+
+- mayor integridad
+- tolerancia a fallos
+- mejor velocidad de transferencia
+- mayor capacidad
+
+Se usa principalmente en servidores.
+
+---
+
+# 9. Tipos de RAID
+
+## RAID 0
+Conjunto dividido.
+
+Mejora velocidad.
+
+No tiene tolerancia a fallos.
+
+---
+
+## RAID 1
+Conjunto en espejo.
+
+Duplica los datos en varios discos.
+
+Mayor seguridad.
+
+---
+
+## RAID 5
+Conjunto dividido con paridad distribuida.
+
+Combina:
+- rendimiento
+- tolerancia a fallos
+
+---
+
+# 10. Actualidad
+
+## HDD
+Siguen siendo importantes por su capacidad y costo.
+
+---
+
+## SSD
+Cada vez reemplazan más a los HDD porque:
+- son más rápidos
+- tienen menor latencia
+- son más resistentes
+
+---
+
+## RAID
+Muy utilizado en servidores y sistemas grandes.
+
+---
+
+## Medios ópticos
+Perdieron popularidad frente al almacenamiento sólido.
+
+---
+
+## Disquetes
+Prácticamente desaparecieron con la llegada de las memorias USB.
