@@ -18,7 +18,7 @@ lang: "es-AR"
 - [Parte 4: Memorias](#parte-4-memorias)
 - [Parte 5: Memoria Caché](#parte-5-memoria-caché)
 - [Parte 6: Direccionamiento e Instrucciones](#parte-6-direccionamiento-formato-de-instrucciones-y-ensamblador)
-- [Parte 7: Procesadores Modernos](#parte-7-procesadores-risc-y-coherencia-de-caché)
+- [Parte 7: Procesadores Modernos](#parte-7-procesadores-modernos)
 - [Parte 8: Arquitecturas Paralelas](#parte-8-arquitectura-de-computadoras-paralelas)
 
 ---
