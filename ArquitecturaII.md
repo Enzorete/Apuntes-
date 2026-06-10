@@ -1,2251 +1,1854 @@
 ---
 title: "Arquitectura II"
-subtitle: "Verdadero / Falso (1 al 8) y Ejercicios de Caché"
+subtitle: "Apuntes completos: Teoría, Ejercicios y Conceptos Avanzados"
 author: "Apuntes de cátedra"
-date: "2026-05-06"
+date: "2026-06-10"
 lang: "es-AR"
 ---
 
 # Arquitectura II
 
-> Resumen completo con teoría, verdadero/falso y ejercicios resueltos.
+> Apuntes completos con teoría, ejercicios resueltos y conceptos de arquitectura de computadores.
 
-## Índice
-- [Parte 0 - Teoría esencial](#parte-0---teoría-esencial)
-- [Parte 1 - Verdadero / Falso](#parte-1---verdadero--falso)
-- [Parte 2 - Ejercicios](#parte-2---ejercicios-de-memoria-caché)
+## Tabla de Contenidos
 
----
-
-## Parte 0 - Teoría esencial
-
-### Interrupciones
-- **IRQ (enmascarables):** la CPU puede ignorarlas.
-- **NMI (no enmascarables):** no se pueden deshabilitar. Para errores críticos.
-
-### DMA
-Permite transferir datos a RAM sin CPU.
-1. Ráfaga: CPU cede el bus completo.
-2. Robo de ciclo: toma 1 ciclo por vez.
-3. Transparente: usa ciclos libres del bus.
-
-### Complemento a dos
-Rango con n bits: de -2^(n-1) a 2^(n-1)-1
-Ejemplo 4 bits: 1001 = -7 (invertir 0110 + 1)
-
-### IEEE 754 (1985)
-Estándar de coma flotante. Simple: 1 bit signo, 8 exponente, 23 mantisa.
-
-### Memoria Caché
-- Hit rate H = aciertos / accesos
-- Tiempo medio: Ts = T1 + (1-H) * T2
-- Mapeo directo: etiqueta + línea + offset
-- Asociativo: etiqueta + offset
+- [Parte 1: Conceptos Fundamentales](#parte-1-conceptos-fundamentales)
+- [Parte 2: Ejercicios Resueltos](#parte-2-ejercicios-resueltos)
+- [Parte 3: Ciclos y Buses](#parte-3-ciclos-de-captación-interrupciones-y-arquitectura-de-buses)
+- [Parte 4: Memorias](#parte-4-memorias)
+- [Parte 5: Memoria Caché](#parte-5-memoria-caché)
+- [Parte 6: Direccionamiento e Instrucciones](#parte-6-direccionamiento-formato-de-instrucciones-y-ensamblador)
+- [Parte 7: Procesadores Modernos](#parte-7-procesadores-risc-y-coherencia-de-caché)
+- [Parte 8: Arquitecturas Paralelas](#parte-8-arquitectura-de-computadoras-paralelas)
 
 ---
 
-## Parte 1 - Verdadero / Falso
+# PARTE 1: CONCEPTOS FUNDAMENTALES
 
-1) NMI no pueden aplazarse
-**Respuesta: ✅ VERDADERO**
+## 1. Interrupciones
 
-2) DMA es polling
-**Respuesta: ❌ FALSO** - Eso es E/S programada.
+Las interrupciones son solicitudes de atención que otros componentes hacen a la CPU.
 
-3) DMA solo tiene un modo
-**Respuesta: ❌ FALSO** - Tiene 3 modos.
+### Tipos de Interrupciones
 
-4) Robo de ciclos usa semiciclos
-**Respuesta: ✅ VERDADERO**
-
-5) 1001 en C2 es 9
-**Respuesta: ❌ FALSO** - Es -7.
-
-6) Negación es complemento a uno +1
-**Respuesta: ✅ VERDADERO**
-
-7) Desde 1985 se usa punto fijo
-**Respuesta: ❌ FALSO** - Es IEEE 754.
-
-8) Overflow de exponente existe
-**Respuesta: ✅ VERDADERO**
+- **IRQ (Enmascarables):** La CPU puede ignorarlas mediante instrucciones de enmascaramiento.
+- **NMI (No enmascarables):** No se pueden deshabilitar. Se usan para errores críticos o situaciones de emergencia.
 
 ---
 
-## Parte 2 - Ejercicios
+## 2. DMA (Acceso Directo a Memoria)
 
-### Ejercicio 1
-Ts = 1 + (1-0,9) * 10 = 1 + 1 = 2 ns
+Permite transferir datos entre RAM y dispositivos periféricos sin intervención directa de la CPU.
 
-### Ejercicio 2
-Ts = 1 + (1-0,975) * 10 = 1 + 0,25 = 1,25 ns
+### Modos de Funcionamiento
 
-### Ejercicio 3 - Mapeo directo
-- MP: 256M = 2^28 → 28 bits
-- Offset: log2(256) = 8 bits
-- Líneas: 4096 → 12 bits
-- Etiqueta: 28-12-8 = 8 bits
-Formato: | Etiqueta 8 | Línea 12 | Palabra 8 |
-Bloques MP: 1.048.576
+1. **Ráfaga:** La CPU cede el control completo del bus al controlador DMA.
+2. **Robo de ciclo:** El DMA toma un ciclo de bus por vez, intercalándose con la CPU.
+3. **Transparente:** Usa ciclos libres del bus que la CPU no está utilizando.
 
-### Ejercicio 4 - Asociativo
+---
+
+## 3. Complemento a Dos (C2)
+
+Sistema de representación para números negativos en binario.
+
+### Características
+
+- **Rango con n bits:** de **-2^(n-1)** a **2^(n-1) - 1**
+- **Ejemplo (4 bits):** `1001` = **-7** (invertir `0110` y sumar 1)
+- **Negación:** complemento a uno + 1
+
+---
+
+## 4. IEEE 754 (Estándar de Coma Flotante)
+
+Estándar de 1985 para representación de números en coma flotante.
+
+### Estructura (Precisión Simple)
+
+- **1 bit:** signo
+- **8 bits:** exponente
+- **23 bits:** mantisa
+
+### Nota sobre Overflow
+
+El overflow de exponente sí existe en IEEE 754 (causa infinito).
+
+---
+
+## 5. Conceptos Clave de Memoria Caché
+
+### Métricas de Rendimiento
+
+- **Hit Rate (H):** H = aciertos / accesos totales
+- **Tiempo medio de acceso:** Ts = T1 + (1 - H) × T2
+  - T1 = tiempo de acceso a caché
+  - T2 = tiempo adicional si hay fallo (miss)
+
+### Mapeo de Bloques
+
+- **Mapeo directo:** etiqueta + línea + offset
+- **Mapeo asociativo:** etiqueta + offset
+- **Mapeo asociativo por conjuntos:** combina ambas aproximaciones
+
+---
+
+# PARTE 2: EJERCICIOS RESUELTOS
+
+## Ejercicio 1: Tiempo de Acceso a Caché
+
+**Datos:** H = 0.9, T_caché = 1 ns, T_memoria = 10 ns
+
+**Solución:**
+```
+Ts = 1 + (1 - 0.9) × 10 = 1 + 1 = 2 ns
+```
+
+---
+
+## Ejercicio 2: Hit Rate Requerido
+
+**Datos:** Ts objetivo = 1.25 ns, T_caché = 1 ns, T_memoria = 10 ns
+
+**Solución:**
+```
+1.25 = 1 + (1 - H) × 10
+0.25 = (1 - H) × 10
+H = 0.975 = 97.5%
+```
+
+---
+
+## Ejercicio 3: Mapeo Directo
+
+**Datos:**
+- Memoria principal: 256M = 2^28 bytes
+- Tamaño de bloque: 256 bytes (2^8)
+- Tamaño de caché: 4096 líneas
+
+**Cálculos:**
+
+| Parámetro | Cálculo | Bits |
+|-----------|---------|------|
+| Offset (palabra) | log₂(256) | 8 |
+| Línea de caché | log₂(4096) | 12 |
+| Etiqueta | 28 - 12 - 8 | 8 |
+
+**Formato de dirección:**
+```
+┌──────────┬─────────────┬──────────┐
+│ Etiqueta │   Línea     │  Offset  │
+│   (8)    │    (12)     │   (8)    │
+└──────────┴─────────────┴──────────┘
+```
+
+**Bloques en memoria:** 256M ÷ 256 = 1,048,576 bloques
+
+---
+
+## Ejercicio 4: Mapeo Asociativo
+
+**Datos:** Memoria 2^28, bloque de 256 bytes
+
+**Resultado:**
 - Offset: 8 bits
 - Etiqueta: 20 bits
-Formato: | Etiqueta 20 | Palabra 8 |
 
-### Ejercicio 5
-- a) bloque = 64 bytes
-- b) 20 = 5 + (1-H)*200
-   1-H = 15/200 = 0,075
-   H = 0,925 = 92,5%
-
-### Ejercicio 6
-- a) Memoria: 2^32 bytes = 4096 MB
-- b) Líneas: 4096, Palabras totales: 16384
-- c) Líneas por conjunto: 4
-- d) Número de líneas: 4096
-- e) Conjuntos: 1024
-- f) 10 = 2 + (1-H)*80 → H = 0,9 = 90%
-
-### Ejercicio 7
-1) H = 600000/1200000 = 0,5
-   Ts = 120 + 0,5*1260 = 750 ns
-2) Campos:
-   - MP 8MB = 2^23 → 23 bits
-   - Offset: 8 bits
-   - Líneas: 4 bits
-   - Etiqueta: 11 bits
-Formato: | Etiqueta 11 | Línea 4 | Offset 8 |
-
-
-# Resumen — Ciclos de captación, interrupciones y arquitectura de buses
-
-# 1. Ciclo de instrucción
-
-La CPU ejecuta programas repitiendo continuamente dos etapas:
-
-1. Captar la instrucción
-2. Ejecutarla
-
-Ese proceso se llama ciclo de instrucción.
+**Formato:**
+```
+┌──────────────────────┬──────────┐
+│     Etiqueta (20)    │  Offset  │
+│                      │   (8)    │
+└──────────────────────┴──────────┘
+```
 
 ---
 
-# 2. Registros importantes de la CPU
+## Ejercicio 5: Cálculo de Hit Rate
 
-## PC — Program Counter
-Guarda la dirección de la próxima instrucción.
+**Datos:**
+- a) Bloque: 64 bytes
+- b) Ts = 20 ns, T_caché = 5 ns, T_memoria = 200 ns
 
-Ejemplo:
-Si PC = 300, la CPU va a buscar la instrucción en la memoria 300.
-
----
-
-## IR — Instruction Register
-Guarda la instrucción que se está ejecutando actualmente.
-
----
-
-## AC — Acumulador
-Registro temporal donde la CPU guarda datos y resultados.
+**Solución:**
+```
+20 = 5 + (1 - H) × 200
+15 = (1 - H) × 200
+1 - H = 0.075
+H = 0.925 = 92.5%
+```
 
 ---
 
-# 3. Codop y dirección
+## Ejercicio 6: Caché Asociativa por Conjuntos
 
-Las instrucciones están divididas en:
+**Datos:** Memoria 2^32 bytes, líneas de 4096, palabras de 4 bytes
+
+**Resultados:**
+
+| Parámetro | Valor |
+|-----------|-------|
+| Memoria principal | 4096 MB |
+| Líneas en caché | 4096 |
+| Palabras totales | 16,384 |
+| Líneas por conjunto | 4 |
+| Número de conjuntos | 1024 |
+| Hit Rate (Ts = 10 ns) | 90% |
+
+---
+
+## Ejercicio 7: Problema Completo de Caché
+
+**Parte 1: Hit Rate y Tiempo de Acceso**
+```
+Accesos = 1,200,000
+Aciertos = 600,000
+
+H = 600,000 / 1,200,000 = 0.5 = 50%
+Ts = 120 + 0.5 × 1260 = 750 ns
+```
+
+**Parte 2: Campos de Dirección**
+- Memoria principal: 8 MB = 2^23 bytes
+- Offset: 8 bits
+- Líneas de caché: 16 = 2^4 bits
+- Etiqueta: 23 - 4 - 8 = 11 bits
+
+**Formato:**
+```
+┌───────────────┬────────┬──────────┐
+│ Etiqueta (11) │ Línea  │  Offset  │
+│               │  (4)   │   (8)    │
+└───────────────┴────────┴──────────┘
+```
+
+---
+
+# PARTE 3: CICLOS DE CAPTACIÓN, INTERRUPCIONES Y ARQUITECTURA DE BUSES
+
+## 1. Ciclo de Instrucción
+
+La CPU ejecuta programas repitiendo continuamente:
+
+1. **Captar** la instrucción de memoria
+2. **Ejecutarla**
+
+Este proceso se denomina **ciclo de instrucción**.
+
+---
+
+## 2. Registros Importantes de la CPU
+
+### PC — Program Counter
+
+Guarda la dirección de la próxima instrucción a ejecutar.
+
+**Ejemplo:** Si PC = 300, la CPU busca la instrucción en memoria[300].
+
+---
+
+### IR — Instruction Register
+
+Almacena la instrucción que se está ejecutando actualmente.
+
+---
+
+### AC — Acumulador
+
+Registro temporal donde la CPU guarda datos y resultados intermedios.
+
+---
+
+## 3. Estructura de Instrucciones
+
+Las instrucciones están compuestas por dos partes:
 
 | Parte | Función |
-|---|---|
-| Codop | Dice qué operación hacer |
-| Dirección | Indica dónde está el dato |
+|-------|---------|
+| **Codop** | Especifica qué operación ejecutar |
+| **Dirección** | Indica dónde está el operando |
 
-Ejemplo:
+### Ejemplo de Instrucción
 
+```
 1940
+├─ 1   → Codop (cargar en AC)
+└─ 940 → Dirección de memoria
 
-- 1 → cargar
-- 940 → dirección de memoria
-
-Significa:
-
-Cargar en AC el dato guardado en la posición 940
+Significado: Cargar en AC el dato guardado en posición 940
+```
 
 ---
 
-# 4. Estados del ciclo de instrucción
+## 4. Estados del Ciclo de Instrucción
 
-1. IAC → Instruction Address Calculation  
-   → Cálculo de la dirección de instrucción
+El ciclo de instrucción consta de 7 estados principales:
 
-2. IF → Instruction Fetch  
-   → Captación de instrucción
-
-3. IOD → Instruction Operation Decoding  
-   → Decodificación de la operación de la instrucción
-
-4. OAC → Operand Address Calculation  
-   → Cálculo de la dirección del operando
-
-5. OF → Operand Fetch  
-   → Captación de operando
-
-6. DO → Data Operation  
-   → Operación con datos
-
-7. OS → Operand Store  
-   → Almacenamiento de operando
+| Acrónimo | Significado | Descripción |
+|----------|-------------|-------------|
+| **IAC** | Instruction Address Calculation | Cálculo de la dirección de instrucción |
+| **IF** | Instruction Fetch | Captación de instrucción desde memoria |
+| **IOD** | Instruction Operation Decoding | Decodificación de la operación |
+| **OAC** | Operand Address Calculation | Cálculo de la dirección del operando |
+| **OF** | Operand Fetch | Captación del operando |
+| **DO** | Data Operation | Operación aritmética o lógica |
+| **OS** | Operand Store | Almacenamiento del resultado |
 
 ---
 
-# 5. Tipos de operaciones que puede hacer la CPU
+## 5. Tipos de Operaciones de la CPU
 
-## Procesador ↔ Memoria
-Mover datos entre CPU y memoria.
+### Procesador ↔ Memoria
 
-## Procesador ↔ E/S
-Mover datos con dispositivos externos.
+Transferencia de datos entre CPU y memoria principal.
 
-## Procesamiento de datos
-Operaciones aritméticas y lógicas.
+### Procesador ↔ E/S
 
-## Control
-Cambiar la secuencia del programa (saltos).
+Transferencia de datos con dispositivos externos (teclado, impresora, disco, etc.).
 
----
+### Procesamiento de Datos
 
-# 6. Interrupciones
+Operaciones aritméticas y lógicas sobre datos.
 
-Una interrupción ocurre cuando otro componente le pide atención a la CPU.
+### Control
 
-Sirven para evitar que el procesador quede esperando mientras un dispositivo lento trabaja.
+Cambio de la secuencia de ejecución del programa (saltos condicionales e incondicionales).
 
 ---
 
-# 7. Tipos de interrupciones
+## 6. Interrupciones
+
+Una interrupción es una solicitud de atención que otro componente hace a la CPU. Sirven para **evitar que el procesador quede esperando** mientras un dispositivo lento trabaja.
+
+### Tipos de Interrupciones
 
 | Tipo | Ejemplo |
-|---|---|
-| Programa | división por cero |
-| Temporización | temporizador |
-| E/S | terminó una impresión |
-| Hardware | error físico |
+|------|---------|
+| **Programa** | División por cero, operación ilegal |
+| **Temporización** | Temporizador (timer) |
+| **E/S** | Impresión completada, dato disponible |
+| **Hardware** | Error físico en memoria, fallo de bus |
 
 ---
 
-# 8. Qué hace la CPU cuando ocurre una interrupción
+## 7. Secuencia de Atención de Interrupciones
 
-## 1. Guarda el contexto actual
-La CPU guarda información importante del programa para poder continuar después donde quedó.
+Cuando ocurre una interrupción, la CPU realiza:
 
-## 2. Suspende el programa
-El programa actual se pausa temporalmente.
+1. **Guarda el contexto actual**
+   - Almacena PC, registros y estado del programa
+   - Permite continuar después donde quedó
 
-## 3. Ejecuta el gestor de interrupción
-La CPU ejecuta una rutina especial para atender la interrupción.
+2. **Suspende el programa**
+   - El programa actual se pausa temporalmente
 
-## 4. Atiende el problema
-Se realiza la acción necesaria según el dispositivo o error.
+3. **Ejecuta el gestor de interrupción**
+   - Rutina especial para atender el evento
 
-## 5. Vuelve al programa original
-La CPU recupera el contexto guardado y continúa normalmente.
+4. **Atiende el problema**
+   - Realiza la acción necesaria según el dispositivo o error
 
----
-
-# 9. Interrupciones múltiples
-
-Puede haber varias interrupciones al mismo tiempo.
-
-## Desactivar interrupciones
-La CPU atiende una por vez.
-
-## Prioridades
-Una interrupción importante puede interrumpir a otra menos importante.
+5. **Vuelve al programa original**
+   - Recupera el contexto guardado
+   - Continúa normalmente
 
 ---
 
-# 10. Entrada y salida (E/S)
+## 8. Interrupciones Múltiples
 
-Los módulos de E/S permiten comunicar la computadora con dispositivos externos:
+Pueden ocurrir varias interrupciones simultáneamente.
 
-- teclado
-- impresora
-- disco
-- etc.
+### Estrategias de Manejo
 
----
+**Desactivar interrupciones:**
+- La CPU atiende una por vez
+- Orden FIFO (primero en llegar, primero en atender)
 
-# 11. DMA — Direct Memory Access
-
-Permite transferir datos directamente entre memoria y dispositivos sin usar constantemente la CPU.
-
----
-
-# 12. Estructura de interconexión
-
-Los componentes principales son:
-
-- CPU
-- Memoria
-- Módulos de E/S
-
-Todos se comunican mediante líneas de conexión.
+**Usar prioridades:**
+- Una interrupción importante puede interrumpir a otra menos importante
+- Requiere hardware adicional
 
 ---
 
-# 13. Bus
+## 9. Entrada y Salida (E/S)
 
-Un bus es un conjunto de líneas compartidas que conectan los componentes.
+Los módulos de E/S permiten que la computadora se comunique con dispositivos externos:
 
----
-
-# 14. Tipos de buses
-
-## Bus de datos
-Transporta datos.
-
-## Bus de direcciones
-Indica origen o destino.
-
-## Bus de control
-Coordina señales y operaciones.
+- Teclado
+- Impresora
+- Disco
+- Monitor
+- Red
 
 ---
 
-# 15. Señales importantes del bus
+## 10. Arquitectura de Interconexión
 
-- Memory Read: lee un dato desde memoria.
-- Memory Write: escribe un dato en memoria.
-- I/O Read: lee un dato desde un dispositivo de E/S.
-- I/O Write: envía un dato a un dispositivo de E/S.
-- Transfer ACK: confirma la transferencia.
-- Bus Request: solicita usar el bus.
-- Bus Grant: concede el uso del bus.
-- Interrupt Request: indica una interrupción pendiente.
-- Interrupt ACK: confirma la interrupción.
-- Clock: sincroniza las operaciones.
-- Reset: reinicia el sistema.
+Los componentes principales de una computadora se comunican mediante líneas de conexión:
+
+- **CPU** (Unidad Central de Procesamiento)
+- **Memoria** (RAM, ROM)
+- **Módulos de E/S** (Controladores)
 
 ---
 
-# Resumen — Introducción a Memorias
+## 11. Bus
 
-# 1. Concepto de memoria
+Un **bus** es un conjunto de líneas compartidas que conectan los componentes de una computadora, permitiendo comunicación entre ellos.
 
-Las memorias se usan para:
-- almacenar datos
-- almacenar instrucciones
+### Tipos de Buses
 
----
-
-# 2. Características de las memorias
-
-Las memorias se diferencian por:
-- ubicación
-- capacidad
-- método de acceso
-- prestaciones
-- soporte físico
-- organización
+| Tipo | Función |
+|------|---------|
+| **Bus de datos** | Transporta datos entre componentes |
+| **Bus de direcciones** | Indica origen o destino de datos |
+| **Bus de control** | Coordina señales y operaciones |
 
 ---
 
-# 3. Ubicación
+## 12. Señales Importantes del Bus
 
-## Interna
-Dentro de la computadora.
+| Señal | Función |
+|-------|---------|
+| **Memory Read** | Lee un dato desde memoria |
+| **Memory Write** | Escribe un dato en memoria |
+| **I/O Read** | Lee un dato desde dispositivo E/S |
+| **I/O Write** | Envía un dato a dispositivo E/S |
+| **Transfer ACK** | Confirma la transferencia |
+| **Bus Request** | Solicita usar el bus |
+| **Bus Grant** | Concede el uso del bus |
+| **Interrupt Request** | Indica interrupción pendiente |
+| **Interrupt ACK** | Confirma la interrupción |
+| **Clock** | Sincroniza operaciones |
+| **Reset** | Reinicia el sistema |
 
-Ejemplos:
-- registros
-- caché
+---
+
+# PARTE 4: MEMORIAS
+
+## 1. Concepto de Memoria
+
+Las memorias sirven para:
+- Almacenar datos
+- Almacenar instrucciones
+
+---
+
+## 2. Características de las Memorias
+
+Las memorias se clasifican por:
+
+- **Ubicación** (interna/externa)
+- **Capacidad** (bytes/palabras)
+- **Método de acceso** (secuencial/directo/aleatorio/asociativo)
+- **Prestaciones** (velocidad, latencia)
+- **Soporte físico** (semiconductores, magnéticos, ópticos)
+- **Organización** (cómo se estructuran los bits)
+
+---
+
+## 3. Ubicación de Memoria
+
+### Interna
+
+Dentro de la computadora:
+- Registros (más rápido)
+- Caché
 - RAM
 
-## Externa
-Dispositivos conectados mediante E/S.
+### Externa
 
-Ejemplos:
-- discos
-- cintas
+Dispositivos conectados por E/S:
+- Discos duros
+- Cintas magnéticas
+- Memorias USB
 
 ---
 
-# 4. Capacidad
+## 4. Capacidad
 
-Indica cuánto puede almacenar una memoria.
+Indica cuánto datos puede almacenar una memoria.
 
 Se expresa en:
-- bytes
-- palabras
+- **Bytes**
+- **Palabras** (palabra = múltiples bytes)
 
 ---
 
-# 5. Unidad de transferencia
+## 5. Unidad de Transferencia
 
-## Memoria interna
-Transfiere palabras.
+### Memoria Interna
 
-## Memoria externa
-Transfiere bloques.
+Transfiere **palabras** completas.
 
----
+### Memoria Externa
 
-# 6. Métodos de acceso
-
-## Secuencial
-Acceso uno por uno.
-
-## Directo
-Acceso aproximado y luego búsqueda.
-
-## Aleatorio
-Acceso directo a cualquier posición.
-
-## Asociativo
-Busca por contenido y no por dirección.
+Transfiere **bloques** de datos.
 
 ---
 
-# 7. Prestaciones
+## 6. Métodos de Acceso
 
-## Tiempo de acceso
-Tiempo para leer o escribir.
-
-## Tiempo de ciclo
-Tiempo mínimo entre accesos.
-
-## Velocidad de transferencia
-Velocidad de envío de datos.
+| Método | Descripción |
+|--------|-------------|
+| **Secuencial** | Acceso uno por uno, en orden |
+| **Directo** | Acceso aproximado y luego búsqueda (ej: disco) |
+| **Aleatorio** | Acceso directo a cualquier posición (ej: RAM) |
+| **Asociativo** | Búsqueda por contenido, no por dirección |
 
 ---
 
-# 8. Soportes físicos
+## 7. Prestaciones
 
-- semiconductores
-- magnéticos
-- ópticos
-- magneto-ópticos
+### Tiempo de Acceso
 
----
+Tiempo requerido para leer o escribir un dato.
 
-# 9. Características físicas
+### Tiempo de Ciclo
 
-## Volátil
-Pierde datos sin energía.
+Tiempo mínimo necesario entre dos accesos consecutivos.
 
-## No volátil
-Mantiene datos sin energía.
+### Velocidad de Transferencia
 
-## ROM
-Memoria solo lectura.
+Velocidad a la que se envían datos desde/hacia memoria.
 
 ---
 
-# 10. Organización
+## 8. Soportes Físicos
 
-Forma en que los bits forman palabras.
-
----
-
-# 11. Jerarquía de memorias
-
-Busca equilibrio entre:
-- capacidad
-- velocidad
-- costo
+- **Semiconductores** (RAM, ROM, Flash)
+- **Magnéticos** (discos duros, cintas)
+- **Ópticos** (CDs, DVDs)
+- **Magneto-ópticos** (Minidisc, Floptical)
 
 ---
 
-# 12. Idea de jerarquía
+## 9. Volatilidad
+
+### Volátil
+
+Pierde datos al desconectar la energía (ej: RAM).
+
+### No Volátil
+
+Mantiene datos sin energía (ej: ROM, discos).
+
+---
+
+## 10. Jerarquía de Memorias
+
+Las memorias se organizan en jerarquía buscando equilibrio entre:
+
+```
+        VELOCIDAD      CAPACIDAD       COSTO
+Registros    ↑            ↓              ↑
+Caché        ↑            ↓              ↑
+RAM          ↓            ↑              ↓
+Disco        ↓            ↑              ↓
+```
 
 Se combinan memorias:
-- rápidas y pequeñas
-- lentas y grandes
+- **Rápidas y pequeñas** (registros, caché)
+- **Lentas y grandes** (RAM, disco)
 
 ---
 
-# 13. Localidad referencial
+## 11. Localidad Referencial
 
-Los datos más usados se mantienen en memorias rápidas.
+Principio fundamental de la jerarquía de memorias:
 
----
+**Los datos más usados se mantienen en memorias rápidas.**
 
-# 14. Tipos de memoria
+### Tipos de Localidad
 
-## Registros
-Más rápidos y pequeños.
-
-## Caché
-Intermedia entre CPU y RAM.
-
-## RAM
-Memoria principal.
-
-## Memoria masiva
-Discos, SSD, pendrives.
-
-## Memoria externa
-Almacenamiento permanente.
+- **Localidad temporal:** Datos recientemente usados serán usados pronto
+- **Localidad espacial:** Datos cercanos a datos usados serán usados pronto
 
 ---
 
-# 15. Caché
+## 12. Tipos de Memoria en la Jerarquía
 
-- pequeña
-- rápida
-- mejora rendimiento
-- guarda datos frecuentes
-
----
-
-# 16. RAM
-
-- memoria principal
-- acceso aleatorio
-- volátil
+| Tipo | Características |
+|------|-----------------|
+| **Registros** | Más rápidos y pequeños |
+| **Caché** | Intermedia entre CPU y RAM |
+| **RAM** | Memoria principal, acceso aleatorio |
+| **Memoria masiva** | Discos, SSD, pendrives |
+| **Memoria externa** | Almacenamiento permanente |
 
 ---
 
-# 17. Ejemplo de jerarquía
+# PARTE 5: MEMORIA CACHÉ
 
-Si el dato está en caché:
-- acceso rápido
+## 1. ¿Por Qué Existe la Caché?
 
-Si no:
-- se busca en memoria lenta
-- luego se copia al nivel rápido
+La CPU es **mucho más rápida** que la memoria principal. La caché aparece para:
 
----
-
-# Resumen — Memoria Caché
-
-# 1. ¿Por qué existe la memoria caché?
-
-La CPU es mucho más rápida que la memoria principal.
-
-La caché aparece para:
-- acelerar accesos a memoria
-- mejorar el rendimiento del sistema
+- Acelerar accesos a memoria
+- Mejorar el rendimiento del sistema
+- Reducir cuellos de botella
 
 ---
 
-# 2. ¿Qué es la memoria caché?
+## 2. ¿Qué es la Memoria Caché?
 
 Es una memoria:
 
-- pequeña
-- muy rápida
-- ubicada entre CPU y RAM
+- **Pequeña** en capacidad
+- **Muy rápida** de acceso
+- **Ubicada entre CPU y RAM**
 
 Guarda copias de datos usados frecuentemente.
 
 ---
 
-# 3. Funcionamiento básico
+## 3. Funcionamiento Básico
 
-## Si el dato está en caché
-La CPU lo obtiene rápidamente.
+### Si el dato está en caché
 
-→ Hit (acierto)
+La CPU lo obtiene rápidamente → **Hit (acierto)**
 
-## Si el dato NO está
-Se trae un bloque desde RAM hacia caché.
+### Si el dato NO está en caché
 
-→ Miss (falla)
+1. Se trae un bloque completo desde RAM hacia caché
+2. Se entrega el dato a la CPU → **Miss (falla)**
 
-El dato pasa a caché cuando ocurre una falla de caché.
-
-O sea:
-
-1. La CPU pide un dato.
-2. La caché revisa si lo tiene.
-3. Si NO está:
-   - lo busca en RAM
-   - trae el bloque completo
-   - lo guarda en caché
-
-RAM → bloque con datos → caché
-
-No es un bloque vacío.
+El dato pasa a caché cuando ocurre una falla.
 
 ---
 
-## Ejemplo
+## 4. Ejemplo Ilustrativo
 
-La CPU pide el dato 22.
+**La CPU pide el dato 22:**
 
-### Primera vez
-- caché NO lo tiene
-- se busca en RAM
-- se trae el bloque:
+**Primera vez:**
+- Caché NO lo tiene
+- Se busca en RAM
+- Se trae el bloque: `[20, 21, 22, 23]`
+- Se guarda completo en caché
 
-20 21 22 23
-
-- ese bloque se guarda en caché
-
-### Segunda vez
-Si la CPU vuelve a pedir 22:
-- ya está en caché
-- acceso rápido (hit)
-
-La caché guarda temporalmente datos usados recientemente porque probablemente vuelvan a utilizarse.
+**Segunda vez:**
+- Ya está en caché
+- Acceso rápido (hit)
 
 ---
 
-# 4. Localidad de referencia
+## 5. Localidad de Referencia
 
 Si un dato fue usado recientemente:
-- probablemente vuelva a usarse
-- o se usen datos cercanos
+- Probablemente vuelva a usarse
+- O se usen datos cercanos
 
-Por eso se cargan bloques completos y no una sola palabra.
+**Por eso se cargan bloques completos y no una sola palabra.**
 
 ---
 
-# 5. Estructura de la caché
+## 6. Estructura de la Caché
 
-## Memoria principal
-Está dividida en bloques.
+### Memoria Principal
 
-## Caché
-Está dividida en líneas.
+Está dividida en **bloques**.
+
+### Caché
+
+Está dividida en **líneas**.
 
 Cada línea contiene:
-- palabras
-- etiqueta (tag)
-
-La etiqueta identifica qué bloque está guardado ahí.
+- **Palabras** (datos)
+- **Etiqueta (tag)** que identifica qué bloque está guardado
 
 ---
 
-# 6. Operación de lectura
+## 7. Operación de Lectura
 
 La CPU genera una dirección.
 
-## Si hay acierto
+### Si hay acierto
+
 La caché entrega el dato directamente.
 
-## Si hay falla
-El bloque se copia desde RAM a caché y luego a la CPU.
+### Si hay falla
+
+1. Se copia el bloque desde RAM a caché
+2. Se entrega el dato a la CPU
 
 ---
 
-# 7. Tipos de carga ante una falla
+## 8. Tipos de Carga ante una Falla
 
-## Load Through
+### Load Through
+
 Primero se envía el dato a la CPU y después se completa la carga del bloque.
 
-## Load Back
+### Load Back
+
 Primero se completa la carga en caché y luego se entrega a la CPU.
 
 ---
 
-# 8. Elementos de diseño de caché
+## 9. Elementos de Diseño de Caché
 
 La caché se diseña considerando:
-- tamaño
-- correspondencia
-- reemplazo
-- escritura
-- tamaño de línea
-- cantidad de cachés
+
+- **Tamaño** (MB)
+- **Correspondencia** (cómo se mapean bloques)
+- **Política de reemplazo** (qué bloque sacar)
+- **Política de escritura** (cómo escribir)
+- **Tamaño de línea** (bytes por línea)
+- **Cantidad de cachés** (L1, L2, L3)
 
 ---
 
-# 9. Tamaño de caché
+## 10. Tamaño de Caché
 
 Se busca equilibrio entre:
-- velocidad
-- costo
-- capacidad
-
-Más caché:
-- mejora rendimiento
-- aumenta costo
+- **Velocidad** (más caché = más rápido)
+- **Costo** (más caché = más caro)
+- **Capacidad** (más caché = más datos)
 
 ---
 
-# 10. Función de correspondencia
+## 11. Función de Correspondencia (Mapeo)
 
-Define dónde puede ubicarse un bloque de RAM dentro de caché.
+Define dónde puede ubicarse un bloque de RAM dentro de la caché.
 
-Tipos:
-- directa
-- asociativa
-- asociativa por conjuntos
+### Tipos de Correspondencia
 
----
-
-# 11. Correspondencia directa
-
-Cada bloque de RAM puede ir solamente a una línea específica de caché.
-
-## Ventaja
-- simple
-- barata
-
-## Desventaja
-Dos bloques pueden pelear por la misma línea constantemente.
+1. **Directa** (Direct Mapped)
+2. **Asociativa** (Fully Associative)
+3. **Asociativa por conjuntos** (Set Associative)
 
 ---
 
-# 12. Correspondencia asociativa
+## 12. Correspondencia Directa
 
-Un bloque puede ir a cualquier línea.
+Cada bloque de RAM puede ir solamente a **una línea específica** de caché.
 
-## Ventaja
-- flexible
-- mejor tasa de aciertos
+**Fórmula:** Línea caché = (Bloque RAM) mod (Líneas caché)
 
-## Desventaja
-- hardware complejo
+### Ventajas
+
+- Simple de implementar
+- Económico en hardware
+
+### Desventajas
+
+- Dos bloques pueden "pelear" por la misma línea constantemente
+- Baja tasa de aciertos en ciertos patrones
 
 ---
 
-# 13. Correspondencia asociativa por conjuntos
+## 13. Correspondencia Asociativa
 
-La caché se divide en conjuntos.
+Un bloque puede ir a **cualquier línea** de caché.
 
-Un bloque puede ir a cualquier línea dentro de su conjunto.
+### Ventajas
+
+- Flexible
+- Mejor tasa de aciertos
+
+### Desventajas
+
+- Hardware muy complejo
+- Búsqueda lenta
+
+---
+
+## 14. Correspondencia Asociativa por Conjuntos
+
+La caché se divide en **conjuntos**.
+
+Un bloque puede ir a cualquier línea **dentro de su conjunto**.
 
 Combina:
-- simplicidad de directa
-- flexibilidad de asociativa
+- Simplicidad de correspondencia directa
+- Flexibilidad de correspondencia asociativa
 
 ---
 
-# 14. Algoritmos de sustitución
+## 15. Algoritmos de Sustitución (Reemplazo)
 
-## LRU
-Reemplaza el menos usado recientemente.
+Cuando la caché está llena, ¿qué bloque sacar?
 
-## LFU
-Reemplaza el menos usado frecuentemente.
-
-## FIFO
-Sale el primero que entró.
-
-## Aleatorio
-Reemplazo al azar.
+| Algoritmo | Estrategia |
+|-----------|-----------|
+| **LRU** (Least Recently Used) | Reemplaza el menos usado recientemente |
+| **LFU** (Least Frequently Used) | Reemplaza el menos usado frecuentemente |
+| **FIFO** (First In First Out) | Sale el primero que entró |
+| **Aleatorio** | Reemplazo al azar |
 
 ---
 
-# 15. Políticas de escritura
+## 16. Políticas de Escritura
 
-## Write Through
-Escribe en caché y RAM al mismo tiempo.
+### Write Through (Escritura Directa)
 
-## Write Back
-Primero escribe en caché y después en RAM.
+Escribe en caché **y RAM simultáneamente**.
 
-## Write Allocate
+- Ventaja: Memoria siempre actualizada
+- Desventaja: Más lento
+
+### Write Back (Post-Escritura)
+
+Escribe primero en caché, **luego en RAM** cuando se reemplaza.
+
+- Ventaja: Más rápido
+- Desventaja: Riesgo de inconsistencia
+
+### Write Allocate
+
 Carga el bloque en caché antes de escribir.
 
-## Write No Allocate
-Escribe directo en RAM.
+### Write No Allocate
+
+Escribe directo en RAM sin traer a caché.
 
 ---
 
-# 16. Coherencia de caché
+## 17. Coherencia de Caché
 
-Si una caché modifica un dato,
-las demás deben actualizarse o invalidarse.
+Si una caché modifica un dato, las demás cachés deben:
+- Actualizarse con el nuevo valor, O
+- Invalidar su copia antigua
 
----
-
-# 17. Tamaño de línea
-
-Bloques grandes:
-- mejoran aciertos
-- aprovechan localidad
-
-Pero:
-- ocupan más espacio
-- reemplazan más datos
+Problema importante en multiprocesadores.
 
 ---
 
-# 18. Caché multinivel
+## 18. Tamaño de Línea
 
-Puede haber:
-- L1
-- L2
-- L3
+### Bloques Grandes
 
-## L1
-Más rápida y pequeña.
+- Mejoran aciertos (localidad espacial)
+- Aprovechan mejor el ancho de banda
+
+**Pero:**
+- Ocupan más espacio
+- Reemplazan más datos
 
 ---
 
-# 19. Caché unificada y partida
+## 19. Caché Multinivel
 
-## Unificada
-Guarda datos e instrucciones.
+Las computadoras modernas tienen múltiples niveles:
 
-## Partida
+| Nivel | Característica |
+|-------|-----------------|
+| **L1** | Más rápida y pequeña (en el chip) |
+| **L2** | Intermedia |
+| **L3** | Más grande (compartida entre núcleos) |
+
+---
+
+## 20. Caché Unificada vs Partida
+
+### Caché Unificada
+
+Guarda datos **e instrucciones** juntos.
+
+### Caché Partida
+
 Separada en:
-- datos
-- instrucciones
+- Caché de datos
+- Caché de instrucciones
 
 ---
 
-# 20. Conceptos importantes
+## 21. Conceptos Importantes de Rendimiento
 
-## Hit Rate (HR)
-Porcentaje de aciertos.
-
-## Miss Rate (MR)
-Porcentaje de fallas.
-
-## Tiempo efectivo de acceso
-Tiempo promedio real de acceso.
-
-
-# Resumen — Memoria Interna
-
-# 1. Memoria principal
-
-La memoria principal utiliza tecnología semiconductora.
-
-Su elemento básico es la celda de memoria.
+| Concepto | Definición |
+|----------|-----------|
+| **Hit Rate (HR)** | Porcentaje de aciertos |
+| **Miss Rate (MR)** | Porcentaje de fallas (1 - HR) |
+| **Tiempo efectivo** | Tiempo promedio real de acceso |
 
 ---
 
-# 2. Celda de memoria
+# PARTE 6: MEMORIA INTERNA
+
+## 1. Memoria Principal
+
+La memoria principal utiliza **tecnología semiconductora**.
+
+Su elemento básico es la **celda de memoria**.
+
+---
+
+## 2. Celda de Memoria
 
 Cada celda:
 
-- representa 0 o 1
-- puede escribirse
-- puede leerse
-
-Tiene dos estados estables para almacenar bits.
+- Representa **0 o 1** (dos estados estables)
+- Puede **escribirse** (almacenar un bit)
+- Puede **leerse** (obtener el bit almacenado)
 
 ---
 
-# 3. Funcionamiento de una celda
+## 3. Funcionamiento de una Celda
 
-## Selección
-Elige la celda que se va a usar.
+El ciclo de operación incluye:
 
-## Control
-Indica si será lectura o escritura.
-
-## Escritura
-Coloca un 0 o un 1 en la celda.
-
-## Lectura
-Obtiene el valor almacenado.
+| Fase | Descripción |
+|------|-------------|
+| **Selección** | Elige la celda a usar |
+| **Control** | Indica si será lectura o escritura |
+| **Escritura** | Coloca un 0 o 1 en la celda |
+| **Lectura** | Obtiene el valor almacenado |
 
 ---
 
-# 4. Memoria RAM
+## 4. Memoria RAM
 
-RAM significa:
+**RAM** significa: **Random Access Memory** (Acceso Aleatorio)
 
-Random Access Memory
-
-(acceso aleatorio)
-
-Se puede acceder directamente a cualquier posición de memoria.
+Se puede acceder directamente a **cualquier posición** de memoria sin pasar por las anteriores.
 
 ---
 
-# 5. Características de la RAM
+## 5. Características de la RAM
 
-- lectura y escritura
-- volátil
-- almacenamiento temporal
-- rápida
-- usa señales eléctricas
+| Característica | Valor |
+|---|---|
+| Lectura | Sí |
+| Escritura | Sí |
+| Volatilidad | Volátil (pierde datos sin energía) |
+| Tipo de almacenamiento | Temporal |
+| Velocidad | Rápida |
+| Tecnología | Señales eléctricas |
+
+### Contenido
 
 Guarda:
-- programas en ejecución
-- datos usados actualmente
+- Programas en ejecución
+- Datos usados actualmente
 
 ---
 
-# 6. Tipos de RAM
+## 6. Tipos de RAM
 
-## SRAM
-RAM estática.
+### SRAM (RAM Estática)
 
-Basada en flip-flops.
+- Basada en **flip-flops** (circuitos lógicos)
+- No necesita refrescos
+- Más rápida pero más cara
+- Usada en caché
 
-## DRAM
-RAM dinámica.
+### DRAM (RAM Dinámica)
 
-Basada en transistores y capacitores.
-
----
-
-# 7. DRAM
-
-La DRAM:
-
-- almacena cargas eléctricas
-- usa capacitores
-- necesita refrescos periódicos
-- se usa como memoria principal
-
-La carga eléctrica se pierde con el tiempo aunque siga encendida.
+- Basada en **transistores y capacitores**
+- Necesita refrescos periódicos
+- Más barata pero más lenta
+- Usada como memoria principal
 
 ---
 
-# 8. SRAM
+## 7. Características de DRAM
 
-La SRAM:
-
-- usa biestables
-- es más rápida
-- no necesita refrescos
-- mantiene datos mientras tenga energía
+- Almacena **cargas eléctricas**
+- Usa **capacitores**
+- Necesita **refrescos periódicos** (recargar capacitores)
+- La carga se pierde con el tiempo aunque esté encendida
 
 ---
 
-# 9. SRAM vs DRAM
+## 8. Características de SRAM
 
-## DRAM
-- más barata
-- más densa
-- más lenta
-- necesita refresco
-- usada como memoria principal
-
-## SRAM
-- más rápida
-- más cara
-- usada en caché
+- Usa **biestables** (flip-flops)
+- **Más rápida**
+- **No necesita refrescos**
+- Mantiene datos mientras tenga energía
 
 ---
 
-# 10. Memoria ROM
+## 9. Comparación DRAM vs SRAM
 
-ROM significa:
-
-Read Only Memory
-
-(memoria de solo lectura)
-
-Contiene datos permanentes y no volátiles.
+| Aspecto | DRAM | SRAM |
+|--------|------|------|
+| Costo | Más barata | Más cara |
+| Densidad | Más densa | Menos densa |
+| Velocidad | Más lenta | Más rápida |
+| Refresco | Necesario | No necesario |
+| Uso | Memoria principal | Caché |
 
 ---
 
-# 11. Funciones de la ROM
+## 10. Memoria ROM
+
+**ROM** significa: **Read Only Memory** (Memoria de Solo Lectura)
+
+Contiene datos permanentes y no volátiles. No pueden modificarse fácilmente.
+
+---
+
+## 11. Funciones de la ROM
 
 La ROM:
 
-- almacena configuraciones básicas
-- ayuda al arranque de la PC
-- activa periféricos
-- guarda programas permanentes
+- Almacena configuraciones básicas (BIOS)
+- Ayuda al arranque de la PC
+- Activa periféricos
+- Guarda programas permanentes
 
 ---
 
-# 12. PROM
+## 12. Tipos de ROM Reprogramable
 
-PROM:
-- programable una sola vez
-- no volátil
-- escritura eléctrica
+### PROM (Programmable ROM)
 
----
+- Programable una sola vez
+- No volátil
+- Escritura eléctrica
 
-# 13. EPROM
+### EPROM (Erasable PROM)
 
-EPROM:
-- puede borrarse con luz ultravioleta
-- puede reprogramarse
-- el borrado afecta todo el chip
+- Puede borrarse con **luz ultravioleta**
+- Puede reprogramarse
+- El borrado afecta **todo el chip**
 
----
+### EEPROM (Electrically EPROM)
 
-# 14. EEPROM
+- Borrado **eléctrico** (no UV)
+- Permite actualizar **bytes específicos**
+- Más flexible que EPROM
 
-EEPROM:
-- borrado eléctrico
-- permite actualizar bytes específicos
-- más flexible
+### Flash
 
----
-
-# 15. Memoria Flash
-
-La memoria Flash:
-
-- usa borrado eléctrico
-- es rápida
-- puede borrar bloques completos
+- Usa borrado eléctrico
+- **Muy rápida**
+- Puede borrar **bloques completos**
+- Muy usada en USB, SSD, etc.
 
 ---
 
-# 16. RAM vs ROM
+## 13. Comparación RAM vs ROM
 
-## RAM
-- lectura y escritura
-- volátil
-- temporal
-
-## ROM
-- solo lectura
-- no volátil
-- permanente
+| Aspecto | RAM | ROM |
+|--------|-----|-----|
+| Lectura | Sí | Sí |
+| Escritura | Sí | No |
+| Volatilidad | Volátil | No volátil |
+| Tipo | Temporal | Permanente |
+| Uso | Programas activos | Configuración BIOS |
 
 ---
 
-# 17. Errores en memoria
+## 14. Errores en Memoria
 
-## Fallo permanente
-Daño físico en la memoria.
+### Fallo Permanente
 
-Puede dejar bits “pegados” en 0 o 1.
+- Daño físico en la memoria
+- Bits "pegados" en 0 o 1
+- Requiere reemplazo
 
-## Error transitorio
-Error temporal sin daño físico.
+### Error Transitorio
 
-Puede deberse a problemas eléctricos.
+- Error temporal sin daño físico
+- Puede deberse a problemas eléctricos
+- Puede corregirse con refresco
 
 ---
 
-# 18. Corrección de errores
+## 15. Corrección de Errores
 
-Se agregan bits extra llamados códigos de error.
+Se agregan **bits extra** llamados códigos de error (ECC).
 
 Sirven para:
-- detectar errores
-- corregir algunos errores
+- **Detectar errores**
+- **Corregir algunos errores**
 
-Cuando se lee la memoria:
-- se recalcula el código
-- se compara con el guardado
+**Proceso:**
+1. Se recalcula el código al leer
+2. Se compara con el código almacenado
+3. Se detectan o corrigen diferencias
 
----
+### Resultados Posibles
 
-# 19. Resultados posibles al verificar errores
-
-## Sin errores
-Los datos se usan normalmente.
-
-## Error corregible
-El sistema corrige el dato.
-
-## Error no corregible
-El sistema informa el problema.
+| Resultado | Acción |
+|-----------|--------|
+| **Sin errores** | Los datos se usan normalmente |
+| **Error corregible** | El sistema corrige el dato automáticamente |
+| **Error no corregible** | El sistema reporta el problema |
 
 ---
 
-# 20. SDRAM
+## 16. SDRAM (Synchronous DRAM)
 
-SDRAM:
-- funciona sincronizada con el reloj
-- trabaja a la velocidad del bus
-- reduce tiempos de espera
-
----
-
-# 21. DDR SDRAM
-
-DDR:
-- envía datos dos veces por ciclo
-- más rápida
-- más económica
+- Funciona **sincronizada con el reloj**
+- Trabaja a la **velocidad del bus**
+- Reduce tiempos de espera
 
 ---
 
-# 22. RDRAM
+## 17. DDR SDRAM (Double Data Rate)
 
-RDRAM:
-- muy rápida
-- muy costosa
-- reemplazada por DDR
+- Envía datos **dos veces por ciclo**
+- Más rápida que SDRAM
+- Más económica
+
+Versiones: DDR, DDR2, DDR3, DDR4, DDR5
 
 ---
 
-# 23. CDRAM
+## 18. RDRAM (Rambus DRAM)
 
-CDRAM:
-- puede funcionar como caché
-- sirve como buffer de datos
+- Muy rápida
+- Muy costosa
+- Reemplazada por DDR
 
-  # Resumen — Memoria Externa
+---
 
-# 1. Definición
+## 19. CDRAM (Cached DRAM)
 
-La memoria externa o auxiliar incluye todos los dispositivos de almacenamiento que no forman parte de la memoria interna (RAM y ROM).
+- Puede funcionar como caché
+- Sirve como buffer de datos
+
+---
+
+# PARTE 7: MEMORIA EXTERNA
+
+## 1. Definición
+
+La memoria externa incluye todos los dispositivos de almacenamiento **fuera de la computadora**.
 
 Se usa para:
-- almacenamiento masivo
-- almacenamiento permanente
-- guardar datos e información
+- Almacenamiento masivo
+- Almacenamiento permanente
+- Guardar datos e información
 
-Es:
-- no volátil
-- de gran capacidad
-- más lenta que la memoria principal
+### Características
 
-No es fundamental para que la computadora funcione.
+- No volátil (mantiene datos sin energía)
+- Gran capacidad
+- Más lenta que memoria principal
+- No fundamental para funcionamiento
 
-Ejemplos:
-- discos duros
-- SSD
-- pendrives
-- CDs
-- DVDs
+### Ejemplos
 
----
-
-# 2. Tecnologías de almacenamiento
-
-Existen distintos tipos de tecnologías para almacenar información.
+- Discos duros (HDD)
+- Discos de estado sólido (SSD)
+- Pendrives
+- CDs y DVDs
+- Cintas magnéticas
 
 ---
 
-# 3. Almacenamiento magnético
+## 2. Tecnologías de Almacenamiento
 
-Utiliza propiedades magnéticas para guardar datos.
-
-Ejemplos:
-- disquete
-- disco duro
-- cinta magnética
-
-Características:
-- gran capacidad
-- almacenamiento tradicional
-- usa magnetismo para leer y escribir
+Existen distintos tipos según la tecnología física.
 
 ---
 
-# 4. Almacenamiento óptico
+## 3. Almacenamiento Magnético
 
-Usa rayos láser para leer y escribir información.
+Utiliza **propiedades magnéticas** para guardar datos.
 
-La información se almacena en surcos microscópicos sobre discos.
+### Ejemplos
 
-Ejemplos:
-- CD
-- DVD
+- Disquete
+- Disco duro (HDD)
+- Cinta magnética
 
-Características:
-- tecnología digital
-- lectura óptica mediante láser
+### Características
+
+- Gran capacidad
+- Almacenamiento tradicional
+- Usa magnetismo para leer y escribir
+- Más lento que semiconductores
 
 ---
 
-# 5. Almacenamiento magneto-óptico
+## 4. Almacenamiento Óptico
+
+Usa **rayos láser** para leer y escribir información.
+
+La información se almacena en **surcos microscópicos** sobre discos.
+
+### Ejemplos
+
+- CD (Compact Disc)
+- DVD (Digital Versatile Disc)
+- Blu-ray
+
+### Características
+
+- Tecnología digital
+- Lectura óptica mediante láser
+- Capacidad media
+
+---
+
+## 5. Almacenamiento Magneto-Óptico
 
 Combina:
-- magnetismo
-- tecnología óptica
+- Magnetismo
+- Tecnología óptica
 
 Permite:
-- escribir
-- reescribir datos
+- Escribir datos
+- Reescribir datos (borrar y grabar)
 
-Ejemplos:
+### Ejemplos
+
 - Disco Zip
 - Floptical
 - Minidisc
 
 ---
 
-# 6. Almacenamiento de estado sólido
+## 6. Almacenamiento de Estado Sólido (SSD)
 
-SSD significa:
+**SSD** significa: **Solid State Drive** (Unidad de Estado Sólido)
 
-Solid State Drive
+Usa **memoria no volátil** (Flash) para almacenar datos sin partes móviles.
 
-Usa memoria no volátil para almacenar datos.
+### Características
 
-Características:
-- más rápido
-- silencioso
-- resistente a golpes
-- menor tiempo de acceso
-- menor latencia
+- Más rápido que discos mecánicos
+- Silencioso (sin partes móviles)
+- Resistente a golpes
+- Menor tiempo de acceso
+- Menor latencia
 
-Ejemplos:
-- memorias USB
-- tarjetas de memoria
-- discos SSD
+### Ejemplos
+
+- Memorias USB
+- Tarjetas de memoria
+- Discos SSD
 
 ---
 
-# 7. RAID
+## 7. RAID (Redundant Array of Independent Disks)
 
-RAID es un sistema que usa varios discos trabajando juntos como una sola unidad lógica.
+Sistema que usa **varios discos trabajando juntos** como una sola unidad lógica.
 
 Puede usar:
-- discos duros
-- SSD
+- Discos duros (HDD)
+- Discos sólidos (SSD)
 
-Objetivos:
-- mejorar rendimiento
-- aumentar capacidad
-- tolerar fallos
-- mejorar integridad de datos
+### Objetivos
 
----
+- Mejorar rendimiento
+- Aumentar capacidad
+- Tolerar fallos (redundancia)
+- Mejorar integridad de datos
 
-# 8. Beneficios de RAID
-
-- mayor integridad
-- tolerancia a fallos
-- mejor velocidad de transferencia
-- mayor capacidad
-
-Se usa principalmente en servidores.
+Se usa principalmente en **servidores**.
 
 ---
 
-# 9. Tipos de RAID
+## 8. Beneficios de RAID
 
-## RAID 0
-Conjunto dividido.
-
-Mejora velocidad.
-
-No tiene tolerancia a fallos.
+- Mayor integridad de datos
+- Tolerancia a fallos
+- Mejor velocidad de transferencia
+- Mayor capacidad total
 
 ---
 
-## RAID 1
-Conjunto en espejo.
+## 9. Tipos de RAID
 
-Duplica los datos en varios discos.
+### RAID 0 - Striping (Conjunto Dividido)
 
-Mayor seguridad.
+- Datos se dividen entre discos
+- **Mejora velocidad**
+- **Sin tolerancia a fallos** (si falla un disco, se pierden datos)
 
----
+### RAID 1 - Mirroring (Conjunto en Espejo)
 
-## RAID 5
-Conjunto dividido con paridad distribuida.
+- Duplica los datos en varios discos
+- **Mayor seguridad**
+- Usa doble capacidad para redundancia
 
-Combina:
-- rendimiento
-- tolerancia a fallos
+### RAID 5 - Striping with Parity
 
----
-
-# 10. Actualidad
-
-## HDD
-Siguen siendo importantes por su capacidad y costo.
-
----
-
-## SSD
-Cada vez reemplazan más a los HDD porque:
-- son más rápidos
-- tienen menor latencia
-- son más resistentes
+- Conjunto dividido con paridad distribuida
+- Combina:
+  - Rendimiento (striping)
+  - Tolerancia a fallos (paridad)
+- Puede tolerar fallo de 1 disco
 
 ---
 
-## RAID
-Muy utilizado en servidores y sistemas grandes.
+## 10. Estado Actual de Tecnologías
+
+### HDD (Discos Duros)
+
+Siguen siendo importantes por su **capacidad y costo**.
+
+### SSD (Discos Sólidos)
+
+Cada vez reemplazan más a HDD porque:
+- Son más rápidos
+- Tienen menor latencia
+- Son más resistentes
+
+### RAID
+
+Muy utilizado en **servidores y sistemas grandes** para confiabilidad.
+
+### Medios Ópticos
+
+**Perdieron popularidad** frente al almacenamiento sólido (USB, SSD).
+
+### Disquetes
+
+**Prácticamente desaparecieron** con la llegada de las memorias USB.
 
 ---
 
-## Medios ópticos
-Perdieron popularidad frente al almacenamiento sólido.
-
----
-
-## Disquetes
-Prácticamente desaparecieron con la llegada de las memorias USB.
-
-# Unidad 6 - Segundo Parcial
-## Direccionamiento, Formato de Instrucciones y Ensamblador
-
-> Apuntes para segundo parcial - Arquitectura II
-
-## Índice
-- [1. Modos de Direccionamiento](#1-modos-de-direccionamiento)
-- [2. Formato de Instrucción](#2-formato-de-instrucción)
-- [3. Lenguaje Ensamblador](#3-lenguaje-ensamblador)
-
----
+# PARTE 6: DIRECCIONAMIENTO, FORMATO DE INSTRUCCIONES Y ENSAMBLADOR
 
 ## 1. Modos de Direccionamiento
 
-### Clasificación general
-- **Con datos:** inmediato, directo, indirecto
-- **Sin datos:** implícito
+Los modos de direccionamiento especifican **cómo obtener el operando** dentro de una instrucción.
 
-### Principales modos
-1. **INMEDIATO:** el operando está en la instrucción. Ej: `LDA #5`
-2. **DIRECTO / ABSOLUTO:** dirección completa en instrucción. Ej: `LDA $2000`
-3. **INDIRECTO:** la instrucción tiene la dirección de la dirección. Ej: `LDA ($2000)`
-4. **REGISTRO:** operando en registro. Ej: `ADD A,B`
-5. **REGISTRO INDIRECTO:** registro contiene dirección. Ej: `LDA (X)`
-6. **INDEXADO:** dirección = base + índice. Ej: `LDA $1000,X`
-7. **RELATIVO:** dirección = PC + desplazamiento. Para saltos.
-8. **IMPLÍCITO:** no lleva operando. Ej: `NOP`, `RTS`
+### Clasificación General
 
-### Resumen del PDF
-Modos de Direccionamiento 
-Clasificación General
-Instrucción
-con datos
-sin datos o dato implícito
-dato en memoria
-dato en un registro
-dirección del dato
-dirección de la dirección del dato
-en la instrucción
-en un registro
-dirección efectiva
-dirección de referencia
-+ desplazamiento
-MODO REGISTRO
-MODO IMPLICITO o INHERENTE
-MODO INDIRECTO
-MODO DIRECTO
-MODO REGISTRO
-INDIRECTO
-MODO RELATIVO
-MODO ABSOLUTO
-si hay datos
-¿ dónde están ?
-¿ cómo se indica dónde está el dato  ?
-¿ cómo se da la dirección del dato ?
-(idem M6800)
-(modo extendido del M6800)
-Formato de Instrución
-Código de Operación 
-Datos
-Los datos pueden ser operandos o direcciones
-INMEDIATO
-INDEXADO 
-R. BASE y DESP.
-RELATIVO ppd.
-PAGINADO
+- **Con datos:** El operando está en la instrucción o en un registro
+  - Inmediato
+  - Directo
+  - Indirecto
+- **Sin datos:** Dato implícito o en operación
 
-Modos de Direccionamiento Relativo 
-Clasificación General
-Modos Relativos
-INMEDIATO
-INDEXADO
-REGIST
+### Principales Modos
+
+| Modo | Descripción | Ejemplo |
+|------|-------------|---------|
+| **Inmediato** | El operando está en la instrucción | `LDA #5` |
+| **Directo/Absoluto** | Dirección completa en instrucción | `LDA $2000` |
+| **Indirecto** | La instrucción tiene la dirección de la dirección | `LDA ($2000)` |
+| **Registro** | Operando en un registro | `ADD A,B` |
+| **Registro Indirecto** | Registro contiene la dirección | `LDA (X)` |
+| **Indexado** | Dirección = base + índice | `LDA $1000,X` |
+| **Relativo** | Dirección = PC + desplazamiento (para saltos) | `BRA ETIQUETA` |
+| **Implícito** | No lleva operando explícito | `NOP`, `RTS` |
 
 ---
 
 ## 2. Formato de Instrucción
 
-Del PDF Direccionamiento:
-Direccionamiento
-Direccionamiento en el Pentium
-Formatos de instrucciones
-Formatos de instrucciones en el Pentium
-Unidad 6
-Instrucciones   
-Direccionamiento y formatos
+Las instrucciones tienen estructura:
 
-Direccionamiento
-• Los modos de direccionamiento son las diferentes maneras de especificar un operando 
-dentro de una instrucción en lenguaje ensamblador.
-• El modo de direccionamiento especifica la forma de calcular la dirección de memoria 
-efectiva de un operando (EA) mediante el uso de la información contenida en registros y/o 
-constantes, contenida dentro de una instrucción de la máquina o en otra parte.
-• No existe una forma generalmente aceptada de nombrar a los distintos modos de 
-direccionamiento. En particular, los distintos autores y fabricantes de equipos pueden dar 
-nombres diferentes para el modo de hacer frente al mismo, o los mismos nombres, a los 
-diferentes modos de direccionamiento.
-• Un modo de direccionamiento que en una determinada arquitectura se trata como un 
-modo de direccionamiento, puede representar la funcionalidad que en otra arquitectura 
-está cubierto por dos o más modos de direccionamiento.
+```
+┌─────────────────────┬──────────────────────┐
+│ Código de Operación │ Datos/Operandos      │
+│ (Codop)             │ (0, 1 o 2 bytes)     │
+└─────────────────────┴──────────────────────┘
+```
 
-2
+### Ejemplo M6800
 
-Direccionamiento
-• Todas las arquitecturas de computadores ofrecen más de un modo. La cuestión que surge 
-es cómo determina la unidad de control qué modo de direccionamiento se está 
-empleando en cada instrucción.
-• A menudo, codops diferentes emplearán modos de direccionamiento distintos.
-• Uno o más bits del formato de instrucción pueden utilizarse 
-
-Estructura típica:
-- **Código de Operación (CO):** 1-2 bytes
-- **Modo:** define cómo obtener operando
-- **Operando/Dirección:** 0, 1 o 2 bytes
-
-Ejemplo M6800:
-- Inherente: 1 byte
-- Inmediato: 2 bytes
-- Extendido: 3 bytes
+| Modo | Tamaño |
+|------|--------|
+| Inherente | 1 byte |
+| Inmediato | 2 bytes |
+| Extendido | 3 bytes |
 
 ---
 
 ## 3. Lenguaje Ensamblador
 
-Del PDF Ensamblador:
-Unidad 6
-Lenguaje ensamblador
-Introducción
-Estructura programa en Assembler
-Simulador
-Ejemplos
+El lenguaje ensamblador es un **lenguaje de bajo nivel** que expresa instrucciones en forma cercana al procesador.
 
-Introducción
-• El lenguaje ensamblador, como cualquier lenguaje de programación, 
-es un conjunto de palabras que le indican la computadora lo que 
-tiene que hacer. 
-• La diferencia fundamental es que cada instrucción escrita en lenguaje 
-ensamblador tiene una correspondencia exacta con una operación de 
-la CPU. 
-• Son operaciones muy sencillas tales como: “Cargar el valor 12 en el registro 
-interno B” o “Transferir el contenido del registro interno A al registro interno 
-B”.  
-• Las palabras del lenguaje ensamblador son nemotécnicos (sirven para 
-ayudar a memorizar) que representan el código máquina, lenguaje 
-que entiende la CPU. 
-2
+### Características
 
-Lenguaje ensamblador (Assembler)
-
-Lenguaje ensamblador (Assembler)
-• El único lenguaje que entienden los procesadores 
-es el código máquina, formado por el sistema 
-binario.
-• El lenguaje ensamblador, lenguaje de 
-programación de bajo nivel, expresa las 
-instrucciones de una forma más natural al 
-hombre a la vez que muy cercana al procesador, 
-ya que cada una de esas instrucciones se 
-corresponde con otra en código máquina.
-• Trabaja con nemónicos, que son grupos de 
-caracteres alfanuméricos que simbolizan las 
-órdenes o tareas a realizar.
-• La traducción de los nemónicos a código máquina 
-entendible por el microcontrolador la lleva a cabo 
-un programa ensamblador.
-• El programa escrito en lenguaje ens
+- Cada instrucción corresponde a **una operación de CPU**
+- Usa **nemotécnicos** (palabras clave) que representan código máquina
+- Más legible que código binario pero muy cercano al hardware
 
 ### Elementos
-- **Etiquetas:** identifican direcciones
-- **Mnemonicos:** ADD, LDA, STA
-- **Operandos:** #inmediato, $directo
-- **Directivas:** ORG, END, EQU
 
-### Proceso
-1. Ensamblador traduce mnemonicos a código máquina
-2. Dos pasadas: tabla de símbolos y generación
+| Elemento | Función | Ejemplo |
+|----------|---------|---------|
+| **Etiquetas** | Identifican direcciones en el programa | `INICIO:` |
+| **Mnemónicos** | Representan instrucciones máquina | `ADD`, `LDA`, `STA` |
+| **Operandos** | Especifican datos o direcciones | `#5` (inmediato), `$2000` (directo) |
+| **Directivas** | Instrucciones para el ensamblador | `ORG`, `END`, `EQU` |
 
-### Ejemplo
+### Proceso de Ensamblaje
+
+1. **Ensamblador** traduce nemotécnicos a código máquina
+2. Realiza **dos pasadas:**
+   - Primera: construye tabla de símbolos
+   - Segunda: genera código máquina
+
+### Ejemplo de Programa
+
+```asm
+        ORG $1000          ; Origen en dirección 0x1000
+
+INICIO  LDA #10            ; Carga 10 en acumulador
+        STA $2000          ; Almacena en memoria 0x2000
+        JMP INICIO         ; Salta a INICIO (bucle infinito)
+
+        END                ; Fin del programa
 ```
-ORG $1000
-INICIO LDA #10
-       STA $2000
-       JMP INICIO
-END
+
+---
+
+# PARTE 7: PROCESADORES MODERNOS
+
+## 1. Organización del Procesador
+
+### Requisitos Fundamentales
+
+Para ejecutar programas, el procesador debe:
+
+1. **Captar instrucción** → Leer instrucción de memoria
+2. **Interpretar instrucción** → Decodificar para saber qué hacer
+3. **Captar datos** → Leer operandos de memoria o registros
+4. **Procesar datos** → Operaciones aritméticas o lógicas
+5. **Escribir datos** → Almacenar resultados
+
+### Estructura Interna del Procesador
+
+```
+┌──────────────────────────────────────┐
+│     UNIDAD DE CONTROL                │
+├──────────────────────────────────────┤
+│                                      │
+│  ┌─────────────────────────────────┐ │
+│  │   UNIDAD ARITMÉTICO LÓGICA      │ │
+│  │  ┌──────────────┐               │ │
+│  │  │ Lógica A/L   │               │ │
+│  │  │ Desplazador  │               │ │
+│  │  │ Complementador│              │ │
+│  │  └──────────────┘               │ │
+│  │                                 │ │
+│  │  Indicadores de estado          │ │
+│  └─────────────────────────────────┘ │
+│                                      │
+│  ┌─────────────────────────────────┐ │
+│  │    REGISTROS                    │ │
+│  │  (PC, IR, AC, etc.)             │ │
+│  └─────────────────────────────────┘ │
+│                                      │
+│      BUS INTERNO DEL PROCESADOR      │
+│                                      │
+└──────────────────────────────────────┘
 ```
 
-# Unidad 7 - Segundo Parcial
-## Organización del Procesador
-
-## Contenido
-Unidad 7
-Estructura y funcionamiento 
-del procesador
-Organización del procesador
-Organización de los registros
-Ciclos de instrucción
-Segmentación de instrucciones
-Tratamiento de saltos
-
-1 ORGANIZACIÓN DEL PROCESADOR
-Ciclo de instrucción básico.
-Para comprender la organización del procesador, consideremos los requisitos 
-que ha de cumplir:
-• Captar instrucción: el procesador lee una instrucción de la memoria 
-(registro, caché o memoria principal).
-• Interpretar instrucción: la instrucción se decodifica para determinar qué 
-acción es necesaria.
-• Captar datos: la ejecución de una instrucción puede exigir leer datos de la 
-memoria o de un módulo de E/S.
-• Procesar datos: la ejecución de una instrucción puede exigir llevar a cabo 
-alguna operación aritmética o lógica con los datos.
-• Escribir datos: los resultados de una ejecución pueden exigir escribir datos 
-en la memoria o en un módulo de E/S.
-
-
-2 ORGANIZACIÓN DEL PROCESADOR
-Logica Aritmetica 
-y booleana
-Indicadores de 
-estado
-BUS INTERNO DEL PROCESADOR
-UNIDAD DE 
-CONTROL
-Caminos de control
-Unidad Aritmetico Logica
-Desplazador
-Complementador
-REGISTRO
-Para hacer estas cosas, es obvio que el procesador necesita almacenar 
-algunos datos temporalmente.
-Debe recordar la posición de la última instrucción de forma que pueda 
-saber de dónde tomar la siguiente. Necesita almacenar instrucciones y 
-datos temporalmente mientras una instrucción está ejecutándose. En 
-otras palabras, el procesador necesita una pequeña memoria interna.
-La Figura de la izquierda presenta una visión un poco más detallada 
-del procesador. Se indican los caminos de transferencia de datos y de 
-la lógica de control, que incluyen un elemento con el rótulo bus 
-interno del procesador. Este elemento es necesario para transferir 
-datos entre los diversos registros y la ALU, ya que la ALU en realidad 
-solo opera con datos de la memoria interna del procesador. La figura 
-muestra también los elementos básicos típicos de la ALU. Observe la 
-similitud entre la estructura interna del computador en su totalidad 
-y la estructura interna del procesador. En ambos casos hay una 
-pequeña colección de elementos principales (computador: 
-procesador, E/S, memoria; procesador, unidad de control, ALU, 
-registros) conectados por caminos de datos.
-
-
-
-3 ORGANIZACIÓN DE LOS REGISTROS
-Un computador emplea una jerarquía de memoria. En los niveles más altos de la jerarquía, la memoria es más rápida, más pequeña y más cara (por bit). 
-Dentro del procesador hay un conjunto de registros que funciona como un nivel de memoria por encima de la memoria principal y de la caché en la 
-jerarquía. Los registros del procesador son de dos tipos:
-• Registros visibles por el usuario: permiten al programador de lenguaje máquina o de ensamblador minimizar las referencias a memoria principal por 
-medio de la optimización del uso de registros.
-• Registros de control y de estado: son utilizados por la unidad de control para controlar el funcionamiento del procesador y por programas privilegiados 
-del sistema operativo para controlar la ejecución de programas.
-No hay una separación bien definida de registros dentro de estas dos categorías. Por ejemplo, enalgunas máquinas el contador de programa es visible por 
-el usuario (por ejemplo, en el Pentium), pero en muchas no lo es. Para el objetivo de la siguiente discusión, no obstante, usaremos estas categorías.
-REGISTROS VISIBLES POR EL USUARIO
-Un registro visible por el usuario es aquél que puede ser referenciado por medio del lenguaje máquina
-que ejecuta el procesador. Podemos clasificarlos en las siguientes categorías:
-• Uso general
-• Datos
-• Direcciones
-• Códigos de condición
-
-
-4 ORGANIZACIÓN DE LOS REGISTROS
-Los registros de uso general pueden ser asignados por el programador a diversas funciones. A veces, su uso dentro del repertorio de instrucciones es ortogonal.
-
-
-# Unidad 8 - Segundo Parcial
-## Computadores RISC y Coherencia de Caché
-
-### 1. Coherencia de Caché
-La esencia del problema es que pueden existir varias copias del mismo dato en cachés diferentes. Si un procesador actualiza su copia, se produce inconsistencia.
-
-**Políticas de escritura:**
-1. Write-back (post-escritura): escribe solo en caché, memoria se actualiza al reemplazar línea.
-2. Write-through (escritura directa): escribe en caché y memoria simultáneamente.
-
-### 2. Soluciones de coherencia
-- Snooping: cada caché observa el bus
-- Directorio: tabla centralizada de estados
-- Estados MESI: Modified, Exclusive, Shared, Invalid
-
-### 3. Computadores RISC
-Características principales:
-1. Conjunto reducido de instrucciones
-2. Formato fijo (32 bits)
-3. Arquitectura load/store
-4. Pipeline profundo
-5. Muchos registros
-
-### 4. RISC vs CISC
-- RISC: 1 ciclo por instrucción, compilador optimiza
-- CISC: instrucciones complejas, microcódigo
-
-# Unidad 8
-## Computadores RISC
-
-Coherencia de Cache
-
-Coherencia de Cache
-
-La esencia del del problema de la coherencia de cache se basa 
-en que pueden existir varias copias del mismo dato 
-simultáneamente en cachés diferentes, y si los procesadores 
-actualizan sus copias, puede producirse una visión 
-inconsistente de la memoria.
-De clases anteriores se definieron dos políticas de escritura 
-usuales: 
-• Post-escritura (Write back): las operaciones de escritura se 
-hacen usualmente solo en la caché. La memoria principal solo 
-se actualiza cuando la línea de caché correspondiente se 
-reemplaza.
-• Escritura directa (Write through): todas las operaciones de 
-escritura se realizan en memoria principal a la vez que en la 
-caché, asegurándose así que el contenido de la memoria 
-principal siempre es válido. 
-
-Coherencia de Cache
-
-De clases anteriores se definieron dos políticas de escritura usuales: 
-• Post-escritura (Write back): las operaciones de escritura se hacen usualmente solo en la caché. La memoria principal solo 
-se actualiza cuando la línea de caché correspondiente se reemplaza.
-• Escritura directa (Write through): todas las operaciones de escritura se realizan en memoria principal a la vez que en la 
-caché, asegurándose así que el contenido de la memoria principal siempre es válido. 
-
-Resulta evidente que una política de postescritura puede ocasionar inconsistencia. Si dos cachés contienen la 
-misma línea, y la línea se actualiza en una caché, la otra caché tendrá un valor no válido. Las lecturas siguientes a 
-dicha línea producirán resultados no válidos. 
-Incluso con la política de escritura directa puede existir inconsistencia, a no ser que las otras cachés comprueben 
-los accesos a la memoria principal o reciban algún tipo de notificación directa de la escritura realizada.
-
-Protocolo de Coherencia de Cache
-
-El objetivo de un protocolo de coherencia de caché es situar las variables locales utilizadas recientemente en la caché 
-apropiada y mantenerlas allí para las distintas escrituras y lecturas, al mismo tiempo que se mantiene la consistencia de las
-variables compartidas que pudieran encontrarse en varias cachés al mismo tiempo. Las aproximaciones de coherencia de 
-caché generalmente se han dividido en aproximaciones software y hardware. Algunas implementaciones adoptan una 
-estrategia que implica tanto elementos software como hardware. No obstante, la distinción entre aproximaciones 680 
-Organización y arquitectura de computadores software y hardware es todavía instructiva y es comúnmente utilizada en la 
-presentación de las estrategias de coherencia de caché.
-
-Soluciones por 
-Software
-Soluciones por 
-Hardware
-Coherencia de 
-Cache
-
-Coherencia de Cache: Soluciones por Software
-
-Los esquemas software de coherencia de caché intentan evitar la necesidad de circuitería y lógica hardware adicional 
-dejando que el compilador y el sistema operativo se encarguen del problema. Las propuestas software son atractivas 
-porque transfieren el costo de la detección de posibles problemas desde el hardware al software. Por otra parte, en el 
-momento de la compilación, el software generalmente debe tomar ciertas decisiones conservadoras que pueden ocasionar 
-una utilización ineficiente de la caché.
-
-Soluciones por 
-Software
-Los mecanismos de coherencia basados en el compilador 
-realizan un análisis del código para determinar qué datos 
-pueden dar problemas al pasar a caché, y los marcan en 
-consecuencia. Después, el sistema operativo o el hardware 
-impiden que se pasen a caché los datos marcados como no 
-almacenables en caché (non-cachéable).
-
-Coherencia de Cache: Soluciones por Software
-
-Soluciones por 
-Software
-El enfoque más sencillo consiste en impedir que cualquier dato compartido pase a caché. Esto es demasiado 
-conservador puesto que una estructura de datos compartida puede utilizarse de manera exclusiva durante 
-ciertos periodos de tiempo y solo para lectura en otros periodos. Es solo durante aquellos periodos en los que al 
-menos un procesador pueda actualizar una variable y otro procesador pueda acceder a la variable cuando hay 
-que considerar la coherencia de caché.
-Hay aproximaciones más eficientes que analizan el 
-código y determinan periodos seguros para las variables 
-compartidas. El compilador inserta entonces 
-instrucciones en el código generado para reforzar la 
-coherencia de caché en los periodos críticos.
-
-Coherencia de Cache: Soluciones por Hardware
-
-Soluciones por 
-Hardware
-Las soluciones basadas en el hardware generalmente se denominan protocolos de coherencia de caché. Estas 
-soluciones permiten reconocer dinámicamente en el momento de la ejecución las situaciones de inconsistencias 
-potenciales. Puesto que el problema se considera solo en el momento en que aparece, existe un uso más 
-efectivo de las cachés, mejorándose las prestaciones en relación a las aproximaciones software. Además, estas 
-aproximaciones son transparentes para el programador y el compilador, reduciendo la complejidad en el 
-desarrollo del software.
-Los esquemas hardware difieren en una serie de 
-aspectos, que incluyen el lugar donde se encuentra la 
-información de estado de las líneas de datos, cómo se 
-organiza esa información, dónde se impone la 
-coherencia y los mecanismos para imponerla. En 
-general, los esquemas hardware se pueden dividir en 
-dos categorías: protocolos de directorio y protocolos de 
-sondeo
-Soluciones por 
-Hardware
-Protocolos de Sondeo
-Protocolos de 
-Directorio
-
-Coherencia de Cache: Protocolo de Directorio
-
-Soluciones por 
-Hardware
-•
-Los protocolos de directorio recogen y mantienen la información acerca de dónde residen las copias de las 
-líneas. 
-•
-Usualmente, hay un controlador centralizado que es parte del controlador de memoria principal, y un 
-directorio que se almacena en la memoria principal. 
-•
-El directorio contiene información de estado global en relación con los contenidos de las diferentes cachés 
-locales. 
-Soluciones por 
-Hardware
-Protocolos de Sondeo
-Protocolos de 
-Directorio
-Cuando el controlador individual de una caché hace una 
-petición, el controlador centralizado comprueba y emite las 
-órdenes precisas para la transferencia entre memoria y caché o 
-entre distintas cachés. Además, es responsable de mantener 
-actualizada la información de estado; de esta  forma, cualquier 
-acción local que pueda afectar al estado global de una línea 
-debe comunicarse al controlador central.
-Los esquemas de directorio presentan las desventajas propias de tener un cuello de botella central y del coste de comunicación entre los controladores de las 
-distintas cachés y el controlador central. No obstante, son efectivos en sistemas de gran escala que poseen múltiples buses o algún esquema complejo de 
-interconexión.
-
-Coherencia de Cache: Protocolo de Sondeo
-
-Soluciones por 
-Hardware
-Los protocolos de sondeo distribuyen la responsabilidad de mantener la coherencia de caché entre todos los 
-controladores de caché del multiprocesador. Una caché debe reconocer cuando una línea de las que contiene 
-está compartida con otras cachés. Cuando se realiza una actualización en una línea de caché compartida, debe 
-anunciarse a todas las otras cachés mediante un mecanismo de difusión (broadcast). Cada controlador de caché 
-es capaz de sondear o «espiar» («snoop») la red para observar las notificaciones que se difunden, y reaccionar 
-adecuadamente.
-Soluciones por 
-Hardware
-Protocolos de Sondeo
-Protocolos de 
-Directorio
-•
-Los protocolos de sondeo se adaptan bien a los 
-multiprocesadores basados en un bus, puesto que el bus 
-compartido proporciona una forma sencilla para la difusión 
-y el sondeo. 
-•
-No obstante, puesto que uno de los objetivos de utilizar 
-cachés locales es evitar los accesos al bus, hay que cuidar 
-que el incremento en el tráfico del bus que requiere la 
-difusión y el sondeo no anule los beneficios de las cachés 
-locales.
-
-Coherencia de Cache: Protocolo de Sondeo
-
-Soluciones por 
-Hardware
-Se han explorado dos enfoques básicos del protocolo de sondeo: invalidar-si-escritura (writeinvalidate) y 
-actualizar-si-escritura, o difundir-escritura (write-update o write-broadcast). 
-Con un protocolo de invalidar-si-escritura, puede haber múltiples procesadores que leen pero un solo 
-procesador que escribe en un momento dado. Inicialmente, una línea puede compartirse por varias cachés con 
-el propósito de lectura. Cuando se quiere hacer una escritura en la línea de una caché, primero envía una 
-notificación que invalida la línea en las otras cachés, haciendo que dicha línea sea exclusiva para la caché donde 
-se va a escribir. Una vez que la línea es exclusiva, el procesador puede realizar escrituras locales en la misma 
-hasta que otro procesador solicita la misma línea.
-Protocolo de Sondeo
-Wtrite Update
-Write Invalidate
-Con un protocolo de actualizar-si-escritura, puede haber varios 
-procesadores que escriben igual que varios procesadores que 
-leen. Cuando un procesador desea escribir en una línea 
-compartida, la palabra a actualizar se distribuye a los demás, y 
-las cachés que contienen esa línea lo pueden actualizar.
-
-Coherencia de Cache: Protocolo MESI
-
-Para proporcionar coherencia de caché en un SMP, la caché 
-de datos usualmente implementa un protocolo conocido 
-como MESI. Con el protocolo MESI, la caché de datos incluye 
-dos bits de estado en la marca, puesto que cada línea puede 
-estar en uno de estos cuatro estados:
-• Modificado (Modified): la línea de caché ha sido 
-modificada (es distinta a su valor en memoria principal) y 
-está disponible solo en esta caché. 
-• Exclusivo (Exclusive): la línea de caché tiene el mismo 
-contenido que en memoria principal y no está presente en 
-ninguna otra caché. 
-• Compartido (Shared): la línea de caché tiene el mismo 
-contenido que en memoria principal y puede estar presente 
-en otra caché. 
-• No-Válido (Invalid): la línea de caché no contiene datos 
-válidos. 
-
-Coherencia de Cache: Protocolo MESI
-
-Fallo de lectura. Cuando se produce un fallo de lectura en la caché local, el procesador inicial una 
-lectura en memoria para acceder a la línea de memoria principal que contiene la dirección que no está 
-en caché. El procesador inserta una señal en el bus que avisa a todos los otros procesadores/cachés 
-para que sondeen la transacción. 
-• Si una de las cachés tiene una copia limpia (clean) de la línea (es decir, una copia no modificada desde que se leyó de 
-memoria) en el estado exclusivo, devuelve una señal indicando que comparte la línea. El procesador que envía esta señal 
-pasa su copia al estado compartido y el procesador inicial lee la línea y pasa el estado de esta en su caché de no-válido a 
-compartido.
-• Si una o más cachés tienen una copia limpia de la línea en estado compartido, cada una de ellas indica que comparte la 
-línea. El procesador inicial lee la línea y pasa su estado en caché de no válido a compartido. 
-• Si una de las cachés tiene una copia modificada de la línea, entonces esa caché bloquea la lectura de memoria y 
-proporciona la línea a la caché que la solicita a través del bus compartido. La caché que proporciona la línea pasa esta del 
-estado modificado al estado compartido. 
-• Si ninguna otra caché tiene una copia de la línea (limpia o en estado modificado), no se envía ninguna señal. El 
-procesador lee la línea y cambia el estado de la línea en su caché de no válido a exclusivo.
-
-Coherencia de Cache: Protocolo MESI
-
-Acierto de lectura. Cuando se produce un acierto en una lectura dentro de una línea presente en la 
-caché local, el procesador simplemente lee el dato solicitado. No hay ningún cambio de estado: se 
-mantiene como modificado, compartido o exclusivo.
-Fallo de escritura. Cuando se produce un fallo en una 
-escritura en la caché local, el procesador comienza una 
-lectura de memoria para acceder a la línea de memoria 
-principal que contiene la dirección que no está en 
-caché. Para ello, el procesador envía una señal a través 
-del bus que indica lectura-para-modificación (RWITM, 
-Read-With-Intent-To-Modify). Cuando se carga la línea, 
-se marca inmediatamente como modificada. Con 
-respecto a las otras cachés, hay dos escenarios posibles 
-previos a la carga del bloque de datos.
-
-Coherencia de Cache: Protocolo MESI
-
-Acierto de escritura. Cuando se produce un acierto de escritura en una línea de caché local, el efecto 
-depende del estado de la línea:
-• Compartido: antes de realizar la actualización, el procesador 
-debe conseguir el acceso exclusivo a la línea. El procesador 
-señala esta intención a través del bus. Todo procesador que 
-tenga una copia de la línea en su caché la cambia del estado 
-compartido al no válido. Después el procesador inicial actualiza 
-la línea y cambia su copia de la línea del estado compartido al 
-estado modificado.
-• Exclusivo: puesto que el procesador tiene el control exclusivo 
-de esta línea, simplemente la actualiza y cambia el estado de la 
-línea de exclusivo a modificado.
-• Modificado: puesto que el procesador tiene el control 
-exclusivo de la línea y la tiene marcada en el estado 
-modificado, solo tiene que actualizarla.
-
-PROCESADORES RISC
-
-CARACTERISTICAS DE UN CISC
-
-En los años 50, todos los ordenadores se diseñaban de forma completamente aislada unos de otros. Esto hacía que sus 
-instrucciones fuesen independientes, haciendo que un programa escrito para un cierto ordenador no se pudiese ejecutar en 
-otro. A finales de la década, IBM reunió a un grupo de sus investigadores para estudiar la forma con la que un programa 
-pudiese trabajar en múltiples ordenadores ampliando la compatibilidad del software.
-La arquitectura CISC ( Complex Instruction Set Compute) es uno de los modelos de arquitectura de ordenadores. Los 
-microprocesadores CISC tienen un conjunto de instrucciones que se caracteriza por ser muy amplio y por poder permitir 
-operaciones complejas entre operandos situados en la memoria o en los registros internos, en contraposición a la 
-arquitectura RISC.
-Este tipo de arquitectura dificulta el paralelismo entre instrucciones, por lo que, en la actualidad, la mayoría de los sistemas
-CISC de alto rendimiento implementan un sistema que convierte dichas instrucciones complejas en varias instrucciones 
-simples del tipo RISC, llamadas generalmente microinstrucciones.
-Los CISC pertenecen a la primera corriente de construcción de procesadores, antes del desarrollo de los RISC. Varios ejemplos
-son: Motorola 68000, Zilog Z80 y toda la familia Intel x86, AMD x86-64 usada en la mayoría de los PCs actuales.
-
-CARACTERISTICAS DE UN RISC
-
-Tras el lanzamiento de CISC, los científicos de IBM empezaron a comprobar que los diseñadores de software creaban sus 
-propias instrucciones más simples y precisas. Entonces, ya en la década de los 70, empezaron a diseñar una alternativa que 
-posteriormente se introdujo en el mercado bajo el acrónimo RISC.
-La arquitectura RISC (Reduced Instruction Set Computer) es un tipo de diseño de CPU generalmente utilizado en 
-microprocesadores que tienen las siguientes características fundamentales:
-Instrucciones de tamaño fijo y presentadas en un reducido número de formatos.
-Sólo las instrucciones de carga y almacenamiento acceden a la memoria de datos. Además estos procesadores suelen 
-disponer de muchos registros de propósito general.
-El objetivo de diseñar máquinas con esta arquitectura es posibilitar la segmentación y el paralelismo en la ejecución de 
-instrucciones y reducir los accesos a memoria.
-La arquitectura RISC esta hecho para un ordenador que esté a favor de los conjuntos de instrucciones pequeñas y simples que 
-toman menor tiempo para ejecutarse. El tipo de procesador más comúnmente utilizado en equipos de escritorio, el x86, está 
-basado en CISC en lugar de RISC.
-
-CARACTERISTICAS DE UN RISC
-
-• Una instrucción por ciclo.
-• Operaciones registro a registro. 
-• Modos de direccionamiento sencillos. 
-• Formatos de instrucción sencillos
-
-CARACTERISTICAS DE UN RISC
-
-Una instrucción por ciclo de maquina:
-Un ciclo máquina se define como el tiempo que se tarda en captar dos operandos desde dos registros, realizar 
-una operación de la ALU y almacenar el resultado en un registro. Así, las instrucciones máquina de un RISC no 
-deberían ser más complicadas que las microinstrucciones de las máquinas CISC, y deberían ejecutarse más o 
-menos igual de rápido. Con instrucciones sencillas y de un ciclo, hay poca o ninguna necesidad de 
-microcódigo; las instrucciones máquina pueden estar cableadas. Tales instrucciones deben ejecutarse más 
-rápido que las instrucciones máquina comparables de otras máquinas, ya que no hay que acceder a la 
-memoria de control de microprograma durante la ejecución de la instrucción.
-
-CARACTERISTICAS DE UN RISC
-
-Operaciones de  registro a registro
-Esta forma de diseño simplifica el repertorio de instrucciones y por 
-tanto la unidad de control. Por ejemplo, un repertorio de 
-instrucciones RISC puede incluir solo una o dos instrucciones ADD 
-(por ejemplo, suma entera y suma con acarreo); el VAX tiene 25 
-instrucciones ADD diferentes. Otra ventaja es que tal arquitectura 
-fomenta la optimización del uso de registros, ya que los operandos 
-accedidos frecuentemente permanecen en el almacenamiento de alta 
-velocidad. Este énfasis en las operaciones registro a registro es 
-notable en los diseños RISC. Las máquinas CISC contemporáneas 
-tienen tales instrucciones, pero incluyen también operaciones 
-memoria a memoria y operaciones mixtas registro/memoria. En los 
-años setenta, antes de la aparición de los RISC, se hicieron intentos de 
-comparar estas aproximaciones. 
-
-CARACTERISTICAS DE UN RISC
-
-Modos de direccionamiento sencillos.
-Casi todas las instrucciones RISC usan direccionamiento sencillo a registro. Se pueden incluir varios modos 
-adicionales, como el desplazamiento y el relativo al contador de programa. Otros modos más complejos se 
-pueden sintetizar por software a partir de los simples. Nuevamente, esta característica de diseño simplifica el 
-repertorio de instrucciones y la unidad de control.
-Formatos de instrucción sencillos. 
-Generalmente, solo se usa un formato o unos pocos. La longitud de las instrucciones es fija y alineada en los 
-límites de una palabra. Las posiciones de los campos, especialmente la del código de operación, son fijas. Este 
-tipo de diseño tiene varias ventajas. Con campos fijos, la decodificación del código de operación y el acceso a 
-los operandos en registros puede tener lugar simultáneamente. Los formatos sencillos simplifican la unidad de 
-control. Se optimiza la captación de instrucciones ya que se captan unidades de una palabra de longitud. La 
-alineación en el límite de una palabra también significa que una única instrucción no traspasa los límites de 
-una página.
-
-RISC vs CISC
-
-Aspectos
-RISC
-CISC
-Aplicación
-Utilizada para entornos de red
-Aplicada a ordenardores
-domesticos
-Características
-Instrucciones de tamaño fijo. 
-Solo las instrucciones de carga y 
-almacenamiento acceden a la 
-memoria de datos.
-Instrucciones muy amplias.
-Objetivos
-Posiibilitar la segmentación y el 
-paralelismo  en la ejecución de 
-instrucciones y reducir los accesos a 
-memoria.
-Permitir operaciones complejas 
-entre operandos situados en la 
-memoria o en los registros internos.
-Ventajas
-La CPU trabaja mas rápido al utilizar 
-menos ciclos de reloj. 
-Reduciendo la ejecución de las 
-operaciones.
-Cada instrucción puede ser 
-ejecutada en un solo ciclo de la CPU.
-Reduce la dificultad de crear 
-compiladores.
-Permite reducir el costo total del 
-sistema.
-Mejora la compactación de código.
-Facilita la depuración de errores.# Unidad 8 - Parte 2
-## Computadores RISC - Completo (continuación)
-
-No-Válido (Invalid): la línea de caché no contiene datos 
-válidos. 
-
-Coherencia de Cache: Protocolo MESI
-
-Coherencia de Cache: Protocolo MESI
-
-Fallo de lectura. Cuando se produce un fallo de lectura en la caché local, el procesador inicial una 
-lectura en memoria para acceder a la línea de memoria principal que contiene la dirección que no está 
-en caché. El procesador inserta una señal en el bus que avisa a todos los otros procesadores/cachés 
-para que sondeen la transacción. 
-• Si una de las cachés tiene una copia limpia (clean) de la línea (es decir, una copia no modificada desde que se leyó de 
-memoria) en el estado exclusivo, devuelve una señal indicando que comparte la línea. El procesador que envía esta señal 
-pasa su copia al estado compartido y el procesador inicial lee la línea y pasa el estado de esta en su caché de no-válido a 
-compartido.
-• Si una o más cachés tienen una copia limpia de la línea en estado compartido, cada una de ellas indica que comparte la 
-línea. El procesador inicial lee la línea y pasa su estado en caché de no válido a compartido. 
-• Si una de las cachés tiene una copia modificada de la línea, entonces esa caché bloquea la lectura de memoria y 
-proporciona la línea a la caché que la solicita a través del bus compartido. La caché que proporciona la línea pasa esta del 
-estado modificado al estado compartido. 
-• Si ninguna otra caché tiene una copia de la línea (limpia o en estado modificado), no se envía ninguna señal. El 
-procesador lee la línea y cambia el estado de la línea en su caché de no válido a exclusivo.
-
-Coherencia de Cache: Protocolo MESI
-
-Acierto de lectura. Cuando se produce un acierto en una lectura dentro de una línea presente en la 
-caché local, el procesador simplemente lee el dato solicitado. No hay ningún cambio de estado: se 
-mantiene como modificado, compartido o exclusivo.
-Fallo de escritura. Cuando se produce un fallo en una 
-escritura en la caché local, el procesador comienza una 
-lectura de memoria para acceder a la línea de memoria 
-principal que contiene la dirección que no está en 
-caché. Para ello, el procesador envía una señal a través 
-del bus que indica lectura-para-modificación (RWITM, 
-Read-With-Intent-To-Modify). Cuando se carga la línea, 
-se marca inmediatamente como modificada. Con 
-respecto a las otras cachés, hay dos escenarios posibles 
-previos a la carga del bloque de datos.
-
-Coherencia de Cache: Protocolo MESI
-
-Acierto de escritura. Cuando se produce un acierto de escritura en una línea de caché local, el efecto 
-depende del estado de la línea:
-• Compartido: antes de realizar la actualización, el procesador 
-debe conseguir el acceso exclusivo a la línea. El procesador 
-señala esta intención a través del bus. Todo procesador que 
-tenga una copia de la línea en su caché la cambia del estado 
-compartido al no válido. Después el procesador inicial actualiza 
-la línea y cambia su copia de la línea del estado compartido al 
-estado modificado.
-• Exclusivo: puesto que el procesador tiene el control exclusivo 
-de esta línea, simplemente la actualiza y cambia el estado de la 
-línea de exclusivo a modificado.
-• Modificado: puesto que el procesador tiene el control 
-exclusivo de la línea y la tiene marcada en el estado 
-modificado, solo tiene que actualizarla.
-
-PROCESADORES RISC
-
-CARACTERISTICAS DE UN CISC
-
-En los años 50, todos los ordenadores se diseñaban de forma completamente aislada unos de otros. Esto hacía que sus 
-instrucciones fuesen independientes, haciendo que un programa escrito para un cierto ordenador no se pudiese ejecutar en 
-otro. A finales de la década, IBM reunió a un grupo de sus investigadores para estudiar la forma con la que un programa 
-pudiese trabajar en múltiples ordenadores ampliando la compatibilidad del software.
-La arquitectura CISC ( Complex Instruction Set Compute) es uno de los modelos de arquitectura de ordenadores. Los 
-microprocesadores CISC tienen un conjunto de instrucciones que se caracteriza por ser muy amplio y por poder permitir 
-operaciones complejas entre operandos situados en la memoria o en los registros internos, en contraposición a la 
-arquitectura RISC.
-Este tipo de arquitectura dificulta el paralelismo entre instrucciones, por lo que, en la actualidad, la mayoría de los sistemas
-CISC de alto rendimiento implementan un sistema que convierte dichas instrucciones complejas en varias instrucciones 
-simples del tipo RISC, llamadas generalmente microinstrucciones.
-Los CISC pertenecen a la primera corriente de construcción de procesadores, antes del desarrollo de los RISC. Varios ejemplos
-son: Motorola 68000, Zilog Z80 y toda la familia Intel x86, AMD x86-64 usada en la mayoría de los PCs actuales.
-
-CARACTERISTICAS DE UN RISC
-
-Tras el lanzamiento de CISC, los científicos de IBM empezaron a comprobar que los diseñadores de software creaban sus 
-propias instrucciones más simples y precisas. Entonces, ya en la década de los 70, empezaron a diseñar una alternativa que 
-posteriormente se introdujo en el mercado bajo el acrónimo RISC.
-La arquitectura RISC (Reduced Instruction Set Computer) es un tipo de diseño de CPU generalmente utilizado en 
-microprocesadores que tienen las siguientes características fundamentales:
-Instrucciones de tamaño fijo y presentadas en un reducido número de formatos.
-Sólo las instrucciones de carga y almacenamiento acceden a la memoria de datos. Además estos procesadores suelen 
-disponer de muchos registros de propósito general.
-El objetivo de diseñar máquinas con esta arquitectura es posibilitar la segmentación y el paralelismo en la ejecución de 
-instrucciones y reducir los accesos a memoria.
-La arquitectura RISC esta hecho para un ordenador que esté a favor de los conjuntos de instrucciones pequeñas y simples que 
-toman menor tiempo para ejecutarse. El tipo de procesador más comúnmente utilizado en equipos de escritorio, el x86, está 
-basado en CISC en lugar de RISC.
-
-CARACTERISTICAS DE UN RISC
-
-• Una instrucción por ciclo.
-• Operaciones registro a registro. 
-• Modos de direccionamiento sencillos. 
-• Formatos de instrucción sencillos
-
-CARACTERISTICAS DE UN RISC
-
-Una instrucción por ciclo de maquina:
-Un ciclo máquina se define como el tiempo que se tarda en captar dos operandos desde dos registros, realizar 
-una operación de la ALU y almacenar el resultado en un registro. Así, las instrucciones máquina de un RISC no 
-deberían ser más complicadas que las microinstrucciones de las máquinas CISC, y deberían ejecutarse más o 
-menos igual de rápido. Con instrucciones sencillas y de un ciclo, hay poca o ninguna necesidad de 
-microcódigo; las instrucciones máquina pueden estar cableadas. Tales instrucciones deben ejecutarse más 
-rápido que las instrucciones máquina comparables de otras máquinas, ya que no hay que acceder a la 
-memoria de control de microprograma durante la ejecución de la instrucción.
-
-CARACTERISTICAS DE UN RISC
-
-Operaciones de  registro a registro
-Esta forma de diseño simplifica el repertorio de instrucciones y por 
-tanto la unidad de control. Por ejemplo, un repertorio de 
-instrucciones RISC puede incluir solo una o dos instrucciones ADD 
-(por ejemplo, suma entera y suma con acarreo); el VAX tiene 25 
-instrucciones ADD diferentes. Otra ventaja es que tal arquitectura 
-fomenta la optimización del uso de registros, ya que los operandos 
-accedidos frecuentemente permanecen en el almacenamiento de alta 
-velocidad. Este énfasis en las operaciones registro a registro es 
-notable en los diseños RISC. Las máquinas CISC contemporáneas 
-tienen tales instrucciones, pero incluyen también operaciones 
-memoria a memoria y operaciones mixtas registro/memoria. En los 
-años setenta, antes de la aparición de los RISC, se hicieron intentos de 
-comparar estas aproximaciones. 
-
-CARACTERISTICAS DE UN RISC
-
-Modos de direccionamiento sencillos.
-Casi todas las instrucciones RISC usan direccionamiento sencillo a registro. Se pueden incluir varios modos 
-adicionales, como el desplazamiento y el relativo al contador de programa. Otros modos más complejos se 
-pueden sintetizar por software a partir de los simples. Nuevamente, esta característica de diseño simplifica el 
-repertorio de instrucciones y la unidad de control.
-Formatos de instrucción sencillos. 
-Generalmente, solo se usa un formato o unos pocos. La longitud de las instrucciones es fija y alineada en los 
-límites de una palabra. Las posiciones de los campos, especialmente la del código de operación, son fijas. Este 
-tipo de diseño tiene varias ventajas. Con campos fijos, la decodificación del código de operación y el acceso a 
-los operandos en registros puede tener lugar simultáneamente. Los formatos sencillos simplifican la unidad de 
-control. Se optimiza la captación de instrucciones ya que se captan unidades de una palabra de longitud. La 
-alineación en el límite de una palabra también significa que una única instrucción no traspasa los límites de 
-una página.
-
-RISC vs CISC
-
-Aspectos
-RISC
-CISC
-Aplicación
-Utilizada para entornos de red
-Aplicada a ordenardores
-domesticos
-Características
-Instrucciones de tamaño fijo. 
-Solo las instrucciones de carga y 
-almacenamiento acceden a la 
-memoria de datos.
-Instrucciones muy amplias.
-Objetivos
-Posiibilitar la segmentación y el 
-paralelismo  en la ejecución de 
-instrucciones y reducir los accesos a 
-memoria.
-Permitir operaciones complejas 
-entre operandos situados en la 
-memoria o en los registros internos.
-Ventajas
-La CPU trabaja mas rápido al utilizar 
-menos ciclos de reloj. 
-Reduciendo la ejecución de las 
-operaciones.
-Cada instrucción puede ser 
-ejecutada en un solo ciclo de la CPU.
-Reduce la dificultad de crear 
-compiladores.
-Permite reducir el costo total del 
-sistema.
-Mejora la compactación de código.
-Facilita la depuración de errores.
-
-# Unidad 9
-## Arquitectura de Computadoras Paralelas
-
-Unidad 9
-Arquitectura de Computadoras Paralelas
-
-GUIA DE LECTURA
-
-Introducción
-
-Ciclo de instrucción básico.
-Tradicionalmente, el computador se ha visto como una máquina secuencial. La mayoría de los lenguajes de programación 
-del computador requieren que el programador especifique los algoritmos mediante una secuencia de instrucciones. Los 
-procesadores ejecutan los programas procesando instrucciones máquina de una en una. Cada instrucción se ejecuta 
-mediante una secuencia de operaciones (captar instrucción, captar operandos, realizar la operación, almacenar los
-resultados).
-Esta perspectiva del computador no es completamente cierta. En el nivel de microoperación, se generan al mismo tiempo 
-múltiples señales de control. La segmentación de las instrucciones, al menos en cuanto al solapamiento de las 
-operaciones de captación y ejecución, se ha utilizado desde hace tiempo. Ambos casos son ejemplos de funciones que se 
-realizan en paralelo. Es el mismo enfoque de la organización superescalar, que aprovecha el paralelismo entre 
-instrucciones. Un procesador superescalar dispone de varias unidades de ejecución que pueden ejecutar en paralelo 
-varias instrucciones del mismo programa.
-
-La taxonomía introducida primeramente por Flynn [FLYN72] es todavía la forma más común de 
-clasificar a los sistemas según sus capacidades de procesamiento paralelo. Flynn propuso las 
-siguientes categorías o clases de computadores:
-• Una secuencia de instrucciones y una secuencia de datos (SISD, Single Instruction Single 
-Data): un único procesador interpreta una única secuencia de instrucciones para operar con los 
-datos almacenados en una única memoria. Los computadores monoprocesador caen dentro
-de esta categoría.
-• Una secuencia de instrucciones y múltiples secuencias de datos (SIMD, de Single Instruction 
-Multiple Data): una única instrucción máquina controla paso a paso la ejecución simultánea y 
-sincronizada de un cierto número de elementos de proceso. Cada elemento de proceso tiene 
-una memoria asociada, de forma que cada instrucción es ejecutada por cada procesador con un 
-conjunto de datos diferentes. Los procesadores vectoriales y los matriciales pertenecen a esta 
-categoría.
-• Múltiples secuencias de instrucciones y una secuencia de datos (MISD): se transmite una 
-secuencia de datos a un conjunto de procesadores, cada uno de los cuales ejecuta una 
-secuencia de instrucciones diferente. Esta estructura nunca ha sido implementada.
-• Múltiples secuencias de instrucciones y múltiples secuencias de datos (MIMD): un conjunto 
-de procesadores ejecuta simultáneamente secuencias de instrucciones diferentes con 
-conjuntos de datos diferentes. Los SMP, los clusters y los sistemas NUMA son ejemplos de esta 
-categoría.
-
-Tipos de Sistemas Paralelos
-
-Multi-Procesadores Simetricos
-Hasta hace poco, prácticamente todos los computadores personales y estaciones de trabajo utilizaban un único microprocesador de 
-uso general. A medida que aumenta la demanda de mayores prestaciones y dado que el coste de los microprocesadores continúa 
-reduciéndose, los fabricantes han introducido los sistemas SMP. El término SMP se refiere a la arquitectura hardware del computador 
-y también al comportamiento del sistema operativo que utiliza dicha arquitectura. Un SMP puede definirse como un computador con 
-las siguientes características:
-1. Hay dos o más procesadores similares de capacidades comparables.
-2. Estos procesadores comparten la memoria principal y las E/S y están interconectados mediante un bus u otro tipo de sistema de interconexión, de 
-forma que el tiempo de acceso a memoria es aproximadamente el mismo para todos los procesadores.
-3. Todos los procesadores comparten los dispositivos de E/S, bien a través de los mismos canales o mediante canales distintos que proporcionan 
-caminos de acceso al mismo dispositivo.
-4. Todos los procesadores pueden desempeñar las mismas funciones (de ahí el término simétrico).
-5. El sistema está controlado por un sistema operativo integrado que proporciona la interacción entre los procesadores y sus programas a los niveles 
-de trabajo, tarea, fichero y datos.
-
-Multi-Procesadores Simetricos
-El significado de los puntos 1 a 4 es claro. El punto 5 corresponde a una de las diferencias con los 
-sistemas multiprocesador débilmente acoplados, tales como los clusters. En estos, la unidad de 
-interacción física es normalmente un mensaje o un fichero completo. En un SMP, la interacción se 
-puede producir a través de elementos de datos individuales, y puede existir un elevado nivel de 
-cooperación entre procesadores.
-El sistema operativo de un SMP planifica la distribución de procesos o hilos (threads) entre todos los 
-procesadores. Un SMP tiene las siguientes ventajas potenciales con respecto a una arquitectura 
-monoprocesador:
-• Prestaciones: si el trabajo a realizar por un computador puede organizarse de forma que partes del 
-mismo se puedan realizar en paralelo, entonces un sistema con varios procesadores proporcionará 
-mejores prestaciones que uno con un solo procesador del mismo tipo 
-• Disponibilidad: en un multiprocesador simétrico, debido a que todos los procesadores pueden 
-realizar las mismas funciones, un fallo en un procesador no hará que el computador se detenga.
-• Crecimiento incremental: se pueden aumentar las prestaciones del sistema añadiendo más
-procesadores.
-• Escalado: los fabricantes pueden ofrecer una gama de productos con precios y prestaciones
-diferentes en función del número de procesadores que configuran el sistema.
-Es importante resaltar que los anteriores son beneficios potenciales más que beneficios garantizados.
-El sistema operativo debe disponer de herramientas y funciones que permitan explotar el 
-paralelismopresente en un SMP.
-Una característica atractiva de un SMP es que la existencia de varios procesadores es transparente
-al usuario. El sistema operativo se encarga de la sincronización entre los procesadores y de la 
-planificaciónde los hilos o de los procesos, asignándolos a los distintos procesadores.
-
-Organización
-La Figura de abajo describe en términos generales la organización de un sistema multiprocesador. Hay dos o más procesadores. Cada procesador es autónomo, incluyendo una 
-unidad de control, una ALU, registros y, posiblemente, caché. Cada procesador tiene acceso a una memoria principal compartida y a los dispositivos de E/S a través de alguna 
-forma de mecanismo de interconexión. Los procesadores pueden comunicarse entre sí a través de la memoria (mensajes e información de control almacenada en áreas 
-comunes para datos). También es posible que los procesadores intercambien señales directamente. La memoria a menudo se organiza de forma que sean posibles los accesos 
-simultáneos a bloques de memoria separados. En algunas configuraciones, cada procesador puede tener también su propia memoria principal privada y sus canales de E/S, 
-además de los recursos compartidos.
-
-BUS de tiempo compartido
-La organización más común en los computadores personales, estaciones de trabajo y 
-servidores es el bus de tiempo compartido. El bus de tiempo compartido es el mecanismo 
-más simple para construir un sistema multiprocesador (Figura 18.5). La estructura y las 
-interfaces son básicamente las mismas que las de un sistema de un único procesador que 
-utilice un bus para la interconexión. El bus consta de líneas de control, dirección y datos. 
-Para facilitar las transferencias de DMA con los procesadores de E/S, se proporcionan los 
-elementos para el:
-• Direccionamiento: debe ser posible distinguir los módulos del bus para determinar la 
-fuente y el destino de los datos.
-• Arbitraje: cualquier módulo de E/S puede funcionar temporalmente como un «maestro». 
-Se proporciona un mecanismo para arbitrar entre las peticiones que compiten por el control 
-del bus, utilizando algún tipo de esquema de prioridad.
-
-BUS de tiempo compartido
-• Tiempo Compartido: cuando un módulo está controlando el bus, los otros módulos no tienen 
-acceso al mismo y deben, si es necesario, suspender su operación hasta que dispongan del bus. 
-Estas características monoprocesador son utilizables directamente en una configuración de 
-SMP.
-En este caso, hay varias CPU además de varios procesadores de E/S que intentan tener acceso a 
-uno o más módulos de memoria a través del bus.
-La organización del bus presenta varias características atractivas:
-• Simplicidad: es la aproximación más simple para organizar el multiprocesador. La interfaz 
-física y la lógica de cada procesador para el direccionamiento, el arbitraje y para compartir el 
-tiempo del bus es el mismo que el de un sistema con un solo procesador.
-• Flexibilidad: es generalmente sencillo expandir el sistema conectando más procesadores al 
-bus.
-• Fiabilidad: el bus es esencialmente un medio pasivo, y el fallo de cualquiera de los 
-dispositivos conectados no provocaría el fallo de todo el sistema.
-La principal desventaja de la organización de bus son las prestaciones. Todas las referencias a 
-memoria pasan por el bus. En consecuencia, la velocidad del sistema está limitada por el 
-tiempo de ciclo. Para mejorar las prestaciones, es deseable equipar a cada procesador de una 
-memoria caché. Esta reduciría dramáticamente el número de accesos. Típicamente, los PC y las 
-estaciones de trabajo de tipo SMP tienen dos niveles de caché, una caché L1 interna (en el 
-mismo chip que el procesador) y una caché L2 externa o interna. Algunos procesadores 
-actuales también utilizan una memoria caché L3.
-El uso de cachés introduce algunas consideraciones de diseño nuevas. Puesto que cada caché 
-local contiene una imagen de una parte de la memoria, si se altera una palabra en una caché,es 
-concebible que eso podría invalidar una palabra en otra caché. Para evitarlo, se debe avisar a 
-los otros procesadores de que se ha producido una actualización de memoria. Este problema se 
-conoce como problema de coherencia de caché, que es resuelto típicamente por el hardware 
-más que por el sistema operativo. 
+---
+
+## 2. Organización de Registros
+
+### Registros Visibles por el Usuario
+
+Tipos que el programador puede referenciar:
+
+- **Registro de uso general** → Asignación flexible
+- **Registro de datos** → Almacenamiento temporal
+- **Registro de direcciones** → Direcciones de memoria
+- **Registro de códigos de condición** → Flags (Z, C, V, etc.)
+
+### Registros de Control y Estado
+
+Utilizados por:
+- Unidad de control (operación del procesador)
+- Sistema operativo (control de programas)
+
+**Ejemplo:** PC (contador de programa) es crítico pero no siempre visible al usuario.
+
+---
+
+## 3. Coherencia de Caché
+
+En sistemas multiprocesador, pueden existir **varias copias del mismo dato** en cachés diferentes.
+
+### El Problema
+
+Si un procesador actualiza su copia, se produce **inconsistencia**.
+
+### Políticas de Escritura
+
+| Política | Descripción |
+|----------|-------------|
+| **Write-Back** | Escribe solo en caché, memoria se actualiza al reemplazar línea |
+| **Write-Through** | Escribe en caché y memoria simultáneamente |
+
+---
+
+## 4. Soluciones de Coherencia
+
+### Snooping
+
+Cada caché **observa el bus** para detectar escrituras de otros procesadores.
+
+### Directorio
+
+**Tabla centralizada** de estados que registra dónde están las copias.
+
+### Protocolo MESI
+
+Estados para cada línea de caché: **Modified, Exclusive, Shared, Invalid**
+
+---
+
+## 5. RISC vs CISC
+
+Dos filosofías de diseño de procesadores.
+
+### CISC (Complex Instruction Set Computer)
+
+**Características:**
+- Conjunto **muy amplio** de instrucciones
+- Instrucciones **complejas** (pueden hacer muchas cosas)
+- Operaciones en memoria
+- Múltiples formatos de instrucción
+
+**Ejemplos:** Intel x86, AMD x86-64, Motorola 68000
+
+**Ventajas:**
+- Código compacto
+- Menos instrucciones para tareas complejas
+
+**Desventajas:**
+- Unidad de control compleja
+- Dificulta el paralelismo
+
+---
+
+### RISC (Reduced Instruction Set Computer)
+
+**Características:**
+- Conjunto **pequeño y simple** de instrucciones
+- Cada instrucción ejecuta en **1 ciclo de máquina**
+- Formato fijo (32 bits generalmente)
+- Arquitectura **load/store** (solo carga/almacenamiento acceden a memoria)
+- **Muchos registros** de propósito general
+
+**Ejemplos:** SPARC, MIPS, ARM, PowerPC
+
+**Ventajas:**
+- Unidad de control simple
+- Facilita pipeline profundo
+- Compilador optimiza fácilmente
+- Mejor paralelismo
+
+---
+
+### Características Clave de RISC
+
+#### 1. Una Instrucción por Ciclo
+
+Un ciclo máquina es el tiempo para:
+- Captar dos operandos desde registros
+- Realizar operación ALU
+- Almacenar resultado en registro
+
+Las instrucciones RISC ejecutan en ~1 ciclo.
+
+#### 2. Operaciones Registro a Registro
+
+Simplifica repertorio de instrucciones y unidad de control.
+
+**Ejemplo:** RISC puede tener 1-2 instrucciones ADD, mientras CISC (VAX) tiene 25.
+
+#### 3. Modos de Direccionamiento Sencillos
+
+Casi todos usan direccionamiento simple a registro.
+
+Modos más complejos se sintetizan por software.
+
+#### 4. Formatos de Instrucción Sencillos
+
+Generalmente solo 1-2 formatos.
+
+- Longitud **fija** (alineada en límites de palabra)
+- Posiciones de campos **fijas**
+- Decodificación y acceso a operandos **simultáneos**
+
+---
+
+### Comparación RISC vs CISC
+
+| Aspecto | RISC | CISC |
+|--------|------|------|
+| **Aplicación** | Entornos de red, servidor | Computadores domésticos |
+| **Instrucciones** | Tamaño fijo, pocas | Amplias y variadas |
+| **Acceso memoria** | Solo load/store | Memoria y registros |
+| **Objetivo** | Segmentación y paralelismo | Operaciones complejas |
+| **Ciclos por instrucción** | ~1 | Variable (2-10+) |
+| **Compilador** | Más simple | Más complejo |
+
+---
+
+# PARTE 8: ARQUITECTURA DE COMPUTADORAS PARALELAS
+
+## 1. Introducción
+
+Tradicionalmente, los computadores se han visto como **máquinas secuenciales**:
+
+- El programador especifica algoritmos mediante **secuencia de instrucciones**
+- Los procesadores ejecutan **una instrucción por vez**
+
+Sin embargo, a niveles más bajos existe paralelismo:
+- **Nivel de microoperación:** múltiples señales de control simultáneas
+- **Segmentación (Pipeline):** solapamiento de captación y ejecución
+- **Superescalar:** múltiples unidades de ejecución en paralelo
+
+---
+
+## 2. Taxonomía de Flynn
+
+Clasificación de sistemas según capacidades de procesamiento paralelo.
+
+### SISD (Single Instruction, Single Data)
+
+**Una secuencia de instrucciones, una secuencia de datos**
+
+- Único procesador interpreta única secuencia de instrucciones
+- Computadores monoprocesador tradicionales
+
+---
+
+### SIMD (Single Instruction, Multiple Data)
+
+**Una secuencia de instrucciones, múltiples secuencias de datos**
+
+- Una instrucción controla paso a paso ejecución simultánea
+- Cada elemento de proceso tiene memoria asociada
+- Misma instrucción ejecutada con conjuntos de datos diferentes
+
+**Ejemplos:**
+- Procesadores vectoriales
+- Procesadores matriciales
+
+---
+
+### MISD (Multiple Instruction, Single Data)
+
+**Múltiples secuencias de instrucciones, una secuencia de datos**
+
+- Secuencia de datos transmitida a conjunto de procesadores
+- Cada procesador ejecuta instrucciones diferentes
+
+**Nota:** Nunca ha sido implementada en la práctica.
+
+---
+
+### MIMD (Multiple Instruction, Multiple Data)
+
+**Múltiples secuencias de instrucciones, múltiples secuencias de datos**
+
+- Conjunto de procesadores ejecuta **simultáneamente**
+- Instrucciones diferentes con **datos diferentes**
+
+**Ejemplos:**
+- SMP (Multiprocesadores Simétricos)
+- Clusters
+- Sistemas NUMA
+
+---
+
+## 3. Multiprocesadores Simétricos (SMP)
+
+### Definición
+
+Un SMP es computador con:
+
+1. **Dos o más procesadores** similares de capacidades comparables
+2. Procesadores **comparten memoria principal y E/S**
+3. Interconexión mediante **bus u otro sistema de interconexión**
+4. Tiempo de acceso a memoria **aproximadamente igual** para todos
+5. Todos procesadores comparten **dispositivos de E/S**
+6. Todos pueden desempeñar **mismas funciones** (simetría)
+7. Controlados por **único sistema operativo integrado**
+
+---
+
+### Ventajas de SMP
+
+**Prestaciones:** Si trabajo se organiza en paralelo, varios procesadores proporcionan mejor rendimiento.
+
+**Disponibilidad:** Fallo en un procesador no detiene computador (otros continúan).
+
+**Crecimiento incremental:** Se pueden agregar más procesadores.
+
+**Escalado:** Fabricantes ofrecen rango de productos.
+
+---
+
+### Diferencia con Clusters
+
+En clusters, la **unidad de interacción es mensaje o archivo completo**.
+
+En SMP, la **interacción se produce a nivel de elementos de datos individuales**, permitiendo **elevado nivel de cooperación**.
+
+---
+
+## 4. Organización de SMP
+
+```
+┌────────────┐  ┌────────────┐  ┌────────────┐
+│   CPU 1    │  │   CPU 2    │  │   CPU N    │
+│ (Control + │  │ (Control + │  │ (Control + │
+│   ALU)     │  │   ALU)     │  │   ALU)     │
+└─────┬──────┘  └─────┬──────┘  └─────┬──────┘
+      │               │               │
+      └───────────────┼───────────────┘
+                      │
+              ┌───────┴────────┐
+              │  BUS COMPARTIDO│
+              └───────┬────────┘
+                      │
+         ┌────────────┼────────────┐
+         │            │            │
+    ┌────────┐  ┌─────────┐  ┌────────┐
+    │Memoria │  │Memoria  │  │Módulos │
+    │Principal│  │Caché L2 │  │ E/S   │
+    └────────┘  └─────────┘  └────────┘
+```
+
+---
+
+## 5. Bus de Tiempo Compartido
+
+### Características
+
+El mecanismo más simple para construir SMP.
+
+- Estructura similar a computador de un procesador
+- Bus consta de líneas: **control, dirección y datos**
+
+### Funciones Necesarias
+
+**Direccionamiento:**
+- Distinguir módulos del bus
+- Determinar fuente y destino de datos
+
+**Arbitraje:**
+- Múltiples módulos compiten por control del bus
+- Esquema de prioridad para arbitrar
+
+**Tiempo Compartido:**
+- Módulo controla bus → otros deben esperar
+- Permite únicamente un operador por vez
+
+---
+
+## 6. Ventajas del Bus Compartido
+
+**Simplicidad:**
+- Interfaz física igual que sistema monoprocesador
+- Lógica de direccionamiento y arbitraje standard
+
+**Flexibilidad:**
+- Fácil agregar procesadores al bus
+
+**Fiabilidad:**
+- Bus es medio pasivo
+- Fallo de dispositivo no causa fallo del sistema
+
+---
+
+## 7. Desventaja Principal: Prestaciones
+
+**Cuello de botella:**
+- Todas referencias a memoria pasan por bus
+- Velocidad sistema limitada por tiempo de ciclo
+
+**Solución: Cachés**
+- Cada procesador con caché **reduce dramáticamente** accesos a bus
+- Típicamente: L1 interna + L2 externa
+- Algunos sistemas usan L3
+
+---
+
+## 8. Coherencia de Caché en Multiprocesadores
+
+### El Problema
+
+Si cada caché local tiene copia de parte de memoria:
+- Alteración en una caché invalida copia en otra
+- Se produce **inconsistencia**
+
+### Protocolos de Coherencia
+
+Dos aproximaciones principales:
+
+**Software:**
+- Compilador marca datos problemáticos
+- Sistema operativo previene cacheo de datos compartidos
+
+**Hardware:**
+- Protocolo de **snooping** (espionaje de bus)
+- Protocolo de **directorio** (tabla centralizada)
+
+Típicamente resuelta por hardware, no sistema operativo.
+
+---
+
+## 9. Protocolo MESI
+
+Estados para cada línea de caché en multiprocesador:
+
+| Estado | Significado | Descripción |
+|--------|-------------|-------------|
+| **M** | Modified | Línea ha sido modificada, solo en esta caché |
+| **E** | Exclusive | Igual a memoria principal, no en otra caché |
+| **S** | Shared | Igual a memoria, pero puede estar en otra caché |
+| **I** | Invalid | Línea no contiene datos válidos |
+
+---
+
+### Fallo de Lectura en MESI
+
+Cuando procesador necesita dato no en caché:
+
+1. **Si otra caché tiene copia EXCLUSIVA:**
+   - La devuelve y cambia a SHARED
+   - Procesador recibe dato
+
+2. **Si otras cachés tienen copia SHARED:**
+   - Leen y pasan a SHARED
+
+3. **Si otra caché tiene copia MODIFIED:**
+   - Bloquea lectura de memoria
+   - Proporciona línea, cambia a SHARED
+
+4. **Si ninguna tiene copia:**
+   - Lee de memoria, estado = EXCLUSIVE
+
+---
+
+### Acierto de Lectura en MESI
+
+Dato ya en caché local:
+- CPU simplemente lee
+- **Sin cambio de estado**
+
+---
+
+### Fallo de Escritura en MESI
+
+Cuando procesador escribe en dato no en caché:
+- Envía RWITM (Read-With-Intent-To-Modify)
+- Línea se marca como MODIFIED inmediatamente
+
+---
+
+### Acierto de Escritura en MESI
+
+Efecto depende del estado:
+
+**Si SHARED:**
+- Obtiene acceso exclusivo
+- Otras cachés invalidan su copia (I)
+- Cambia a MODIFIED
+
+**Si EXCLUSIVE:**
+- Simplemente actualiza
+- Cambia a MODIFIED
+
+**Si MODIFIED:**
+- Simplemente actualiza
+- Mantiene MODIFIED
+
+---
+
+## Fin del Documento
+
+Apuntes completos de Arquitectura II cubriendo teoría fundamental, ejercicios resueltos, conceptos de procesadores modernos y arquitecturas paralelas.
+
+**Última actualización:** 2026-06-10
