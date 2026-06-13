@@ -1851,4 +1851,21 @@ Efecto depende del estado:
 
 Apuntes completos de Arquitectura II cubriendo teoría fundamental, ejercicios resueltos, conceptos de procesadores modernos y arquitecturas paralelas.
 
-**Última actualización:** 2026-06-10
+---
+
+## Apéndice: Respuestas rápidas (no repetir)
+
+- Coherencia de caché: políticas (write-through / post-escritura), protocolos (snooping / directorio), aproximaciones (hardware suele resolver por latencia).
+- MESI: suele usarse con write-back (post-escritura) y un protocolo de snooping en buses; si la línea está modificada no se escribe a MP hasta reemplazo y las caches se interrogan/coordina para mantener coherencia.
+- Post-escritura (write-back): la línea modificada permanece en caché y no se escribe inmediatamente a memoria principal; otras caches/lecturas consultan caches y se realizan invalidaciones/transferencias según el protocolo.
+- RISC vs CISC: RISC = instrucciones simples, pipeline y decodificación sencilla; CISC = instrucciones complejas y microcódigo más pesado.
+- Modos de direccionamiento / Pentium: la dirección lineal se forma como dirección efectiva + registro de segmento (segundo nivel en Pentium); el opcode (CODOP) siempre está presente.
+- Paralelismo vs segmentación (pipelining): paralelismo ejecuta instrucciones simultáneamente en distintos procesadores; segmentación divide una instrucción en etapas que se solapan en pipeline.
+- NUMA vs SMP: NUMA tiene memoria distribuida con latencias no uniformes; SMP tiene memoria compartida de acceso uniforme.
+- Acoplamiento: débilmente acoplado vs fuertemente acoplado — cuánto intercambio/comunicación requieren los nodos.
+- Transparente: comportamiento invisible para procesos vecinos (p. ej. migración o replicación transparente).
+- Formas de DMA: "storm" (bus mastering y transferencia de bloques grandes), "robo de ciclos" (cycle stealing, toma breves ventanas), "transparente" (espera breves ventanas sin bloquear CPU).
+- Módulos: dispositivos externos gestionados por controladores (I/O, buses, periféricos).
+- Pipelining: precarga y solapamiento de etapas para reducir tiempo total; practicar la fórmula de speedup/latencia del pipeline.
+
+**Última actualización:** 2026-06-13
