@@ -1853,7 +1853,7 @@ Apuntes completos de Arquitectura II cubriendo teoría fundamental, ejercicios r
 
 ---
 
-## Apéndice: Respuestas rápidas (no repetir)
+## Apéndice: Respuestas rápidas
 
 - Coherencia de caché: políticas (write-through / post-escritura), protocolos (snooping / directorio), aproximaciones (hardware suele resolver por latencia).
 - MESI: suele usarse con write-back (post-escritura) y un protocolo de snooping en buses; si la línea está modificada no se escribe a MP hasta reemplazo y las caches se interrogan/coordina para mantener coherencia.
