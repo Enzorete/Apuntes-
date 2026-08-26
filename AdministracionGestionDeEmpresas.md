@@ -164,3 +164,126 @@ Los **administradores** son los responsables de diseñar, coordinar y ajustar la
 - Robbins, S. P. *Administración*.
 - Chiavenato, I. *Introducción a la teoría general de la administración*.
 
+# Resumen - Administración y Gestión de Empresas
+
+## Índice de esta sección
+
+- [1. Concepto de organización](#1-concepto-de-organización)
+- [2. Dimensiones del diseño organizacional](#2-dimensiones-del-diseño-organizacional)
+- [3. Tipologías organizacionales](#3-tipologías-organizacionales)
+- [4. Eficacia, economía, eficiencia y efectividad](#4-eficacia-economía-eficiencia-y-efectividad)
+- [5. Rol del administrador](#5-rol-del-administrador)
+- [6. Perspectivas sobre la responsabilidad social](#6-perspectivas-sobre-la-responsabilidad-social)
+- [7. Administración verde y sustentabilidad](#7-administración-verde-y-sustentabilidad)
+
+## 1. Concepto de Organización
+
+> Una organización es un sistema social formado por un grupo de personas que comparten determinados valores, se relacionan entre sí y utilizan recursos para desarrollar actividades coordinadas orientadas al logro de objetivos comunes.
+
+### Definición técnica
+
+Según Daft, una organización es una entidad social orientada a alcanzar metas, compuesta por un sistema de actividades estructuradas y vinculada con su entorno.
+
+### Finalidades de una organización
+
+Las organizaciones existen para:
+
+1. Alcanzar objetivos comunes.
+2. Preservar conocimientos e impulsar la innovación.
+3. Obtener y transformar recursos del entorno.
+
+### La organización como sistema abierto
+
+Las organizaciones son sistemas abiertos porque intercambian recursos, información y resultados con el entorno.
+
+**Entrada -> proceso de transformación -> salida -> retroalimentación**
+
+- **Entrada:** recursos que recibe la organización, como información, dinero, personas, tecnología o materias primas.
+- **Proceso de transformación:** actividades que convierten los recursos en bienes, servicios o resultados.
+- **Salida:** productos, servicios y demás resultados que la organización entrega al entorno.
+- **Retroalimentación:** información que permite evaluar los resultados, corregir errores y realizar mejoras.
+
+## 2. Dimensiones del diseño organizacional
+
+Las dimensiones del diseño organizacional permiten analizar y configurar la estructura de una organización.
+
+### Dimensiones contextuales
+
+Son factores generales que describen el contexto en el que funciona la organización:
+
+- **Tamaño:** cantidad de empleados y magnitud de la organización.
+- **Tecnología:** herramientas y métodos utilizados para realizar el trabajo.
+- **Entorno:** factores externos que influyen sobre la organización.
+- **Metas y estrategia:** objetivos y acciones definidos para alcanzarlos.
+- **Cultura:** valores, creencias y costumbres compartidos.
+
+### Dimensiones estructurales
+
+Son elementos internos que pueden ser diseñados y ajustados por los administradores:
+
+- **Formalización:** cantidad de reglas, procedimientos y documentación.
+- **Especialización:** división del trabajo en tareas específicas.
+- **Jerarquía de autoridad:** cadena de mando y distribución de responsabilidades.
+- **Centralización:** nivel en que las decisiones se concentran en los niveles superiores.
+- **Profesionalismo:** nivel de formación y capacitación del personal.
+- **Razón de personal:** proporción entre el personal administrativo y el personal operativo.
+- **Complejidad:** cantidad de niveles, áreas y actividades diferenciadas.
+
+**Objetivo:** alcanzar la efectividad mediante la combinación de eficiencia y eficacia.
+
+## 3. Tipologías organizacionales
+
+Las organizaciones pueden clasificarse según distintos criterios:
+
+- **Finalidad:** lucrativas, como McDonald's, o no lucrativas, como Greenpeace.
+- **Tamaño:** microemprendimientos, PyMEs o grandes empresas, como Arcor.
+- **Sector de actividad:** primario, secundario, terciario, como el comercio y los servicios, o cuaternario, relacionado con la tecnología y la innovación.
+- **Origen del capital:** público, cuando pertenece al Estado; privado, cuando pertenece a particulares o inversores; o mixto, cuando combina ambos tipos.
+- **Tipo jurídico:** Sociedad Anónima (SA), Sociedad de Responsabilidad Limitada (SRL), Sociedad por Acciones Simplificada (SAS), cooperativa u otra forma legal.
+- **Ámbito de actuación:** local, provincial, nacional, internacional o global.
+
+Por ejemplo, Greenpeace es una organización global y no lucrativa, mientras que un kiosco puede ser una organización local, lucrativa y de tamaño micro.
+
+## 4. Eficacia, economía, eficiencia y efectividad
+
+- **Eficacia:** capacidad de alcanzar los objetivos propuestos. Consiste en lograr lo que se busca.
+- **Economía:** capacidad de obtener y utilizar los recursos minimizando su costo, sin afectar la calidad necesaria.
+- **Eficiencia:** relación óptima entre los recursos utilizados y los resultados obtenidos. Implica hacer bien las cosas y aprovechar adecuadamente los recursos.
+- **Efectividad:** capacidad de alcanzar resultados relevantes combinando eficacia y eficiencia de manera sostenida, con un impacto real y duradero.
+
+## 5. Rol del administrador
+
+El administrador diseña, coordina y ajusta las dimensiones estructurales para que la organización pueda adaptarse a las dimensiones contextuales.
+
+Sus funciones principales son:
+
+- **Planificar:** definir objetivos y determinar cómo alcanzarlos.
+- **Organizar:** distribuir tareas, recursos y responsabilidades.
+- **Dirigir:** guiar, motivar y coordinar a las personas.
+- **Controlar:** evaluar los resultados y corregir las desviaciones.
+
+Su importancia radica en transformar recursos desorganizados en resultados y contribuir a la supervivencia y adaptación de la organización.
+
+## 6. Perspectivas sobre la responsabilidad social
+
+- **Perspectiva clásica:** considera que la obligación principal de la organización es cumplir la ley y alcanzar objetivos económicos, especialmente maximizar las utilidades y satisfacer los intereses de los accionistas.
+- **Sensibilidad social:** propone responder a las necesidades y demandas de la sociedad mediante acciones guiadas por valores, costumbres y políticas sociales. Por ejemplo, Ford desarrolló una función para evitar que los teléfonos emitieran sonidos de notificaciones al conectarse con el automóvil, con el objetivo de reducir distracciones y accidentes de tránsito.
+- **Perspectiva socioeconómica:** sostiene que la empresa tiene responsabilidades que van más allá de lo económico y legal, por lo que también debe contribuir al bienestar de la sociedad.
+
+## 7. Administración verde y sustentabilidad
+
+La administración verde es una forma de gestión en la que la gerencia considera el impacto de la organización sobre el ambiente. Implica asumir la responsabilidad de reducir ese impacto y contribuir a la protección y preservación del medioambiente.
+
+### Niveles de compromiso ambiental
+
+- **Verde claro:** corresponde a una perspectiva clásica. La organización tiene un nivel bajo de responsabilidad social y se limita a cumplir las exigencias legales.
+- **Verde de sensibilidad social:** la organización responde a las demandas sociales y ecológicas de sus clientes y grupos de interés.
+- **Verde oscuro:** representa el nivel más elevado de responsabilidad social. La organización adopta un enfoque activista y busca generar cambios ambientales positivos.
+
+### ¿Cómo puede volverse verde una organización?
+
+Puede reducir el consumo de recursos y energía, reciclar, separar residuos, utilizar tecnologías limpias, capacitar al personal y establecer alianzas con organizaciones no gubernamentales.
+
+### Comportamientos éticos
+
+Los comportamientos éticos surgen de la interacción entre las personas, la cultura y las políticas de la organización. Los gerentes pueden fomentarlos mediante políticas claras, manuales de conducta y prácticas coherentes con los valores que se comunican dentro y fuera de la organización.
