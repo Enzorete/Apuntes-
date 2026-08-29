@@ -375,53 +375,57 @@ En las discontinuidades aparece un sobrepico aproximado del 9%, aunque agreguemo
 ---
 
 ## 5. Forma compleja de Fourier
-Usando la identidad de Euler:
+Usando la identidad de Euler,
 
 $$
-e^{jx}=\cos x + j\sin x
+e^{jt} = \cos t + j\sin t
 $$
 
-la señal puede escribirse como:
+la señal puede escribirse como
 
 $$
-f(t)=\sum_{n=-\infty}^{+\infty} C_n e^{j n \omega_0 t}
+f(t) = \sum_{n=-\infty}^{+\infty} C_n e^{j n \omega_0 t}
 $$
 
-donde:
+donde
 
 $$
-C_n=\frac{1}{T}\int_{-T/2}^{T/2} f(t)e^{-j n \omega_0 t}\,dt
+C_n = \frac{1}{T}\int_{-T/2}^{T/2} f(t)e^{-j n \omega_0 t}\,dt
 $$
 
-Esta forma es muy útil porque expresa amplitud y fase de cada componente.
+Esta forma es muy útil porque expresa la amplitud y la fase de cada componente armónica.
 
 ### Tren rectangular
-Para un pulso rectangular de amplitud $A$, ancho $\tau$ y período $T$:
+Para un pulso rectangular de amplitud $A$, ancho $\tau$ y período $T$,
 
 $$
-|C_n| = A\frac{\tau}{T}\left|\frac{\sin(n\omega_0\tau/2)}{n\omega_0\tau/2}\right|
+|C_n| = A\frac{\tau}{T}
+\left|\frac{\sin\left(n\omega_0\tau/2\right)}{n\omega_0\tau/2}\right|
 $$
 
-Se puede escribir como:
+o equivalentemente,
 
 $$
 |C_n| = A\frac{\tau}{T}\left|\operatorname{sinc}\left(\frac{n\omega_0\tau}{2}\right)\right|
 $$
 
-con:
+con
 
 $$
 \operatorname{sinc}(x)=\frac{\sin x}{x}
 $$
 
-### Fórmulas de oro
-- número de armónicas relevantes:
+### Fórmulas útiles
+- Número de armónicas relevantes:
+
   $$
-  N=\frac{T}{\tau}
+  N = \frac{T}{\tau}
   $$
-- amplitud máxima del espectro:
+
+- Amplitud máxima del espectro:
+
   $$
-  |C_0|=A\frac{\tau}{T}
+  |C_0| = A\frac{\tau}{T}
   $$
 
 Si $\tau$ es pequeño, el espectro es ancho; si $\tau$ es grande, el espectro es más estrecho.
@@ -552,19 +556,25 @@ En Fourier:
 
 ## Resumen final
 - La serie de Fourier descompone una señal periódica en armónicas.
-- La frecuencia fundamental es:
+- La frecuencia fundamental es
+
   $$
-  f_0=\frac{1}{T}
+  f_0 = \frac{1}{T}
   $$
-- La forma trigonométrica es:
+
+- La forma trigonométrica es
+
   $$
-  f(t)=a_0+\sum_{n=1}^{\infty}[a_n\cos(n\omega_0 t)+b_n\sin(n\omega_0 t)]
+  f(t) = a_0 + \sum_{n=1}^{\infty}\left[a_n\cos(n\omega_0 t)+b_n\sin(n\omega_0 t)\right]
   $$
-- La forma compleja es:
+
+- La forma compleja es
+
   $$
-  f(t)=\sum_{n=-\infty}^{+\infty} C_n e^{j n \omega_0 t}
+  f(t) = \sum_{n=-\infty}^{+\infty} C_n e^{j n \omega_0 t}
   $$
-- Un tren rectangular tiene espectro con envolvente sinc.
+
+- Un tren rectangular tiene un espectro con envolvente sinc.
 - El ancho de banda depende del ancho del pulso $\tau$ y del período $T$.
-- Este análisis es fundamental para la transmisión, filtrado y diagnóstico en telecomunicaciones.
+- Este análisis es fundamental para la transmisión, el filtrado y el diagnóstico en telecomunicaciones.
 
