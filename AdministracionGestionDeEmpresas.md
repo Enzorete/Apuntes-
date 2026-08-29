@@ -1,19 +1,26 @@
 # Administración y Gestión de Empresas
-## Primera clase teórica
-
-> [!NOTE]
-> En esta primera clase se introducen los conceptos básicos de la administración, la teoría organizacional y el diseño de las organizaciones.
 
 ## Índice
 
-- [1. Desafíos del entorno actual](#1-desafíos-del-entorno-actual)
-- [2. Teoría organizacional](#2-teoría-organizacional)
-- [3. Dimensiones del diseño organizacional](#3-dimensiones-del-diseño-organizacional)
+- [Clase 1](#clase-1)
+- [Clase 2](#clase-2)
+
+---
+
+<a id="clase-1"></a>
+# Clase 1
+
+## Índice de la Clase 1
+
+- [1. Desafíos del entorno actual](#1-desafios-del-entorno-actual)
+- [2. Teoría organizacional](#2-teoria-organizacional)
+- [3. Dimensiones del diseño organizacional](#3-dimensiones-del-diseno-organizacional)
 - [4. Configuraciones y clasificaciones de las organizaciones](#4-configuraciones-y-clasificaciones-de-las-organizaciones)
 - [5. Resumen final](#5-resumen-final)
 
 ---
 
+<a id="1-desafios-del-entorno-actual"></a>
 ## 1. Desafíos del entorno actual
 
 Los administradores deben enfrentar un entorno cada vez más dinámico y competitivo. Algunos de los principales desafíos son:
@@ -32,6 +39,7 @@ Los administradores deben enfrentar un entorno cada vez más dinámico y competi
 
 ---
 
+<a id="2-teoria-organizacional"></a>
 ## 2. Teoría organizacional
 
 La teoría organizacional es la disciplina que estudia cómo diseñar y gestionar un conjunto de personas para que trabajen de manera coordinada y eficiente, evitando que la organización se desarme o pierda su rumbo.
@@ -73,6 +81,7 @@ Las organizaciones son sistemas abiertos, porque interactúan constantemente con
 
 ---
 
+<a id="3-dimensiones-del-diseno-organizacional"></a>
 ## 3. Dimensiones del diseño organizacional
 
 El diseño organizacional busca crear una estructura adecuada para lograr la efectividad de la empresa.
@@ -106,6 +115,7 @@ Los **administradores** son los responsables de diseñar, coordinar y ajustar la
 
 ---
 
+<a id="4-configuraciones-y-clasificaciones-de-las-organizaciones"></a>
 ## 4. Configuraciones y clasificaciones de las organizaciones
 
 ### 1) Por su finalidad
@@ -143,6 +153,7 @@ Los **administradores** son los responsables de diseñar, coordinar y ajustar la
 
 ---
 
+<a id="5-resumen-final"></a>
 ## 5. Resumen final
 
 > [!WARNING]
@@ -164,18 +175,24 @@ Los **administradores** son los responsables de diseñar, coordinar y ajustar la
 - Robbins, S. P. *Administración*.
 - Chiavenato, I. *Introducción a la teoría general de la administración*.
 
-# Resumen - Administración y Gestión de Empresas
+---
 
-## Índice de esta sección
+<a id="clase-2"></a>
+# Clase 2
 
-- [1. Concepto de organización](#1-concepto-de-organización)
-- [2. Dimensiones del diseño organizacional](#2-dimensiones-del-diseño-organizacional)
-- [3. Tipologías organizacionales](#3-tipologías-organizacionales)
-- [4. Eficacia, economía, eficiencia y efectividad](#4-eficacia-economía-eficiencia-y-efectividad)
+## Índice de la Clase 2
+
+- [1. Concepto de organización](#1-concepto-de-organizacion)
+- [2. Dimensiones del diseño organizacional](#2-dimensiones-del-diseno-organizacional)
+- [3. Tipologías organizacionales](#3-tipologias-organizacionales)
+- [4. Eficacia, economía, eficiencia y efectividad](#4-eficacia-economia-eficiencia-y-efectividad)
 - [5. Rol del administrador](#5-rol-del-administrador)
 - [6. Perspectivas sobre la responsabilidad social](#6-perspectivas-sobre-la-responsabilidad-social)
-- [7. Administración verde y sustentabilidad](#7-administración-verde-y-sustentabilidad)
+- [7. Administración verde y sustentabilidad](#7-administracion-verde-y-sustentabilidad)
 
+---
+
+<a id="1-concepto-de-organizacion"></a>
 ## 1. Concepto de Organización
 
 > Una organización es un sistema social formado por un grupo de personas que comparten determinados valores, se relacionan entre sí y utilizan recursos para desarrollar actividades coordinadas orientadas al logro de objetivos comunes.
@@ -203,6 +220,9 @@ Las organizaciones son sistemas abiertos porque intercambian recursos, informaci
 - **Salida:** productos, servicios y demás resultados que la organización entrega al entorno.
 - **Retroalimentación:** información que permite evaluar los resultados, corregir errores y realizar mejoras.
 
+---
+
+<a id="2-dimensiones-del-diseno-organizacional"></a>
 ## 2. Dimensiones del diseño organizacional
 
 Las dimensiones del diseño organizacional permiten analizar y configurar la estructura de una organización.
@@ -231,6 +251,9 @@ Son elementos internos que pueden ser diseñados y ajustados por los administrad
 
 **Objetivo:** alcanzar la efectividad mediante la combinación de eficiencia y eficacia.
 
+---
+
+<a id="3-tipologias-organizacionales"></a>
 ## 3. Tipologías organizacionales
 
 Las organizaciones pueden clasificarse según distintos criterios:
@@ -244,6 +267,9 @@ Las organizaciones pueden clasificarse según distintos criterios:
 
 Por ejemplo, Greenpeace es una organización global y no lucrativa, mientras que un kiosco puede ser una organización local, lucrativa y de tamaño micro.
 
+---
+
+<a id="4-eficacia-economia-eficiencia-y-efectividad"></a>
 ## 4. Eficacia, economía, eficiencia y efectividad
 
 - **Eficacia:** capacidad de alcanzar los objetivos propuestos. Consiste en lograr lo que se busca.
@@ -251,6 +277,9 @@ Por ejemplo, Greenpeace es una organización global y no lucrativa, mientras que
 - **Eficiencia:** relación óptima entre los recursos utilizados y los resultados obtenidos. Implica hacer bien las cosas y aprovechar adecuadamente los recursos.
 - **Efectividad:** capacidad de alcanzar resultados relevantes combinando eficacia y eficiencia de manera sostenida, con un impacto real y duradero.
 
+---
+
+<a id="5-rol-del-administrador"></a>
 ## 5. Rol del administrador
 
 El administrador diseña, coordina y ajusta las dimensiones estructurales para que la organización pueda adaptarse a las dimensiones contextuales.
@@ -264,12 +293,18 @@ Sus funciones principales son:
 
 Su importancia radica en transformar recursos desorganizados en resultados y contribuir a la supervivencia y adaptación de la organización.
 
+---
+
+<a id="6-perspectivas-sobre-la-responsabilidad-social"></a>
 ## 6. Perspectivas sobre la responsabilidad social
 
 - **Perspectiva clásica:** considera que la obligación principal de la organización es cumplir la ley y alcanzar objetivos económicos, especialmente maximizar las utilidades y satisfacer los intereses de los accionistas.
 - **Sensibilidad social:** propone responder a las necesidades y demandas de la sociedad mediante acciones guiadas por valores, costumbres y políticas sociales. Por ejemplo, Ford desarrolló una función para evitar que los teléfonos emitieran sonidos de notificaciones al conectarse con el automóvil, con el objetivo de reducir distracciones y accidentes de tránsito.
 - **Perspectiva socioeconómica:** sostiene que la empresa tiene responsabilidades que van más allá de lo económico y legal, por lo que también debe contribuir al bienestar de la sociedad.
 
+---
+
+<a id="7-administracion-verde-y-sustentabilidad"></a>
 ## 7. Administración verde y sustentabilidad
 
 La administración verde es una forma de gestión en la que la gerencia considera el impacto de la organización sobre el ambiente. Implica asumir la responsabilidad de reducir ese impacto y contribuir a la protección y preservación del medioambiente.
@@ -287,3 +322,18 @@ Puede reducir el consumo de recursos y energía, reciclar, separar residuos, uti
 ### Comportamientos éticos
 
 Los comportamientos éticos surgen de la interacción entre las personas, la cultura y las políticas de la organización. Los gerentes pueden fomentarlos mediante políticas claras, manuales de conducta y prácticas coherentes con los valores que se comunican dentro y fuera de la organización.
+
+---
+
+## Resumen final
+
+> [!WARNING]
+> La administración es fundamental para que una organización funcione de manera ordenada, eficiente y adaptativa al entorno.
+
+### En síntesis
+
+- Las organizaciones son sistemas abiertos.
+- Deben responder a cambios del entorno.
+- Su estructura debe ser diseñada de acuerdo con objetivos y contexto.
+- Los administradores son quienes coordinan recursos, personas y procesos.
+- La efectividad organizacional depende de la combinación entre eficiencia y eficacia.
