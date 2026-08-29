@@ -2,10 +2,17 @@
 
 ## Índice
 
+- [Clase 2](#clase-2)
+- [Clase 3](#clase-3)
+
+---
+
+<a id="clase-2"></a>
+# Clase 2
+
+## Índice de la Clase 2
+
 - [1. Antecedentes históricos y conceptos base](#1-antecedentes-historicos-y-conceptos-base)
-  - [1.1 Antecedentes históricos](#11-antecedentes-historicos)
-  - [1.2 Conceptos base](#12-conceptos-base)
-  - [1.3 Ecuaciones de Maxwell - forma de Heaviside](#13-ecuaciones-de-maxwell---forma-de-heaviside)
 - [2. Electromagnetismo básico](#2-electromagnetismo-basico)
 - [3. Espectro electromagnético](#3-espectro-electromagnetico)
 - [4. Señales analógicas y digitales](#4-senales-analogicas-y-digitales)
@@ -247,4 +254,317 @@ FF &= \frac{V_{RMS}}{Y_m}
 $$
 
 ---
+
+<a id="clase-3"></a>
+# Clase 3: Series de Fourier y señales periódicas
+
+## Índice de la Clase 3
+
+- [1. ¿Por qué importa en telecom?](#1-por-que-importa-en-telecom)
+- [2. Condiciones de Dirichlet](#2-condiciones-de-dirichlet)
+- [3. Forma trigonométrica de Fourier](#3-forma-trigonometrica-de-fourier)
+- [4. Onda cuadrada impar](#4-onda-cuadrada-impar)
+- [5. Forma compleja de Fourier](#5-forma-compleja-de-fourier)
+- [6. Tiempo vs frecuencia](#6-tiempo-vs-frecuencia)
+- [7. Ejercicio resuelto](#7-ejercicio-resuelto)
+- [8. Velocidad de modulación y transmisión](#8-velocidad-de-modulacion-y-transmision)
+- [9. BER y rendimiento](#9-ber-y-rendimiento)
+- [10. Cierre con GeoGebra](#10-cierre-con-geogebra)
+
+---
+
+## 1. ¿Por qué importa en telecom?
+La Serie de Fourier es fundamental porque permite estudiar una señal compleja como combinación de senoidales simples. En telecomunicaciones esto sirve para:
+
+- transmisión eficiente
+- filtrado de ruido e interferencias
+- análisis del ancho de banda
+- estudio de modulación y demodulación
+- mejora tecnológica y diagnóstico de señales
+
+Idea clave: la dualidad tiempo-frecuencia.
+- En el dominio del tiempo se observa la forma de la señal.
+- En el dominio de la frecuencia se observan las senoides que la componen.
+
+---
+
+## 2. Condiciones de Dirichlet
+Una función $f(t)$ puede desarrollarse en serie de Fourier si cumple:
+
+1. $f(t)$ es periódica, con período $T$
+2. está definida salvo en un número finito de puntos
+3. tiene un número finito de máximos y mínimos en un período
+4. $f(t)$ y $f'(t)$ son continuas por partes
+
+Estas condiciones aseguran que la serie converja en casi todos los puntos.
+
+---
+
+## 3. Forma trigonométrica de Fourier
+La forma general es:
+
+$$
+f(t)=a_0+
+\sum_{n=1}^{\infty}\left[a_n\cos(n\omega_0 t)+b_n\sin(n\omega_0 t)\right]
+$$
+
+donde:
+
+$$
+\omega_0=\frac{2\pi}{T}=2\pi f_0
+$$
+
+y los coeficientes son:
+
+$$
+a_0=\frac{1}{T}\int_{-T/2}^{T/2} f(t)\,dt
+$$
+
+$$
+a_n=\frac{2}{T}\int_{-T/2}^{T/2} f(t)\cos(n\omega_0 t)\,dt
+$$
+
+$$
+b_n=\frac{2}{T}\int_{-T/2}^{T/2} f(t)\sin(n\omega_0 t)\,dt
+$$
+
+### Paridad útil
+- Si $f(t)$ es par:
+  $$
+  \int_{-a}^{a} f(t)\,dt = 2\int_0^a f(t)\,dt
+  $$
+- Si $f(t)$ es impar:
+  $$
+  \int_{-a}^{a} f(t)\,dt = 0
+  $$
+
+Esto simplifica mucho los cálculos.
+
+---
+
+## 4. Ejemplo: onda cuadrada impar
+Una onda cuadrada impar cumple:
+
+$$
+f(t)=-f(-t)
+$$
+
+Entonces:
+
+$$
+a_0=0, \qquad a_n=0
+$$
+
+y solo aparecen términos en seno:
+
+$$
+f(t)=\sum_{n\text{ impar}} \frac{4}{n\pi}\sin(n\omega_0 t)
+$$
+
+Desarrollando:
+
+$$
+f(t)\approx \frac{4}{\pi}\sin(\omega_0 t)+\frac{4}{3\pi}\sin(3\omega_0 t)+\frac{4}{5\pi}\sin(5\omega_0 t)+\cdots
+$$
+
+Esto muestra que una onda cuadrada está formada por infinitas armónicas impares.
+
+### Fenómeno de Gibbs
+En las discontinuidades aparece un sobrepico aproximado del 9%, aunque agreguemos más armónicas. Esto se conoce como fenómeno de Gibbs.
+
+---
+
+## 5. Forma compleja de Fourier
+Usando la identidad de Euler:
+
+$$
+e^{jx}=\cos x + j\sin x
+$$
+
+la señal puede escribirse como:
+
+$$
+f(t)=\sum_{n=-\infty}^{+\infty} C_n e^{j n \omega_0 t}
+$$
+
+donde:
+
+$$
+C_n=\frac{1}{T}\int_{-T/2}^{T/2} f(t)e^{-j n \omega_0 t}\,dt
+$$
+
+Esta forma es muy útil porque expresa amplitud y fase de cada componente.
+
+### Tren rectangular
+Para un pulso rectangular de amplitud $A$, ancho $\tau$ y período $T$:
+
+$$
+|C_n| = A\frac{\tau}{T}\left|\frac{\sin(n\omega_0\tau/2)}{n\omega_0\tau/2}\right|
+$$
+
+Se puede escribir como:
+
+$$
+|C_n| = A\frac{\tau}{T}\left|\operatorname{sinc}\left(\frac{n\omega_0\tau}{2}\right)\right|
+$$
+
+con:
+
+$$
+\operatorname{sinc}(x)=\frac{\sin x}{x}
+$$
+
+### Fórmulas de oro
+- número de armónicas relevantes:
+  $$
+  N=\frac{T}{\tau}
+  $$
+- amplitud máxima del espectro:
+  $$
+  |C_0|=A\frac{\tau}{T}
+  $$
+
+Si $\tau$ es pequeño, el espectro es ancho; si $\tau$ es grande, el espectro es más estrecho.
+
+---
+
+## 6. Tiempo vs frecuencia
+- En el tiempo: vemos pulsos, forma de onda, amplitud versus $t$
+- En la frecuencia: vemos rayas o componentes armónicas separadas por $f_0$
+- El espectro de un tren de pulsos tiene una envolvente sinc
+
+La separación entre líneas del espectro es:
+
+$$
+\Delta f = f_0 = \frac{1}{T}
+$$
+
+Esto es clave en telecomunicaciones porque determina el ancho de banda y la capacidad de transmisión.
+
+---
+
+## 7. Ejercicio resuelto (pág. 22)
+Datos:
+- $FRP=1000\ \text{pps}$
+- $T=\frac{1}{1000}=0.001\ \text{s}$
+- $V_m=2000\ \text{baudios}$
+- $\tau=\frac{1}{V_m}=0.5\times10^{-4}\ \text{s}$
+- $A=1\ \text{V}$
+
+### 1) Período
+$$
+T=0.001\ \text{s}
+$$
+
+### 2) Duración del pulso
+$$
+\tau=0.5\times10^{-4}\ \text{s}
+$$
+
+### 3) Número de armónicas
+$$
+N=\frac{T}{\tau}=\frac{0.001}{0.5\times10^{-4}}=20
+$$
+
+### 4) Frecuencia fundamental
+$$
+f_0=\frac{1}{T}=\frac{1}{0.001}=1000\ \text{Hz}
+$$
+
+### 5) Ancho de banda
+$$
+BW\approx N\cdot f_0 = 20\cdot1000 = 20000\ \text{Hz}=20\ \text{kHz}
+$$
+
+### 6) Amplitud máxima
+$$
+|C_0|=A\frac{\tau}{T}=1\cdot\frac{0.5\times10^{-4}}{0.001}=0.05\ \text{V}
+$$
+
+Conclusión: el espectro es sinc y el primer cero aparece en la armónica 20.
+
+---
+
+## 8. Velocidad de modulación y transmisión
+La velocidad de símbolos es:
+
+$$
+V_m=\frac{\text{número de cambios}}{\text{tiempo}}\quad [\text{baudios}]
+$$
+
+La velocidad de transmisión en bits es:
+
+$$
+V_t=\frac{1}{\tau}\log_2(n)\quad [\text{bps}]
+$$
+
+donde $n$ es el número de niveles.
+
+### Importante
+- más niveles $\Rightarrow$ más bits por cambio
+- mayor eficiencia espectral
+- pero también mayor complejidad y sensibilidad al ruido
+
+---
+
+## 9. BER y rendimiento
+### BER
+$$
+BER=\frac{\text{bits con errores}}{\text{bits transmitidos}}
+$$
+
+Valores típicos:
+- muy bueno: $10^{-9}$ a $10^{-10}$
+- bueno: $10^{-6}$
+- degradado: $10^{-3}$ a $10^{-5}$
+- dañado: $>10^{-3}$
+
+### Rendimiento
+$$
+\text{Rendimiento}=\frac{\text{bits útiles}}{\text{bits totales}}
+$$
+
+---
+
+## 10. Cierre con GeoGebra
+Una señal sinusoidal general es:
+
+$$
+f(t)=A\sin(\omega t+\phi)
+$$
+
+donde:
+- $A$ = amplitud
+- $\omega$ = frecuencia angular
+- $\phi$ = fase
+
+En Fourier:
+- $A$ representa la amplitud del armónico $|C_n|$
+- $\omega=n\omega_0$
+- $\phi$ representa la fase del coeficiente complejo
+
+### Interpretación visual
+- aumentar $A$ → estiramiento vertical
+- aumentar $\omega$ → más ciclos por unidad de tiempo
+- aumentar $\phi$ → desplazamiento horizontal (adelanto o retraso)
+
+---
+
+## Resumen final
+- La serie de Fourier descompone una señal periódica en armónicas.
+- La frecuencia fundamental es:
+  $$
+  f_0=\frac{1}{T}
+  $$
+- La forma trigonométrica es:
+  $$
+  f(t)=a_0+\sum_{n=1}^{\infty}[a_n\cos(n\omega_0 t)+b_n\sin(n\omega_0 t)]
+  $$
+- La forma compleja es:
+  $$
+  f(t)=\sum_{n=-\infty}^{+\infty} C_n e^{j n \omega_0 t}
+  $$
+- Un tren rectangular tiene espectro con envolvente sinc.
+- El ancho de banda depende del ancho del pulso $\tau$ y del período $T$.
+- Este análisis es fundamental para la transmisión, filtrado y diagnóstico en telecomunicaciones.
 
