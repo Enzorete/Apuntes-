@@ -4,6 +4,7 @@
 
 - [Clase 1](#clase-1)
 - [Clase 2](#clase-2)
+- [Clase 3](#clase-3)
 
 ---
 
@@ -333,7 +334,93 @@ Los comportamientos éticos surgen de la interacción entre las personas, la cul
 ### En síntesis
 
 - Las organizaciones son sistemas abiertos.
-- Deben responder a cambios del entorno.
-- Su estructura debe ser diseñada de acuerdo con objetivos y contexto.
-- Los administradores son quienes coordinan recursos, personas y procesos.
+- Deben responder a los cambios del entorno.
+- Su estructura debe diseñarse según objetivos y contexto.
+- Los administradores coordinan recursos, personas y procesos.
 - La efectividad organizacional depende de la combinación entre eficiencia y eficacia.
+
+---
+
+<a id="clase-3"></a>
+
+# Clase 3
+
+## Índice
+
+- [Definición de la cultura](#qué-es-la-cultura)
+- [Función de la cultura](#para-qué-sirve)
+- [Origen de la cultura](#cómo-inicia-una-cultura)
+- [Mantenimiento y transmisión](#cómo-se-crea-y-se-sostiene)
+- [Elementos de la cultura](#cómo-se-mantiene-viva-cómo-se-transmite)
+- [Resumen para estudiar](#preguntas-clave-para-el-parcial)
+- [Procesos de consolidación](#cómo-se-mantiene-la-cultura)
+
+## Cultura Organizacional - Resumen
+
+### ¿Qué es la cultura?
+Es el sistema de significados compartidos por los miembros de una organización que la distingue de las demás. Es la personalidad de la empresa.
+
+### ¿Para qué sirve?
+1. Da identidad.
+2. Genera compromiso más allá del individuo.
+3. Da sentido y estabilidad.
+4. Establece mecanismos de control sobre el comportamiento.
+
+### ¿Cómo inicia una cultura?
+Inicia desde los fundadores, desde lo que piensan y sienten. Quieren que se haga como ellos dicen.
+
+1. **Adoctrinamiento:** socializan a los trabajadores a su misma manera de pensar y sentir, transmitiendo su ideología.
+2. **Internalización:** la conducta de los fundadores anima a los trabajadores a actuar igual. Se internalizan valores, creencias y conductas.
+3. **Éxito:** cuando la organización triunfa, también triunfa la personalidad y la forma de pensar de los fundadores.
+
+> La cultura es fundamental porque guía el rumbo de la empresa en su constitución, orienta el trabajo y el trato de empleados, clientes y sociedad.
+
+### ¿Cómo se crea y se sostiene?
+Se crea y se sostiene a través de 3 pilares:
+- Prácticas de selección (contratar gente acorde)
+- Métodos de socialización (inducción)
+- Alta dirección (lo que hace y dice la gerencia)
+
+### ¿Cómo se mantiene viva? ¿Cómo se transmite?
+
+**1. Símbolos:** objetos, diseño de oficinas, vestimenta, logos, autos, oficinas. Comunican quién es importante y qué se valora.
+
+**2. Rituales:** actividades repetitivas y programadas: reuniones de los lunes, premiaciones, festejos, capacitaciones. Refuerzan valores.
+
+**3. Historias:** anécdotas de los fundadores, de éxitos, fracasos, despidos. Enseñan cómo se debe actuar y qué no hacer.
+
+---
+
+### Preguntas clave para el parcial
+
+**¿Qué es?** Sistema de significados compartidos.
+
+**¿Para qué sirve?** Identidad, compromiso, sentido y control.
+
+**¿Cómo inicia?** Con los fundadores.
+
+**¿Cómo se transmite?** Por socialización, historias, rituales y símbolos.
+
+---
+
+## ¿Cómo se mantiene la cultura?
+
+Se mantiene a través de 3 procesos clave:
+
+### 1. Prácticas de selección
+No solo se elige por conocimientos técnicos, sino por identificación con la organización. Se busca gente que comparta pensamientos y valores, que "encaje" con la cultura.
+
+### 2. Acciones de la alta dirección
+Lo que hacen y dicen los jefes. Con su conducta, con lo que premian, castigan y priorizan, marcan qué es importante y qué no. Los empleados miran a la gerencia.
+
+### 3. Métodos de socialización
+Es cómo la empresa integra al nuevo empleado. Proceso de adaptación con 3 etapas:
+
+**Etapa 1: Previa a la llegada**
+Es la más crítica. Es el aprendizaje previo que trae la persona de afuera. Viene con expectativas, valores, creencias e información que investigó sobre la empresa antes de entrar.
+
+**Etapa 2: Encuentro**
+El empleado entra y se enfrenta la expectativa vs. la realidad. Ve lo que en realidad es la empresa y nota si sus expectativas coinciden o difieren. Puede haber choque.
+
+**Etapa 3: Metamorfosis**
+El individuo cambia en su mayoría, y en menor medida también cambia la organización. El empleado encuentra conformidad, internaliza las normas, valores y se vuelve parte de la cultura. Ya es "uno más".
