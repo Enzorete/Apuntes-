@@ -4,7 +4,7 @@
 
 - [Clase 2](#clase-2)
 - [Clase 3](#clase-3)
-
+- [Clase 4](#clase-4)
 ---
 
 <a id="clase-2"></a>
@@ -578,3 +578,449 @@ En Fourier:
 - El ancho de banda depende del ancho del pulso $\tau$ y del período $T$.
 - Este análisis es fundamental para la transmisión, el filtrado y el diagnóstico en telecomunicaciones.
 
+---
+
+<a id="clase-4"></a>
+# Clase 4: Espectro de pulsos, enlaces y espectro electromagnético
+
+## Índice de la Clase 4
+
+- [1. Espectro de pulsos](#1-espectro-de-pulsos)
+- [2. Cálculo de enlaces y decibelios](#2-calculo-de-enlaces-y-decibelios)
+- [3. Unidades con referencia fija](#3-unidades-con-referencia-fija)
+- [4. Balance de potencia](#4-balance-de-potencia)
+- [5. Ejercicio resuelto](#5-ejercicio-resuelto)
+- [6. Espectro electromagnético](#6-espectro-electromagnetico)
+
+---
+
+<a id="1-espectro-de-pulsos"></a>
+## 1. Espectro de pulsos
+
+### 1.1 Parámetros básicos
+
+El ancho del pulso es la inversa de la velocidad de modulación:
+
+$$
+\mathit{tau} = V_m^{-1} = \frac{1}{V_m}\quad [s]
+$$
+
+El período de repetición es la inversa de la frecuencia de repetición de pulsos:
+
+$$
+T = FRP^{-1} = \frac{1}{FRP}\quad [s]
+$$
+
+### 1.2 Ancho de banda y armónicas
+
+El ancho de banda aproximado depende del ancho del pulso:
+
+$$
+AB = \tau^{-1} = \frac{1}{\tau} = V_m\quad [Hz]
+$$
+
+Cuanto más angosto es el pulso, mayor ancho de banda se necesita.
+
+La cantidad aproximada de armónicas dentro del lóbulo principal es:
+
+$$
+N_{\text{armónicas}} = \frac{T}{\tau}
+$$
+
+Para una amplitud de pulso $A$, la amplitud de cada línea espectral se aproxima mediante:
+
+$$
+C_n = A\frac{\tau}{T}
+$$
+
+En el caso particular de $A=1\,V$:
+
+$$
+C_n = \frac{\tau}{T}\quad [V]
+$$
+
+### 1.3 Relación clave
+
+Cuando $A=1$:
+
+$$
+C_n\,N_{\text{armónicas}}
+= \left(\frac{\tau}{T}\right)\left(\frac{T}{\tau}\right)=1
+$$
+
+---
+
+<a id="2-calculo-de-enlaces-y-decibelios"></a>
+## 2. Cálculo de enlaces y decibelios
+
+### 2.1 Atenuación y ganancia
+
+La relación lineal entre la potencia de salida y la de entrada es:
+
+$$
+R = \frac{P_s}{P_e}
+$$
+
+- **Atenuación:** $P_s<P_e$, por lo tanto $0<R<1$.
+- **Ganancia:** $P_s>P_e$, por lo tanto $R>1$.
+
+Un atenuador reduce la potencia. Algunos ejemplos son una resistencia, un cable largo o el espacio libre.
+
+### 2.2 Elementos en cascada
+
+Las ganancias y pérdidas lineales se multiplican:
+
+$$
+G_{\text{tot}} = \prod_{i=1}^{n}G_i
+$$
+
+Por ejemplo:
+
+$$
+G_{\text{tot}}=G_1\,G_2\,G_3
+$$
+
+Si hay pérdidas y ganancias mezcladas, se aplica la misma regla.
+
+### 2.3 Decibelios
+
+Para potencia, la relación se expresa como:
+
+$$
+G_{\text{dB}}=10\log_{10}\left(\frac{P_s}{P_e}\right)
+$$
+
+- Si $P_s>P_e$, el resultado es positivo y representa una ganancia.
+- Si $P_s<P_e$, el resultado es negativo y representa una pérdida.
+
+En lineal las relaciones se multiplican; en decibelios se suman:
+
+$$
+G_{\text{tot,dB}}=\sum_{i=1}^{n}G_{i,\text{dB}}
+$$
+
+La conversión inversa es:
+
+$$
+P_s=P_e\,10^{G_{\text{dB}}/10}
+$$
+
+---
+
+<a id="3-unidades-con-referencia-fija"></a>
+## 3. Unidades con referencia fija
+
+Estas unidades comparan una potencia o tensión con un valor de referencia fijo.
+
+### 3.1 dBm
+
+La referencia es $1\,mW$:
+
+$$
+P_{\text{dBm}}=10\log_{10}\left(\frac{P[mW]}{1\,mW}\right)
+$$
+
+$$
+0\,\text{dBm}=1\,mW
+$$
+
+### 3.2 dBW
+
+La referencia es $1\,W$:
+
+$$
+P_{\text{dBW}}=10\log_{10}\left(\frac{P[W]}{1\,W}\right)
+$$
+
+$$
+0\,\text{dBW}=1\,W=30\,\text{dBm}
+$$
+
+### 3.3 dBu
+
+La referencia de tensión es $0.775\,V_{\text{RMS}}$:
+
+$$
+V_{\text{dBu}}=20\log_{10}\left(\frac{V[V]}{0.775\,V}\right)
+$$
+
+Ese valor genera $1\,mW$ sobre una resistencia de $600\,\Omega$:
+
+$$
+0\,\text{dBu}=0.775\,V_{\text{RMS}}=0\,\text{dBm}=1\,mW
+$$
+
+### 3.4 dBmV
+
+La referencia es $1\,mV$ y se utiliza principalmente en televisión y cable coaxial:
+
+$$
+V_{\text{dBmV}}=20\log_{10}\left(\frac{V[mV]}{1\,mV}\right)
+$$
+
+### 3.5 Regla de oro
+
+- Para **potencia**: $10\log_{10}$.
+- Para **tensión**: $20\log_{10}$.
+
+La razón es que $P=V^2/R$:
+
+$$
+10\log_{10}\left(\frac{P_s}{P_e}\right)
+=10\log_{10}\left[\left(\frac{V_s}{V_e}\right)^2\right]
+=20\log_{10}\left(\frac{V_s}{V_e}\right)
+$$
+
+### 3.6 Conversión rápida
+
+| Relación lineal | Ganancia o pérdida |
+| :---: | :---: |
+| $\times 0.001$ | $-30\,\text{dB}$ |
+| $\times 0.01$ | $-20\,\text{dB}$ |
+| $\times 0.1$ | $-10\,\text{dB}$ |
+| $\times 0.5$ | $-3\,\text{dB}$ |
+| $\times 1$ | $0\,\text{dB}$ |
+| $\times 2$ | $+3\,\text{dB}$ |
+| $\times 4$ | $+6\,\text{dB}$ |
+| $\times 10$ | $+10\,\text{dB}$ |
+| $\times 100$ | $+20\,\text{dB}$ |
+| $\times 1000$ | $+30\,\text{dB}$ |
+
+---
+
+<a id="4-balance-de-potencia"></a>
+## 4. Balance de potencia
+
+### 4.1 Enlace por cable o fibra
+
+Esquema:
+
+$$
+Tx\longrightarrow\text{cable}\longrightarrow Amp
+\longrightarrow\text{cable}\longrightarrow Rx
+$$
+
+La potencia recibida se calcula en dB como la suma de ganancias menos la suma de pérdidas:
+
+$$
+P_{Rx}=P_{Tx}+Amp-
+\left(At_{\text{cable}}+At_{\text{empalmes}}+At_{\text{conectores}}+FD\right)
+$$
+
+La condición para que el enlace funcione es:
+
+$$
+P_{Rx}\geq S_{Rx}
+$$
+
+Donde:
+
+$$
+\begin{aligned}
+At_{\text{cable}}&=\alpha L \\
+At_{\text{empalmes}}&=N_{\text{empalmes}}At_{\text{empalme}} \\
+At_{\text{conectores}}&=N_{\text{conectores}}At_{\text{conector}}
+\end{aligned}
+$$
+
+- $P_{Tx}$: potencia transmitida, en dBm.
+- $Amp$: ganancia del amplificador, en dB.
+- $FD$: factor de diseño o margen de seguridad, normalmente entre $3$ y $6\,dB$.
+- $S_{Rx}$: sensibilidad del receptor, en dBm.
+
+Si $P_{Rx}<S_{Rx}$, el enlace no funciona. Las alternativas son aumentar la ganancia, reducir la distancia o agregar un repetidor.
+
+### 4.2 Enlace satelital
+
+Esquema:
+
+$$
+\mathrm{Tierra}\xrightarrow{\text{Up-Link}}\text{Satélite}
+\xrightarrow{\text{Down-Link}}\text{Tierra}
+$$
+
+La ecuación incorpora las ganancias de las antenas y la ganancia del satélite:
+
+$$
+P_{Rx}=P_{Tx}+Amp_{\text{sat}}+G_{\text{antenas}}
+-\left(At_{\text{atmósfera}}+At_{\text{cables}}+At_{\text{empalmes}}
++At_{\text{conectores}}+FD\right)
+$$
+
+La ganancia total de las antenas es:
+
+$$
+G_{\text{antenas}}=G_{Tx}+G_{Rx}
+$$
+
+Y la condición de enlace sigue siendo:
+
+$$
+P_{Rx}\geq S_{Rx}
+$$
+
+La atenuación atmosférica incluye el espacio libre, la lluvia y el aire. El satélite actúa como repetidor, mientras que las antenas parabólicas concentran energía y aportan ganancia.
+
+> **Regla general:** todo lo que ayuda menos todo lo que frena debe superar la sensibilidad del receptor.
+
+---
+
+<a id="5-ejercicio-resuelto"></a>
+## 5. Ejercicio resuelto: balance de potencia
+
+### 5.1 Enunciado
+
+Un enlace de $1800\,m$ utiliza un coaxial con una atenuación de $0.5\,dB/100\,m$ y transmite $P_{Tx}=2\,W$. ¿Qué sensibilidad máxima, expresada en mW, puede admitir el receptor?
+
+Datos:
+
+$$
+L=1800\,m,\qquad \alpha=0.5\,\frac{dB}{100\,m},\qquad P_{Tx}=2\,W
+$$
+
+Se consideran nulas las pérdidas de empalmes, conectores y el factor de diseño, y no hay amplificador.
+
+### 5.2 Resolución
+
+**1. Atenuación del cable**
+
+$$
+At_{\text{cable}}=1800\,m\left(\frac{0.5\,dB}{100\,m}\right)=9\,dB
+$$
+
+**2. Conversión de la potencia transmitida**
+
+$$
+P_{Tx}=2\,W=2000\,mW
+$$
+
+$$
+P_{Tx}=10\log_{10}(2000)=33.01\,dBm
+$$
+
+**3. Potencia que llega al receptor**
+
+$$
+P_{Rx}=33.01-9=24.01\,dBm
+$$
+
+**4. Conversión a mW**
+
+$$
+P_{Rx}=10^{24.01/10}=251.7\,mW
+$$
+
+Por lo tanto, la sensibilidad debe cumplir:
+
+$$
+S_{Rx}\leq251.7\,mW
+$$
+
+Por ejemplo, un receptor con sensibilidad de $200\,mW$ funciona; uno de $500\,mW$ no alcanza el nivel recibido.
+
+### 5.3 Atajo sin dBm
+
+Una pérdida de $9\,dB$ equivale a una relación lineal de:
+
+$$
+10^{-9/10}=0.1259
+$$
+
+Entonces:
+
+$$
+P_{Rx}=2\,W\times0.1259=0.2517\,W=251.7\,mW
+$$
+
+---
+
+<a id="6-espectro-electromagnetico"></a>
+## 6. Espectro electromagnético
+
+### 6.1 Longitud de onda
+
+La longitud de onda es la distancia que avanza una onda durante un período, o la distancia entre dos puntos equivalentes consecutivos.
+
+$$
+\lambda=vT=\frac{v}{f}
+$$
+
+En el vacío, $v=c$:
+
+$$
+c=3\times10^8\,m/s,\qquad \lambda=\frac{c}{f}
+$$
+
+Para calcular rápidamente con $f$ en MHz:
+
+$$
+\lambda[m]\approx\frac{300}{f[MHz]}
+$$
+
+Ejemplos:
+
+$$
+\begin{aligned}
+100\,MHz&\Rightarrow\lambda=3\,m \\
+300\,MHz&\Rightarrow\lambda=1\,m \\
+900\,MHz&\Rightarrow\lambda\approx0.33\,m=33\,cm \\
+2.4\,GHz&=2400\,MHz\Rightarrow\lambda=12.5\,cm
+\end{aligned}
+$$
+
+Regla clave:
+
+$$
+f\uparrow\Rightarrow\lambda\downarrow\Rightarrow\text{antena más pequeña}
+$$
+
+### 6.2 Bandas de frecuencia
+
+| Banda | Abreviatura | Frecuencia | Longitud de onda aproximada |
+| :--- | :---: | :--- | :--- |
+| Por debajo de ELF | -- | $<3\,Hz$ | $>100000\,km$ |
+| Extra baja frecuencia | ELF | $3$--$30\,Hz$ | $100000$--$10000\,km$ |
+| Super baja frecuencia | SLF | $30$--$300\,Hz$ | $10000$--$1000\,km$ |
+| Ultra baja frecuencia | ULF | $300$--$3000\,Hz$ | $1000$--$100\,km$ |
+| Muy baja frecuencia | VLF | $3$--$30\,kHz$ | $100$--$10\,km$ |
+| Baja frecuencia | LF | $30$--$300\,kHz$ | $10$--$1\,km$ |
+| Media frecuencia | MF | $300$--$3000\,kHz$ | $1\,km$--$100\,m$ |
+| Alta frecuencia | HF | $3$--$30\,MHz$ | $100$--$10\,m$ |
+| Muy alta frecuencia | VHF | $30$--$300\,MHz$ | $10$--$1\,m$ |
+| Ultra alta frecuencia | UHF | $300$--$3000\,MHz$ | $1\,m$--$100\,mm$ |
+| Super alta frecuencia | SHF | $3$--$30\,GHz$ | $100$--$10\,mm$ |
+| Extra alta frecuencia | EHF | $30$--$300\,GHz$ | $10$--$1\,mm$ |
+| Por encima de EHF | -- | $>300\,GHz$ | $<1\,mm$ |
+
+### 6.3 Aplicaciones para recordar
+
+| Banda | Aplicaciones frecuentes |
+| :--- | :--- |
+| VLF | Comunicaciones con submarinos |
+| LF/MF | Radio AM |
+| HF | Onda corta y radioaficionados |
+| VHF | Radio FM, televisión aérea y aeronáutica |
+| UHF | Televisión digital y celulares 4G |
+| SHF/EHF | Microondas, WiFi de 5 GHz, satélite y radar |
+
+Como referencia adicional:
+
+| Aplicación o banda de uso | Frecuencia o longitud de onda aproximada |
+| :--- | :--- |
+| Comunicaciones submarinas | $<30\,kHz$, longitudes de onda mayores a $10\,km$ |
+| Radio AM | Alrededor de MF, longitudes de onda menores a $650\,m$ |
+| Radio de onda corta | HF, longitudes de onda menores a $180\,m$ |
+| Radio FM | VHF, longitudes de onda menores a $10\,m$ |
+| Radar y televisión | UHF, longitudes de onda menores a $1\,m$ |
+| Microondas | Frecuencias mayores a $1\,GHz$ |
+| Luz visible | Aproximadamente $384$--$750\,THz$ |
+| Ultravioleta | Frecuencias mayores a aproximadamente $1.5\,PHz$ |
+| Rayos X | Frecuencias mayores a aproximadamente $30\,PHz$ |
+| Rayos gamma | Frecuencias mayores a aproximadamente $30\,EHz$ |
+
+$$
+2.4\,GHz\Rightarrow\lambda=12.5\,cm,\qquad
+5\,GHz\Rightarrow\lambda=6\,cm
+$$
+
+> **Nota para el parcial:** el apunte del profesor ubica celular, microondas y satélite dentro de “infrarrojo cercano”. Técnicamente, las comunicaciones celulares se encuentran principalmente en UHF/SHF, aproximadamente entre $300\,MHz$ y $30\,GHz$.
